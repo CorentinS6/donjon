@@ -1,0 +1,6 @@
+<ul>{% for d in liste %}
+<li><a href="javascript:void(0);" onclick="displayFiche('donjon','{{d.id}}');">{{d.nom}}</a>
+{% if mode == 'n' %} {{d.dateOuverture|date("m/d/Y")}}
+{% else %} {# ('.$d->stat($mode)->VAL.') <p class="smaller">'.$d->stat('NOTe_COM')->VAL.'</p>#}
+{% endif %} [<a href="javascript:void(0);" onclick="AllerAuDonjon({{d.id}})">Go!</a>]</li>
+{% endfor %}</ul>

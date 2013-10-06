@@ -1,0 +1,34 @@
+<h1>L'inventaire</h1>
+	
+{% if inventaire|length > 0 %}
+
+<table id="economat-table-liste-inventaire">
+<thead><tr><th>Nom</th><th>Type</th><th>Qualité</th><th>Etat</th><th>Actions</th></tr></thead>
+<tobdy>
+{% for i in inventaire %}
+	<tr>
+	<td><a href="javascript:void(0);" onclick="displayFiche('inventaire','{{i.id}}')">{{i.nom}}</a></td>
+	<td>{{i.idobjets.cat}}</td>
+	<td>{{i.qualite|qualite}}</td>
+	<td>{{i.displayPOSITION()}}</td>
+	<td>
+		{% if i.position!='{V}' %}<a href="javascript:void(0);" onclick="economat_inv_vendre('{{i.id}}');" title="Vendez cet objet sur le marché aux occasions">Vendre</a> {%endif%}
+		{% if i.position!='{I}' %}<a href="javascript:void(0);" onclick="economat_inv_ranger('{{i.id}}');" title="Ranger cet objet dans tes coffres">Ranger</a> {%endif%}
+		{% if i.idpiece is null %}<a href="javascript:void(0);" onclick="economat_inv_deposer('{{i.id}}');" title="Déposer cet objet dans une salle du donjon">Déposer</a> {%endif%}
+		{% if i.position|slice(1,1) != 'E' %}<a href="javascript:void(0);" onclick="economat_inv_equiper('{{i.id}}');" title="Equiper une créature avec cet objet">Equiper</a> {%endif%}
+	</td>
+	</tr>
+{% endfor %}
+</tobdy>
+</table>
+
+<div id="economat-table-liste-inventaire-pager" class="pager"> <form> <span class="first pointer">&lt;&lt;</span> <span class="prev pointer">&lt;</span> <span class="smaller pagedisplay"></span> <span class="pointer next">&gt;</span> <span class="pointer last">&gt;&gt;</span> </form></div>
+
+<script>$(function(){			
+	$("#economat-table-liste-inventaire").tablesorter().tablesorterPager({container:$("#economat-table-liste-inventaire-pager"), output: "{page} / {totalPages}"});
+});
+</script>
+{% else %}
+<p>Vous n'avez aucun objet pour le moment.</p>
+{% endif %}
+<script> updateAffichageDonneeNoVal("PACT"); </script>

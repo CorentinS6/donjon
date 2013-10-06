@@ -1,0 +1,26 @@
+<div id="aventurier-relation-conteneur">
+
+
+<div style="display:inline-block;" class="ui-state-default ui-corner-all">
+    <span class="ui-icon ui-icon-circle-plus" onclick="set_dialog({title: 'Nouvelle Relation'}, 'aventurier/relation_new_form')" title="Nouvelle relation"></span>
+</div>
+
+
+    {# $liste = relation::liste($this->av,'ORDER BY TYPE'); #}
+<table><thead>
+        <tr>
+            <th>Nom</th>
+            <th>Type</th>
+            <th>Action</th>
+        </tr>
+    </thead><tbody>
+    {# foreach($liste as $r){ #}
+            <tr>
+                <td><a href="javascript:void(0);" onclick="displayFiche('aventurier', '.$r->getAventurierAutre()->getID().')">$r->getAventurierAutre()->NOM</a></td>
+                <td>$r->TYPE</td>
+            {# <td><div style="display:inline-block;" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-close" title="Supprimer" onclick="loadInLayer('aventurier/relation_del?d=1&idRelation='.$r->idRelation.'','aventurier-sidepanel-relations');"></span></div></td>
+        #}
+            </tr>
+
+</tbody></table>
+</div>

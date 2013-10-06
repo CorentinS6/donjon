@@ -1,0 +1,49 @@
+<div id="eTopBar">
+
+		<img id="gLogo" align="left" height="80%" src="{{ asset('bundles/ndjdgame/images/interface/gardien2.jpg') }}" style="border:1em;border-radius:0.5em; margin:0.2em 0.5em;" class="right" />	
+
+		<div class="right smaller h100" style="width:250px;">
+			<table class="w100 h100">
+			<tr>
+				<td class="txtcenter smaller">
+				Niveau <span class="data-donjon-EXPERIENCE">{{ donjon.experience | level }}</span>
+				<div class="progressbar-XP center" style="height:20px; width:100px;" title="Expérience">
+					<div class="right smaller">
+						<span class="data-donjon-EXPERIENCE">{{ donjon.experience }}</span>
+						/
+						<span class="data-donjon-EXPERIENCE_NEXT_LEVEL">{{ donjon.experience | next_level }}</span>
+					</div>
+				</div>
+				</td>
+				
+				<td>
+					<div><img src="{{asset('bundles/ndjdgame/images/gicon/pa.png')}}" width="25" align="absmiddle" title="Points d'action" /> <span class="data-donjon-PACT">{{ donjon.pact }}</span></div>
+					
+					<div><img src="{{asset('bundles/ndjdgame/images/gicon/po.png')}}" width="25" align="absmiddle" title="Argent" /> <span class="data-donjon-ARGENT">{{donjon.argent}}</span></div>
+				</td>
+			</tr>
+			
+			</table>
+		</div>
+		
+		<div class="txtcenter amatic bolder">{{ donjon.nom }}</div>
+		
+		<div id="eNavMenu">
+			<ul>
+				<li class="current"><a class="" href="#bureau">Bureau du gardien</a></li>
+				<li><a class="" href="#yeux">Salle des yeux</a></li>
+				<li><a class="" href="#economat">Economat</a></li>
+				<li><a class="" href="#editeur">Editeur</a></li>
+			</ul>
+		</div>
+		
+	<script>
+	{% set xp_place = donjon.experience|xp_place %}
+	$(function(){
+        $( ".progressbar-XP" ).progressbar({
+            value:{{xp_place[1]}},
+            max:{{xp_place[2]}}
+        });
+	});	
+	</script>
+</div>

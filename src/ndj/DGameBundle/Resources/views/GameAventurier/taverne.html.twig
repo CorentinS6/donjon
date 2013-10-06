@@ -1,0 +1,80 @@
+<div class="w30 right o90" style="height:90%;margin:1em 2em 0 0;">
+<div id="aventurier-donjon-accordeon">
+
+<p>Les nouveaux</p>
+<div>
+Les nouveaux
+{% include 'ndjDGameBundle:Donjon:donjon.liste.description.html.twig' with {'liste':liste_nouv, 'mode':'n'} %}
+</div>
+
+<p>Les + visités</p>
+<div>
+{# $out .= donjon::listeDescTop('AV_IN'); #}
+{% include 'ndjDGameBundle:Donjon:donjon.liste.description.html.twig' with {'liste':liste_pvisite,'mode':'pvisite'} %}
+</div>
+ 
+<p>Les mieux noté</p>
+<div>
+{#$out .= donjon::listeDescTop('NOTE_AVG'#}
+{% include 'ndjDGameBundle:Donjon:donjon.liste.description.html.twig' with {'liste':liste_pnote,'mode':'pnote'} %}
+</div>
+ 
+<p>Tous les Donjons</p>
+<div>
+{% include 'ndjDGameBundle:Donjon:donjon.liste.description.html.twig' with {'liste':liste_tous,'mode':'tous'} %}
+<div id="taverne-donjon-info"></div>
+</div>
+ 
+</div>
+<script> $("#aventurier-donjon-accordeon").accordion({ heightStyle: "fill" }); </script>
+</div>
+
+<div class="ui-widget-content o90 ui-corner-all pad1 w60 overa" style="margin:1em auto;">
+<h1>La taverne</h1>
+
+<div class="smaller">
+<p>Tu es actuellement à taverne. C'est un lieux de détente, d'échange et de rencontre entre les aventuriers.
+De retour d'un donjon, les uns racontent leurs hauts-faits (en se la pétant un peu parfois), et les autres écoutent, se préparent...
+<br />
+Tu peux aussi rejoindre un groupe d'aventurier afin de partir à l'aventurer à plusieurs, c'est beaucoup plus aisé (surtout lorsque l'on débute) !.
+<br />
+En attendant, prends un bière ou <input type="button" id="aventurier-taverne-gotomarche" onclick="Av_AllerMarche();" value="aller faire un tour au marché"> afin de t'équiper !</p>
+</div>
+<script>$(document).ready(function(){ $("#aventurier-taverne-gotomarche").button(); });</script>
+	
+</div>
+ 
+
+<div class="ui-widget-content ui-corner-all overa o90 pad1 w60" style="margin:0 auto;height:50%;">
+<h1>Partir en groupe</h1>
+<p class="smaller">Il est plus aisé et plus avantageux de partir en groupe à l'aventure dans un donjon.</p>
+{#
+$lst = db::get()->fetchAllInto('SELECT * FROM ORGANISATION WHERE CAT="group" AND ACTIONS_DIFF IS NOT NULL', 'organisation');
+ 
+<p class="smaller">Il y a # groupes que vous pouvez rejoindre.</p>
+<ul class="smaller colllist">
+foreach($lst as $o) {
+	$chef = $o->getChef();
+	$act = explodex(',',$o->ACTIONS_DIFF);
+	$act_0 = explode('.',$act[0]);
+	$d_id = array_pop($act_0);
+	$d = new donjon($d_id);
+	$ismb = $this->av->groupIsMembre($o);
+	<li>';
+	// @todo : rejoindre/quitter le grp en fonction d'appart.
+	if ($ismb)
+		<button class="right">Quitter ce groupe</button>';
+	else
+		<button class="right">Rejoindre ce groupe</button>';
+	<p><b>'.$o->NOM.'</b> | '.$o->DESCRIPTION.'</p>'
+	.'<p>Chef : <a href="javascript:void(0);" onclick="displayFiche(\'aventurier\','.$chef[0]->getAventurier()->getId().')">'.$chef[0]->getAventurier()->getNOM().'</a> | Mb : '.count($o->getMembre()).'/'.$o->NOMBRE_MB_MAX.'</p>'
+	.'<p>CrÃ©Ã© le '.date::mysqlToDate($o->DATE_CREA).' |  DÃ©part dans '.$act[1].' tour(s) dans "<a href="javascript:void(0);" onclick="displayFiche(\'donjon\','.$d->getId().')">'.$d->getNOM().'</a>"</p></li>';
+}
+</ul>
+ 
+<!--  @todo : vÃ©rifier si le joueur appartient dÃ©jÃ  Ã  un groupe -->
+<button onclick="set_dialog({title:'Créer un groupe'},'aventurier/orga_crea_form?t=g')">Créer un groupe</button>';
+#}
+</div>
+ 
+<script>$(document).ready(function(){set_background("taverne_01"); $(".av-mode-donjon").fadeOut(); });</script>

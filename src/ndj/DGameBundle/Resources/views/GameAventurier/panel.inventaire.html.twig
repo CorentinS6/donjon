@@ -1,0 +1,53 @@
+<table class="width_cent smaller">
+<tr><th>Objets équipés</th><th>Objets dans ton sac : </th></tr>
+<tr><td>
+<table class="width_cent" style="background:no-repeat url('{{asset('bundles/ndjdgame/images/interface/perso-fond.png')}}');background-position:center center;">
+
+<tr><td></td><td>
+<div id="aventurier-sidepanel-inventaire-ET" title="Tête">{% include 'ndjDGameBundle:Inventaire:panel.inventaire.liste.html.twig' with {'liste':liste_et} %}</div>
+</td><td>
+<div id="aventurier-sidepanel-inventaire-EC" title="Collier">{% include 'ndjDGameBundle:Inventaire:panel.inventaire.liste.html.twig' with {'liste':liste_ec} %}</div>
+</td></tr>
+
+<tr><td>
+<div id="aventurier-sidepanel-inventaire-EAD" title="Main droite">{% include 'ndjDGameBundle:Inventaire:panel.inventaire.liste.html.twig' with {'liste':liste_ead} %}</div>
+</td><td>
+<div id="aventurier-sidepanel-inventaire-ECA" title="Armure / Habit">{% include 'ndjDGameBundle:Inventaire:panel.inventaire.liste.html.twig' with {'liste':liste_eca} %}</div>
+</td><td>
+<div id="aventurier-sidepanel-inventaire-EAG" title="Main gauche">{% include 'ndjDGameBundle:Inventaire:panel.inventaire.liste.html.twig' with {'liste':liste_eag} %}</div>
+</td></tr>
+
+<tr><td>
+<div id="aventurier-sidepanel-inventaire-EMD" title="Bracelet / Bague">{% include 'ndjDGameBundle:Inventaire:panel.inventaire.liste.html.twig' with {'liste':liste_emd} %}</div>
+</td><td>
+<div id="aventurier-sidepanel-inventaire-ECC" title="Ceinture">{% include 'ndjDGameBundle:Inventaire:panel.inventaire.liste.html.twig' with {'liste':liste_ecc} %}</div>
+</td><td>
+<div id="aventurier-sidepanel-inventaire-EMG" title="Bracelet / Bague">{% include 'ndjDGameBundle:Inventaire:panel.inventaire.liste.html.twig' with {'liste':liste_emg} %}</div>
+</td></tr>
+
+<tr><td></td><td>
+<div id="aventurier-sidepanel-inventaire-EP" title="Pieds">{% include 'ndjDGameBundle:Inventaire:panel.inventaire.liste.html.twig' with {'liste':liste_ep} %}</div>
+</td><td></td></tr>
+
+</table>
+
+</td><td valign="top" class="bg2">
+<div id="aventurier-sidepanel-inventaire-I">
+{% include 'ndjDGameBundle:Inventaire:panel.inventaire.liste.html.twig' with {'liste':liste_i} %}
+</div>
+</td></tr>
+
+<tr><td class="bg2" valign="top">
+Jeter : <div id="aventurier-sidepanel-inventaire-JET" class="right av-mode-donjon" title="Jeter">
+{% include 'ndjDGameBundle:Inventaire:panel.inventaire.liste.html.twig' with {'liste':liste_jet} %}
+</div>
+</td><td class="bg1"  valign="top">
+Vendre d'occasion : <div id="aventurier-sidepanel-inventaire-V" class="center" title="Vendre">
+{% include 'ndjDGameBundle:Inventaire:panel.inventaire.liste.html.twig' with {'liste':liste_v} %}
+</div>
+</td>
+</tr>
+ 
+</table>
+ 
+<div class="smaller txtcenter">Double-cliquez sur un objet pour afficher sa fiche descriptive.</div><div class="smaller" id="inventaireInfo"></div>

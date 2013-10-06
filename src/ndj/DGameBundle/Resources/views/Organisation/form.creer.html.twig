@@ -1,0 +1,78 @@
+<form action="{{ path('organisation_creer') }}" method="post" {{ form_enctype(form) }} onsubmit="return organisation_submit(this);">
+<p>{{ form_errors(form) }}</p>
+
+<table>
+	<tr>
+		<td>Nom : </td>
+		<td>{{ form_widget(form.nom) }} <p>{{form_errors(form.nom)}}</p></td>
+	</tr>
+	
+	<tr>
+		<td> Description : </td>
+		<td>
+		<div class="small">(En quelques mots/phrases, décrire le(s) but(s) de l'organisation, ses critères d'admission, etc)</div>
+		{{ form_widget(form.description) }} <p>{{form_errors(form.description)}}</p></td>
+	</tr>
+	<tr>
+		<td>Nombre de membre maximum : </td>
+		<td>
+			<div class="small">(0 pour illimité)</div>
+		{{ form_widget(form.nombrembmax) }} <p>{{form_errors(form.nombrembmax)}}</p></td>
+	</tr>
+	
+	{% if cat == 'guilde' %}
+		
+	<tr>
+		<td>Charte de la guilde : </td>
+		<td>
+		<div class="small">(la charte est à usage interne. Accessible uniquement aux membres, elle décrit principalement les règles de fonctionnement de votre organisation).</div>
+		{{ form_widget(form.charte) }} <p>{{form_errors(form.charte)}}</p></td>
+	</tr>
+		
+	<tr>
+		<td>Blason : </td>
+		<td>{{ form_widget(form.blason) }} <p>{{form_errors(form.blason)}}</p></td>
+	</tr>
+		
+	<tr>
+		<td>Mode de gestion : </td>
+		<td>
+		<div class="small">(Le mode de gestion concerne la gestion des inscriptions.)</div>
+		{{ form_widget(form.gestion) }} <p>{{form_errors(form.gestion)}}</p></td>
+	</tr>
+		
+	<tr>
+		<td> Visibilité : </td>
+		<td>
+		<div class="small">(Choisir "cachée" signifie seuls le nom et la description de la guilde sera visible. On ne pourra y rentrer que sur invitation. )</div>
+		{{ form_widget(form.public) }} <p>{{form_errors(form.public)}}</p></td>
+	</tr>
+	
+	<tr>
+		<td> Prix d'entrée : </td>
+		<td>
+		<div class="small">(Le montant qu'un personnage doit dépenser pour rentrer dans la guilde.)</div>
+		{{ form_widget(form.prixIn) }} <p>{{form_errors(form.prixIn)}}</p></td>
+	</tr>
+	
+	<tr>
+		<td> Cotisation : </td>
+		<td>
+		<div class="small">(Le montant dont un personnage doit s'acquitter régulièrment en payant la guilde.)</div>
+		{{ form_widget(form.prixCot) }} <p>{{form_errors(form.prixCot)}}</p></td>
+	</tr>
+	{% endif %}
+</table>
+
+{{ form_rest(form) }}
+
+<input type="submit" value="Envoyer" />
+
+</form>
+
+<script>
+$(function(){
+	$('#form_nombrembmax').spinner({min:0,step:1});
+	$('#form_prixIn, #form_prixCot').spinner({min:0,step:1});
+});
+</script>

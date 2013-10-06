@@ -1,0 +1,49 @@
+{% extends 'ndjDAdminBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+    <h1>Banque list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Taillecoffre</th>
+                <th>Argent</th>
+                <th>Argentmax</th>
+                <th>Cout</th>
+                <th>Etat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('banque_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.tailleCoffre }}</td>
+                <td>{{ entity.argent }}</td>
+                <td>{{ entity.argentMax }}</td>
+                <td>{{ entity.cout }}</td>
+                <td>{{ entity.etat }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('banque_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('banque_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('banque_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Membre" table="MEMBRE">
+    <id name="idmembre" type="integer" column="idMEMBRE">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="username" type="string" column="USERNAME" length="20" nullable="false"/>
+    <field name="userpass" type="string" column="USERPASS" length="255" nullable="false"/>
+    <field name="courriel" type="string" column="COURRIEL" length="255" nullable="false"/>
+    <field name="dateInscription" type="date" column="DATE_INSCRIPTION" nullable="false"/>
+    <field name="actif" type="boolean" column="ACTIF" nullable="false"/>
+    <field name="role" type="string" column="ROLE" length="45" nullable="true"/>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,177 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<p>&nbsp;</p>
+<div class="ui-widget-content ui-corner-all center w75">
+<h1>Création d'un donjon</h1>
+<p class="txtcenter"><a href="#ecole">Avant de commencer, si ce n'est pas fait, venez écouter quelques conseils !</a></p>
+<form action="{{ path('donjon_creation') }}" method="post" {{ form_enctype(form) }}>
+ 
+{# Les erreurs générales du formulaire. #}
+<div class="ui-widget-error">{{ form_errors(form) }}</div>
+ 
+
+
+  {# Génération du label. #}
+  <div class="form_title amatic">{{ form_label(form.nom) }}</div>
+  
+  <p class="txtcenter">Besoin d'idées pour trouver un (super) nom à ton donjon ? : <a href="http://gunof.net/cite_medievale_lieu-dit" target="_blank">http://www.gunof.net/</a> ou <a href="http://donjon.bin.sh/fantasy/name/#dungeon" target="_blank">http://donjon.bin.sh/fantasy/name/</a></p>
+ 
+  {# Affichage des erreurs pour ce champ précis. #}
+  <span class="ui-widget-error">{{ form_errors(form.nom) }}</span>
+ 
+  {# Génération de l'input. #}
+  <br />
+  <div class="txtcenter">{{ form_widget(form.nom, { 'attr': { 'size' : 40, 'maxlength':45, 'onkeyup':"dj_creation_check_nom($(this))" } }) }}
+  <span class="info_nom_donjon"></span>
+  </div>
+ 
+  {# Génération du label. #}
+  <div class="form_title amatic">{{ form_label(form.description) }}</div>
+ <div class="smaller italic txtcenter">
+		Cette description doit donner envie de partir à l'aventure dans ton donjon aux aventuriers.<br />
+		N'hésitez pas à y mettre l'état d'esprit de ton donjon, son charme, son style... !</div>
+		
+  {# Affichage des erreurs pour ce champ précis. #}
+  <span class="ui-widget-error">{{ form_errors(form.description) }}</span>
+  
+  {{ form_widget(form.description, { 'attr': { 'class' : 'tinymce'}}) }}
+	{# <textarea name="Description" class="tinymce"></textarea> #}
+	
+<div class="form_title amatic">Configuration de départ</div>		
+<table class="w60 center" cellspacing="5">
+<tr>
+
+<td class="txtcenter" valign="top">
+	<div>Nombre de niveaux : <span class="bolder creation-donjon-ETAGE">5</span></div>
+<input type="hidden" name="ETAGE" class="creation-donjon-form-ETAGE" value="5" />
+	<br />
+	<div class="italic smaller2">
+	Tu pourras par la suite construire des niveaux supplémentaires de la taille de ton choix (attention, plus la taille de l'étage est grande, plus il te coûtera cher). 
+	</div>
+</td>
+<td class="txtcenter w30" valign="top">
+	<div>Largeur du donjon : <span class="bolder creation-donjon-TAILLE">60</span></div>
+	<br />
+	<div class="italic smaller2">
+	Par exemple, une largeur de 50 veut dire que tu aura un donjon carré de 50 cases par 50 pour chaque étage.<br />
+	Tu pourras par la suite construire d'autres étages de la taille de ton choix !
+	</div>
+</td>
+<td rowspan="3" class="txtcenter" valign="top">
+	<div>ton or : <span class="bolder creation-donjon-PO">2000</span> PO</div>
+	<br />
+	<div class="italic smaller2">
+	Au début du jeu, vous avez besoin d'or pour l'achat de créatures,
+	d'objets, et pour déposer quelques tas d'or dans tes salles !
+	</div>
+</td>
+</tr>
+<tr>
+<td colspan="2" class="w60"><div id="creation-donjon-conf"></div></td>
+
+</tr>
+<tr>
+<td colspan="2" class="txtcenter">Soit une supérficie de <span class="bolder creation-donjon-SURF">18000</span></td>
+</tr>
+</table>
+	
+{{ form_rest(form) }}
+
+<input type="submit" />
+
+</form>
+
+</div>
+
+{% endblock body %}
+
+			
+{% block javascripts %}
+{{ parent() }}
+<script>
+ $(function() {
+        $( "#creation-donjon-conf" ).slider({
+            value:60,
+            min: 40,
+            max: 80,
+            step: 10,
+            slide: function( event, ui ) {
+                $( ".creation-donjon-TAILLE" ).html(ui.value);
+                var etage = 3 + ((80 - parseInt(ui.value)) / 10);
+                $( ".creation-donjon-ETAGE" ).html(etage);
+                $( ".creation-donjon-form-ETAGE" ).val(etage);
+                $( ".creation-donjon-COUTETAGE" ).html(ui.value*10);
+                var sup = etage * ui.value * ui.value;
+                $( ".creation-donjon-SURF" ).html(sup);
+                $( ".creation-donjon-PO" ).html(2000 + (18000-sup)/10 );
+            }
+        });
+        $( "#amount" ).val( "$" + $( "#slider" ).slider( "value" ) );
+    });
+    function dj_creation_check_nom(obj) {
+    	nom = obj.val();
+    	if (nom.length < 5) {
+    		$('.info_nom_donjon').html(' <span class="color-red">Le nom est trop court</span>');
+    	} else {
+    		console.log("@todo check nom déjà pris !");
+    		$.get("{$dir}_ajax_query.php/game/creaCheckNom?n="+nom,function(data){
+    			if (data=='ok') {
+    				$('.info_nom_donjon').html('<span class="color-green">Le nom est disponible</span>');
+    			} else {
+    				$('.info_nom_donjon').html('<span class="color-red">Le nom est déjà pris !</span>');
+    			}
+    		});
+    	}
+    }
+
+	$().ready(function() {
+		$('textarea.tinymce').tinymce({
+			
+	        width : "100%",
+	        height:	"300",
+
+			// Location of TinyMCE script
+			script_url : "{{ asset('bundles/ndjdgame/js/tinymce/jscripts/tiny_mce/tiny_mce.js') }}",
+
+			// General options
+			theme : "advanced",
+			//plugins : "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist",
+			plugins : "autolink,lists,style,table,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,media,contextmenu,paste,directionality,noneditable,visualchars,nonbreaking,xhtmlxtras,advlist",
+
+			// Theme options
+			theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect,|,cut,copy,paste,pastetext,pasteword,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo",
+			theme_advanced_buttons2 : "link,unlink,anchor,image,cleanup,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,tablecontrols,|,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,tr,rtl,|,styleprops,attribs",
+			theme_advanced_toolbar_location : "top",
+			theme_advanced_toolbar_align : "left",
+			theme_advanced_statusbar_location : false,
+			theme_advanced_resizing : false,
+
+			// Example content CSS (should be your site CSS)
+			//content_css : "css/content.css",
+
+			// Drop lists for link/image/media/template dialogs
+			template_external_list_url : "lists/template_list.js",
+			external_link_list_url : "lists/link_list.js",
+			external_image_list_url : "lists/image_list.js",
+			media_external_list_url : "lists/media_list.js",
+
+			// Replace values for the template plugin
+			template_replace_values : {
+				username : "Some User",
+				staffid : "991234"
+			}
+		});
+	});
+	function verification(f)
+	{
+		return true;
+	}
+</script>
+<script src="{{asset('bundles/ndjdgame/js/tinymce/jscripts/tiny_mce/jquery.tinymce.js')}}" type="text/javascript"></script>
+{#
+		//$this->addHeaderCss(DIR.'js/tinyeditor/style.css',true);
+		//$this->addHeaderJs(DIR.'js/tinyeditor/tinyeditor.js',true);
+		$this->addHeaderJs(DIR.'js/tinymce/jscripts/tiny_mce/jquery.tinymce.js',true);
+#}
+{% endblock javascripts %}

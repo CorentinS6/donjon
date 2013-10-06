@@ -1,0 +1,25 @@
+<table class="width_cent">
+<tr>
+	<td colspan="2">
+	{% if inventaire.idobjets.isImg() %} <img src="{{ asset( inventaire.idobjets.getimg ) }}" class="right" align="absmiddle" /> {% endif %}
+	<b>{{inventaire.nom}}</b> ({{inventaire.idobjets.frequence|rarete}})</td>
+</tr>
+{% if is_granted('ROLE_MODO') %}<tr><td colspan="2">#{{inventaire.id}}</td></tr>{% endif %}
+<tr><td>Type :</td><td>{{inventaire.idobjets.cat}}</td></tr>
+<tr><td>Description :</td><td>{{inventaire.idobjets.description}}</td></tr>
+
+{% if inventaire.idobjets.degat !='' and inventaire.idobjets.degat != 0 %}<tr><td>Dégât :</td><td>{{inventaire.idobjets.degat}}</td></tr>{% endif %}
+
+<tr>
+	<td>Qualité :</td><td>{{inventaire.qualite|qualite}}</td>
+</tr>
+		
+<tr>
+	<td>Usure :</td><td>{{inventaire.usure|number_format}}</td>
+</tr>
+
+{% if inventaire.bonus !='' %}<tr><td>Bonus :</td><td>{{inventaire.bonus}}</td></tr>{% endif %}
+{% if inventaire.envoutement !='' %}<tr><td>Envoutement :</td><td>{{inventaire.envoutement}}</td></tr>{% endif %}
+
+<tr><td>Prix :</td><td>{{inventaire.calculerprix|or}}</td></tr>
+</table>

@@ -1,0 +1,66 @@
+{% extends 'ndjDAdminBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+    <h1>Objets</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ entity.nom }}</td>
+            </tr>
+            <tr>
+                <th>Cat</th>
+                <td>{{ entity.cat }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ entity.description }}</td>
+            </tr>
+            <tr>
+                <th>Bonus</th>
+                <td>{{ entity.bonus }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ entity.prix }}</td>
+            </tr>
+            <tr>
+                <th>Frequence</th>
+                <td>{{ entity.frequence }}</td>
+            </tr>
+            <tr>
+                <th>Degat</th>
+                <td>{{ entity.degat }}</td>
+            </tr>
+            <tr>
+                <th>Bouclier</th>
+                <td>{{ entity.bouclier }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('objets') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('objets_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('objets_delete', { 'id': entity.id }) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}

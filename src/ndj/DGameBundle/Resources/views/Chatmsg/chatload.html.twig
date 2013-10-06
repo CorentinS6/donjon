@@ -1,0 +1,36 @@
+{% set lastid = lastmsg %}
+{% for msg in messages %}
+	{% include 'ndjDGameBundle:Chatmsg:chatline.html.twig' with {'message':msg} %}
+	{% set lastid = msg.id %}
+{% endfor %}
+<script>$("#chat-input-lastmsg").val({{ lastid }});console.log({{ lastid }});$("#chat-lists .chat-lists").html("connectes@todo");
+{% for e in evenements %}
+{% if e.cat==0 %}
+set_info("{{e.content}}"); $(".event-liste-IDPLAYER").prepend("{{ e.dt | date('d/m/Y H:M:S') }} {{e.content}}");
+{% elseif e.cat==1 %}
+Av_level_up();
+{% elseif e.cat==2 %}
+Av_Reload_Interface();
+{% elseif e.cat==3 %}
+Av_Reload_Interface();
+{% endif %}
+{% endfor%}
+</script>
+<!--
+<li title="'.utf8_encode($nom).'" ondblclick="displayFiche(\''.$type.'\','.$id.')"  onclick="chat_msg_prive(\''.utf8_encode($nom).'\')"  class="pointer">'.str_troncate($nom,27).'</li>
+
+		// liste des connectÃ©s
+		$lstc = '<ul>';
+		$con = db::get()->query('SELECT idCONNECTE FROM CONNECTE WHERE lasttime>'.(time()-30).' ORDER BY idCONNECTE')->fetchAll(PDO::FETCH_NUM);
+		foreach($con as $j)
+		{
+			list($id,$t) = explodex(':',$j[0]);
+			$type = ($t=='d')?'donjon':'aventurier';
+			list($nom) = db::get()->query('SELECT NOM FROM '.strtoupper($type).' WHERE id'.strtoupper($type).'='.$id)->fetch(PDO::FETCH_NUM);
+			$lstc .= '';
+		}
+		$lstc .= '</ul>';
+
+		$this->out .= '<script>$("#chat-lists .chat-lists").html("'.addslashes($lstc).'");$("#chat-input-lastmsg").val('.$last_id.');'.$js_ev.'</script>';
+
+-->

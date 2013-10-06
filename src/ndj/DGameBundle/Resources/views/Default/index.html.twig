@@ -1,0 +1,94 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<div class="w100" style="height:200px;background:#ffffff;background-image:url('{{ asset('bundles/ndjdgame/images/interface/donjon_01.png') }}');background-position:right bottom;background-repeat:no-repeat;">
+	<div class="txtcenter amatic" style="padding:50px 0 0 0;font-size:4em;">Donjon !</div>
+</div>
+<p>&nbsp;</p>
+<div class="ui-widget-content ui-corner-all w80 center pad1">
+<p>Bienvenue {{ app.user.username }} !</p>
+<p>Dernière connexion le {{ app.user.lastlogin | date('D d M Y H:i') }}</p>
+
+<p><a href="{{ path('fos_user_profile_show') }}">Voir les informations de mon compte</a></p>
+<p><a href="{{ path('fos_user_profile_edit') }}">Modifier les informations de mon compte</a></p>
+<p><a href="{{ path('fos_user_change_password') }}">Changer mon mot de passe</a></p>
+
+<p><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></p>
+
+{% if is_granted('ROLE_MODO')  %}{% endif %}
+
+{% if is_granted('ROLE_ADMIN')  %}
+<div>
+<h2>Admin</h2>
+<p><a href="{{ path('ndj_d_admin_homepage') }}">Admin</a></p>
+</div>
+{% endif %}
+
+<p>TODO : interface + sympa, option: inscription/mdp/e-mail/mdp oublié</p> 
+
+
+
+<div class="ui-widget-content ui-corner-all" style="width:46%; float:right; border:none; padding:0.5em;">
+	<h1>Jeu en mode "Aventurier"</h1>
+	<div>
+	{% for av in app.user.getaventuriers %}
+		<div><a href='{{ path('default_load',{'mode':'aventurier','id': av.id }) }}'>{{ av.nom }}</a> (niveau {{ av.experience | level }})
+		 	{# <span class="listtooltip" data="{{av.id}}" data-type="aventurier" title=""><img align="absmiddle" width="26" src="{{ asset('bundles/ndjdgame/images/gicon/fiche.png')}}" /></span> #}
+		</div>
+    {% endfor %}
+    </div>
+    <br />
+    {% if  app.user.getaventuriers|length < app.user.limitAventurier  or is_granted('ROLE_USER_UNLIMITED')  %}
+	<div><a href="{{ path('aventurier_creation') }}">Créer un aventurier</a></div>
+	{% endif %}
+</div>
+		
+<div class="ui-widget-content ui-corner-all" style="width:46%; float:left; border:none; padding:0.5em;">
+	<h1>Jeu en mode "Gardien"</h1>
+	<div>
+	{% for dj in app.user.getdonjons %}
+		<div><a href='{{ path('default_load',{'mode':'donjon','id': dj.id }) }}'>{{ dj.nom }}</a> (niveau {{ dj.experience | level }})
+			{# <span class="listtooltip"  data="{{dj.id}}" data-type="donjon" title=""><img align="absmiddle" width="26" src="{{asset('bundles/ndjdgame/images/gicon/fiche.png')}}" /></span> #}
+		</div>
+    {% endfor %}
+    </div>
+    <br />
+    {% if  app.user.getdonjons|length < app.user.limitDonjon  or is_granted('ROLE_USER_UNLIMITED')  %}
+	<div><a href="{{ path('default_donjon_ecole') }}">Créer un donjon</a> <br />
+	<span class="smaller2"><a href="{{ path('donjon_creation') }}">Créer un donjon sans lire l'aide</a></span>
+	</div>
+	{% endif %}
+</div>
+
+
+<script>
+$(function() {
+	$('span.listtooltip').tooltip({
+		content: function(callback) {
+			var elem = $(this);
+			var type = elem.attr('data-type');
+	        $.get(Routing.generate(type+'_displayfiche',{'id':elem.attr('data')} ), function(data) {
+				elem.attr('title',data);
+	            callback(data);
+	        });
+    	},
+    	position: {
+    		my: "left center",
+    		at: "right center",
+    		collision:"fit flip"
+    	},
+	    show: {
+			effect: "slideDown",
+			delay: 250
+		}
+	});
+});
+</script>
+
+
+</div>
+
+{% endblock body %}
+
+{% block javascripts %} {{ parent() }}
+{% endblock javascripts %}

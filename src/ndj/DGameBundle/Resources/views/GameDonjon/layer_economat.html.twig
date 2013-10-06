@@ -1,0 +1,19 @@
+<div id="economat-right-panel" class="right h100 bgd w15">
+	<h1>Economat</h1>
+<div id="gardien-eco-buttons" class="txtcenter">
+	<div><button onclick="economatLoad('#economat?p=Preview')">Aperçu</button></div>
+	<div><button onclick="economatLoad('#economat?p=Or')">L'or</button></div>
+	<div><button onclick="economatLoad('#economat?p=Inventaire')">Inventaire</button></div>
+	<div><button onclick="economatLoad('#economat?p=Bestiaire')">Bestiaire</button></div>
+	<div><button onclick="economatLoad('#economat?p=Marche')">Aller au march&eacute;</button></div>
+</div>
+<script> $("#gardien-eco-buttons > div > button").button(); </script>
+
+	{#	<p>Gestion des objets (reserve, donjon, revente, or/objets dans les salles)</p>
+	<p>Gérer monstres (repos/salles, Equipements/évolution, salaires, revente, géstion mort)</p> #}
+	
+	<div id="layer_mache_dialog"></div>
+</div>
+<div id="economat-main-panel" class="h100 bgl w85">
+{{ render(controller('ndjDGameBundle:GameDonjon:getEconomatInterface',{'interface':p})) }}
+</div>

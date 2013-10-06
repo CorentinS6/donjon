@@ -1,0 +1,12 @@
+parameters:
+#    ndj_d_game.example.class: ndj\DGameBundle\Example
+
+services:
+#    ndj_d_game.example:
+#        class: %ndj_d_game.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    acme.twig.acme_extension:
+        class: ndj\DGameBundle\Twig\ndjExtension
+        tags:
+            - { name: twig.extension }

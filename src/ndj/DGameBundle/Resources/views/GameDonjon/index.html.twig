@@ -1,0 +1,13 @@
+{% extends '::base.html.twig' %}
+{% block javascripts %}<script>modeDeJeu='d';</script>{{parent()}}{% endblock javascripts %}
+{% block body %}
+{% include 'ndjDGameBundle:GameDonjon:top.html.twig' with {'donjon': donjon}   %}
+<div id="eContent">
+<div id="layer_bureau">{{ render(controller('ndjDGameBundle:GameDonjon:interfaceBureau',{params:''})) }}</div>
+<div id="layer_yeux">{{ render(controller('ndjDGameBundle:GameDonjon:interfaceYeux',{params:''})) }}</div>
+<div id="layer_economat">{{ render(controller('ndjDGameBundle:GameDonjon:interfaceEconomat',{params:''})) }}</div>
+<div id="layer_editeur">{{ render(controller('ndjDGameBundle:GameDonjon:interfaceEditeur',{params:''})) }}</div>		
+</div>
+{% include 'ndjDGameBundle:GameCommon:chat.html.twig' with {'donjon': donjon}  %}	
+{% include 'ndjDGameBundle:GameCommon:topmenu.html.twig' with {'donjon': donjon}  %}
+{% endblock body %}

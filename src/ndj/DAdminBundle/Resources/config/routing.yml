@@ -1,0 +1,7 @@
+ndj_d_admin_homepage:
+    pattern:  /
+    defaults: { _controller: ndjDAdminBundle:Default:index }
+
+admin:
+    resource: "@ndjDAdminBundle/Controller"
+    type:     annotation

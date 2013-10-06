@@ -1,0 +1,49 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+<div class="w80 center pad1 ui-widget-content ui-corner-all">
+
+		<h1>Création d'un personnage</h1>
+<form action="{{ path('aventurier_creation') }}" method="post" {{ form_enctype(form) }}>
+
+{{ form_errors(form) }}
+
+	<div>
+		<table class="w100">
+			<thead>
+			<tr><th></th><th>Nom</th>
+			{# <th>Acrobatie</th><th>Bagarre</th><th>Charme</th><th>Acuité</th><th>Vie</th><th>Dégat</th> #}
+			</tr>
+			</thead>
+			<tbody>
+				<tr><td colspan="2"></td><td rowspan="{{form.idcreature|length}}" id="form_creature_descriptif" valign="top"></td></tr>
+				{% for child in form.idcreature %}
+					<tr onmouseover="loadInLayer('{{ path('creature_fiche',{id:child.get('value')}) }}','#form_creature_descriptif')">
+						<td>{{ form_widget(child) }}</td>
+						<td>{{ form_label(child) }}</td>
+					</tr>
+				{% endfor %}
+		
+			</tbody>
+		</table>
+	<div>
+	
+	<p><hr/></p>
+	<div>
+		<p class="smaller">Besoin d'idées pour trouver un nom à ton personnage ? : <a href="http://www.gunof.net/" target="_blank">http://www.gunof.net/</a> ou <a href="http://donjon.bin.sh/fantasy/name/" target="_blank">http://donjon.bin.sh/fantasy/name/</a></p>
+		Le nom de votre personnage : 
+		{{ form_widget(form.nom) }}
+	</div>
+
+{{ form_rest(form) }}
+
+<input type="submit" value="Envoyer" />
+	
+
+
+</form>
+
+</div>
+
+{% endblock body %}

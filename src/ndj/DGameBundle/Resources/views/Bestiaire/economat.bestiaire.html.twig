@@ -1,0 +1,33 @@
+<h1>Bestiaire</h1>
+
+{% if bestiaire|length > 0 %}
+<table id="economat-table-liste-bestiaire">
+<thead><tr><th>Nom</th><th>Creature</th><th>Vie</th><th>Valeur</th><th>Etat</th><th>Actions</th></tr></thead>
+<tobdy>
+{% for b in bestiaire %}
+	<tr>
+	<td><a href="javascript:void(0);" onclick="displayFiche('bestiaire','{{b.id}}')">{{b.prenom}}</a> (Niv. {{b.experience|level}})</td>
+	<td>{{b.idcreature.nom}} ({{b.idcreature.intelligente}})</td>
+	<td>{{b.pvie}}/{{b.pviemax}}</td>
+	<td>{{b.calculerPrix()|or}}</td>
+	<td>{{b.displayposition()}}</td>
+	<td>
+		{% if b.etat != 'vente' %} <a href="javascript:void(0);" onclick="economat_bes_vendre('{{b.id}}');" title="Vendez cet objet sur le marché aux occasions">Vendre</a> {%endif%}
+		{% if b.etat != 'repos' %} <a href="javascript:void(0);" onclick="economat_bes_repos('{{b.id}}');" title="Ranger cet objet dans tes coffres">Mettre au repos</a> {%endif%}
+		{% if b.etat != 'salle' %} <a href="javascript:void(0);" onclick="economat_bes_salle('{{b.id}}');" title="Déposer cet objet dans une salle du donjon">Mettre en salle</a> {%endif%}
+	</td>
+	</tr>
+{% endfor %}
+</tobdy>
+</table>
+
+<div id="economat-table-liste-bestiaire-pager" class="pager"> <form> <span class="first pointer">&lt;&lt;</span> <span class="prev pointer">&lt;</span> <span class="smaller pagedisplay"></span> <span class="pointer next">&gt;</span> <span class="pointer last">&gt;&gt;</span> </form></div>
+<script>
+$(function(){
+$("#economat-table-liste-bestiaire").tablesorter().tablesorterPager({container:$("#economat-table-liste-bestiaire-pager"), output: "{page} / {totalPages}"});
+});
+</script>
+{% else %}
+<p>Vous n'avez aucune créature à votre service pour le moment.</p>
+{% endif %}
+<script> updateAffichageDonneeNoVal("PACT"); </script>

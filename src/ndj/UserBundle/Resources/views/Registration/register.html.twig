@@ -1,0 +1,10 @@
+{% extends 'ndjUserBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} | Inscription {% endblock title %}
+
+{% block content %}
+<h1>Inscription</h1>
+{% block fos_user_content %}
+{% include "ndjUserBundle:Registration:register_content.html.twig" %}
+{% endblock fos_user_content %}
+{% endblock content %}

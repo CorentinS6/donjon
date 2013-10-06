@@ -1,0 +1,9 @@
+{% extends 'ndjUserBundle::layout.html.twig' %}
+
+{% block content %}
+<h1>Modifier mes informations</h1>
+{% block fos_user_content %}
+{% include "ndjUserBundle:Profile:edit_content.html.twig" %}
+{% endblock fos_user_content %}
+
+{% endblock content %}

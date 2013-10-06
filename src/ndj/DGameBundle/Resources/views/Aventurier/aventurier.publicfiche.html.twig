@@ -1,0 +1,30 @@
+<table class="width_cent">
+<tr>
+	<td colspan="2">
+	{% if aventurier.idcreature.isImg() %} <img src="{{ asset( aventurier.idcreature.getimg ) }}" class="right" align="absmiddle" /> {% endif %}
+	<b>{{aventurier.nom}}</b>
+	</td>
+</tr>
+<tr><td colspan="2">Niveau {{aventurier.experience|level}}</td></tr>			
+{% if is_granted('ROLE_MODO') %}
+<tr><td colspan="2" class="smaller">
+#{{aventurier.id}}<br />
+Argent : {{aventurier.argent|or}}<br />
+Position : {{aventurier.displayposition()|raw}}
+</td></tr>
+{% endif %}
+<tr><td>Peuple :</td><td>{{aventurier.idcreature.nom}}</td></tr>
+<tr><td>Acrobatie</td><td>{{aventurier.acrobatie|carac}}</td></tr>
+<tr><td>Bagarre</td><td>{{aventurier.bagarre|carac}}</td></tr>
+<tr><td>Charme</td><td>{{aventurier.charme|carac}}</td></tr>
+<tr><td>Acuité</td><td>{{aventurier.acuite|carac}}</td></tr>
+<tr><td>Age</td><td>{{aventurier.age}}</td></tr>		
+<tr><td>Renommée</td><td>{{aventurier.renommee|renommee}}</td></tr>	
+<tr><td>Vie</td><td>{{aventurier.pvie}}/{{aventurier.pviemax}}</td></tr>	
+<tr><td>Dégât :</td><td>{{aventurier.idcreature.degat}}</td></tr>
+
+{% if aventurier.pouvoirs!='' %} <tr><td>Pouvoirs :</td><td>{{aventurier.pouvoirs}}</td></tr>{% endif %}
+{% if aventurier.talents!='' %} <tr><td>Talents :</td><td>{{aventurier.talents}}</td></tr>{% endif %}
+{% if aventurier.envoutement!='' %} <tr><td>Envoutements :</td><td>{{aventurier.envoutement}}</td></tr>{% endif %}
+	
+</table>

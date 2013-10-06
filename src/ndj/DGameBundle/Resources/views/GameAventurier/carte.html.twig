@@ -1,0 +1,32 @@
+{# <div id="aventurier-infocarte" class="smaller txtcenter">$p->getMapInfo()</div>
+<div id="aventurier-carte-wrapper"><div id="aventurier-carte"></div></div>
+#}
+
+<div id="aventurier-carte-wrapper"><div id="aventurier-carte"></div></div>
+		 
+<script>
+//if (mapA!=undefined && mapA!=null) {
+	//mapA.destroy();
+	//delete mapA;
+//}
+/*
+
+var p = {{ aventurier.idpiece.json |raw }};
+mapA = new Map(p.id, p.taillex, p.tailley);
+mapA.lumiere = p.lumiere;
+mapA.setInitialPosition('0','0');
+mapA.createMapStructure('#aventurier-carte');
+mapA.createMapElements(p.coucheSol, p.coucheSol2, p.coucheMobilier);
+
+$(document).ready(function(){
+	if (mapA!=undefined) {
+		Av_timer_Map(null);
+	}
+	 $(".av-mode-donjon").fadeIn();
+});
+*/
+
+$(function(){
+    $("#aventurier-carte").createMap({name:"carte_aventurier"}).importMap({{ aventurier.idpiece.json |raw }});
+});
+</script>

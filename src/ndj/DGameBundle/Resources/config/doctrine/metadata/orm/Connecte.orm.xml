@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Connecte" table="CONNECTE">
+    <id name="id" type="string" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="lasttime" type="integer" column="LASTTIME" nullable="false"/>
+  </entity>
+</doctrine-mapping>

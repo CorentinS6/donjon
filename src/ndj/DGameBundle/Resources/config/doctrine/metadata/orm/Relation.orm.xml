@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Relation" table="RELATION">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="cat" type="string" column="CAT" nullable="false"/>
+    <field name="cout" type="float" column="COUT" nullable="false"/>
+    <field name="dateRelation" type="date" column="DATE_RELATION" nullable="false"/>
+    <field name="fin" type="smallint" column="FIN" nullable="false"/>
+    <field name="etat1" type="boolean" column="ETAT1" nullable="false"/>
+    <field name="etat2" type="boolean" column="ETAT2" nullable="false"/>
+    <many-to-one field="idaventurier2" target-entity="Aventurier">
+      <join-columns>
+        <join-column name="idAVENTURIER2" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idaventurier1" target-entity="Aventurier">
+      <join-columns>
+        <join-column name="idAVENTURIER1" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

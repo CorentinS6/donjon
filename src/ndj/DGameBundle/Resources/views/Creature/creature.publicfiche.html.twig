@@ -1,0 +1,14 @@
+{% if creature.isImg() %} <img src="{{ asset( creature.getimg ) }}" class="right" align="absmiddle" /> {% endif %}
+<p><b>{{creature.nom}}</b></p>
+<p>{{creature.description}}</p>
+<table class="w100 txtcenter">
+<tr><th>Description</th><th>Acrobatie</th><th>Bagarre</th><th>Charme</th><th>Acuité</th></tr>
+<tr><td>{{creature.acrobatie|carac}}</td><td>{{creature.bagarre|carac}}</td><td>{{creature.charme|carac}}</td><td>{{creature.acuite|carac}}</td></tr>
+</table>
+<table>
+<tr><td>Vie</td><td>{{creature.vie}}</td></tr>	
+<tr><td>Dégât :</td><td>{{creature.degat}}</td></tr>
+</table>
+{% if creature.pouvoirs!='' %}
+Pouvoirs : {{creature.pouvoirs}}
+{% endif %}

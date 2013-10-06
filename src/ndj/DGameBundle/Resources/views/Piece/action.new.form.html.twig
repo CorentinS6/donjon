@@ -1,0 +1,148 @@
+{#
+	'PO' 	=> 'PiÃÂ¨ce d\'or',				// {X,Y,PO,5}	: 5 PO
+	'I'		=> 'Case interdite',			// {X,Y,I}		: Case interdit
+	'W'		=> 'Case avec de l\'eau',		// {X,Y,W}		: Case d'eau
+	'V'		=> 'Case avec du vide',			// {X,Y,V}		: Case avec du vide
+	'EM'	=> 'Escalier qui monte',		// {X,Y,EM}		: Escalier qui monte
+	'ED'	=> 'Escalier qui descend',		// {X,Y,ED}		: Escalier qui descent
+	'P'		=> 'Passage (secret ou pas)',	// {X,Y,P,idP,X,Y} : passage secret vers piece#idP en X,Y
+	'M'		=> 'Message',					// {X,Y,M,"Message"} : affiche le message "Message" lorsque le personnage arrive
+	'MS'	=> 'Message survol',			// {X,Y,MS,"Message"} : affiche le message "Message" lors du survol de la sourie
+	'Z'		=> 'Zone de dÃÂ©part',			// {X,Y,Z}	: zone de dÃÂ©part du donjon
+	'S'		=> 'Zone de sortie',			// {X,Y,S}	: zone de sortie du donjon
+	'F'		=> 'Zone de fin',				// {X,Y,F}	: zone de fin du donjon
+	'D'		=> 'Action dynamique'			// {X,Y,D,[d],[a],[v]} : si le dÃÂ©clencheur d est activÃÂ©, on fait l'action a. [v] sont des variables.
+#}
+
+<form name="newaction">
+<input type="hidden" id="newActionidPIECE" name="idPIECE" value="{{piece.id}}" />
+<div>X : <input type="text" name="x" id="newActionX" value="{{x}}" size="3" />
+ - Y : <input type="text" name="y" id="newActionY" value="{{y}}" size="3" /></div>
+<div> Type : <select id="libFormNewaction_type" onchange="$('.toggleNewAction').hide();$('#newAction'+this.value).show();">
+{% for a,l in piece.getAvailableActions %}
+	{# if ($a=='PO') continue; #}
+	<option value="{{a}}"{{ (type!='' and type==a)? 'selected="selected"' : '' }}>{{l}}</option>
+{% endfor %}
+</select></div>
+{# pour message #}
+<div id="newActionM" class="toggleNewAction hide">Message : <input type="text" id="newactionMessage" name="message" value="" maxlength="255" /> </div>
+
+{# pour message au survol #}
+<div id="newActionMS" class="toggleNewAction hide">Message : <input type="text" id="newactionMessageS" name="messageS" value="" maxlength="255" /> </div>
+
+{# pour un passage #} {# piece::listeChoix('idPIECE','Choisissez une salle',null,' id="newActionPidPIECE"') #}
+<div id="newActionP" class="toggleNewAction hide">
+Vers la salle {% include 'ndjDGameBundle:Piece:selector.html.twig' with {'pieces':piece.getiddonjon.getpieces,'options':' id=newActionPidPIECE '} %} 
+<br />En : X = <input type="text" name="xto" id="newActionXto" value="0" size="3" /> - Y : <input type="text" name="yto" id="newActionYto" value="0" size="3" />
+</div>
+ 
+{# pour les PO #}
+<div id="newActionPO" class="toggleNewAction">Montant : <input type="text" name="po" id="newActionPo" value="0" size="3" /> PO
+</div>
+
+
+{# pour les declencheurs #}
+{% set car = {'PV' : 'Points de vie', 'PA' : 'Points d actions', 'PD' : 'Points', 'ARGENT' : 'Argent' } %}
+{% set act = ['+','-'] %}
+<div id="newActionD" class="toggleNewAction hide">
+<span class="smaller">Un déclencheur est un evenement qui s'actionne lorsqu'un joueur arrive sur la case.</span>
+<ul>
+<li>Rythme de déclenchement : <select type="rythme" id="newActionDRythme"><option value="0">Infini</option>
+{% for i in 1..10 %} <option value="{{i}}">{{i}} fois par tour</option> {% endfor %}
+</select></li>
+<li id="gald_carac" class="glad_caracline">Modifie <select name="car">
+{% for k,l in car %} <option value="{{k}}">{{l}}</option> {% endfor %}
+</select> <select name="act">
+{% for k in act %} <option value="{{k}}">{{k}}</option> {% endfor %}
+</select> <input type="text" name="val" value="0" size="2" maxlength="3" /></li>
+</ul>
+<input type="button" onclick="$('#gald_carac').parent().append('<li class=\'glad_caracline\'><span class=\'pointer right ui-icon ui-icon-close\' onclick=\'$(this).parent().remove()\'></span>' + $('#gald_carac').html()+ '</li>')" value="Plus..." />
+
+</div>
+{# fin déclencheur #}
+ 
+<div><input type="submit" value="Créer"></div>
+</form>
+
+<script>
+$('form[name="newaction"]').submit( function() {
+	
+	uri = Routing.generate('piece_actionformvalid',{
+			'id':$("#newActionidPIECE").val(),
+			'x':$("#newActionX").val(),
+			'y':$("#newActionY").val(),
+			'a':$("#libFormNewaction_type").val(),
+		}) + '?';
+	
+	switch($("#libFormNewaction_type").val())
+	{
+		case 'PO' :
+			re = /^[0-9\.]+$/;
+			somme=$("#newActionPo").val();
+			if (re.exec(somme) == null || somme<=0)
+			{
+				alert("La somme doit être positive !");
+				return false;
+			}
+			uri = uri + "&somme="+$("#newActionPo").val();
+			break;
+		case 'M' :
+			re = /^[a-zA-Z0-9 \.]+$/;
+			if (re.exec($("#newactionMessage").val()) == null)
+			{
+				alert("ton message est invalide (seulement des caractères) !");
+				return false;
+			}
+			uri = uri + "&message="+$("#newactionMessage").val();
+			break;
+		case 'MS' :
+			re = /^[a-zA-Z0-9 \.]+$/;
+			if (re.exec($("#newactionMessageS").val()) == null)
+			{
+				alert("ton message est invalide (seulement des caractères) !");
+				return false;
+			}
+			uri = uri + "&message="+$("#newactionMessageS").val();
+			break;
+		case 'P' :
+			x = $("#newActionXto").val();
+			y = $("#newActionYto").val();
+			idP = $("#newActionPidPIECE").val();
+			uri = uri + '&idPIECEto='+idP+'&xto='+x+'&yto='+y;
+			if (idP=='') { alert('Choisissez une salle !'); return false; }
+			break;
+		case 'D' :
+			timing = $("#newActionDRythme").val();
+			var caracs = new Array();
+			$('.glad_caracline').each(function(){
+				var car = $(this).children('select[name="car"]').val();
+				var act = $(this).children('select[name="act"]').val();
+				var val = $(this).children('input[name="val"]').val();
+				caracs.push('car[]='+car+'&act[]='+act+'&val[]='+val);
+				alert(caracs);
+			});
+    
+			uri = uri + '&rythme='+timing+'&'+caracs.join("&");
+			break;
+	}
+	
+	$.get(uri, function(data){
+		if (data!='1')
+		{
+			set_error(data);
+		}
+		else
+		{
+			loadInLayer("{{ path('piece_interfaceediteurpieceactionlibs',{'id':piece.id}) }}", '#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6');
+			map.build();
+			$("#dialogLibNewAction").dialog('close');
+		}
+	});
+    
+	return false;
+});
+
+{% if type is not null %}$(".toggleNewAction").hide(); $("#newAction{{type}}").show(); {% endif %}
+
+$("#newActionX, #newActionY, #newActionXto, #newActionYto").spinner({ min:0, max:99});
+</script>

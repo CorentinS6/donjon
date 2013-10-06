@@ -1,0 +1,63 @@
+{% extends 'ndjDAdminBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+    <h1>Organisation list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Cat</th>
+                <th>Public</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Charte</th>
+                <th>Blason</th>
+                <th>Gestion</th>
+                <th>Nombrembmax</th>
+                <th>Prixin</th>
+                <th>Prixcot</th>
+                <th>Actionsdiff</th>
+                <th>Datecrea</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('organisation_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.cat }}</td>
+                <td>{{ entity.public }}</td>
+                <td>{{ entity.nom }}</td>
+                <td>{{ entity.description }}</td>
+                <td>{{ entity.charte }}</td>
+                <td>{{ entity.blason }}</td>
+                <td>{{ entity.gestion }}</td>
+                <td>{{ entity.nombreMbMax }}</td>
+                <td>{{ entity.prixIn }}</td>
+                <td>{{ entity.prixCot }}</td>
+                <td>{{ entity.actionsDiff }}</td>
+                <td>{% if entity.dateCrea %}{{ entity.dateCrea|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('organisation_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('organisation_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('organisation_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

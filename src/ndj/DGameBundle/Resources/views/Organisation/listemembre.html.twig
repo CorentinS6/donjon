@@ -1,0 +1,93 @@
+{% set droits = orga.getDroitsPossibles() %}
+{% set appm = orga.getOrganisationAppartenance(aventurier) %}
+{% set pkey = orga.id ~ actif ~ liste|length ~ actif ~ random(99)%}
+<table id="listeMembre{{pkey}}" border="1">
+<thead>
+    <tr>
+        <th rowspan="2">Nom</th>
+        <th rowspan="2">Titre</th>
+        <th rowspan="2">Etat</th>
+        <th rowspan="2">Actions</th>
+        {% if appm.actionPossible('gererDroits') and actif %}<th colspan="10">Droits (<a href="javascript:void(0);">?</a>)</th>{%endif%}
+    </tr>
+    {% if appm.actionPossible('gererDroits') and actif %}
+    <tr>
+        <th>Chef</th>
+        <th title="Administrateur">Adm</th>
+        <th title="Gestion des droits">G.D.</th>
+        <th title="Gestion de l'agent">G.A.</th>
+        <th title="Gestion des objets">G.O.</th>
+        <th title="Gestion des membres">G.M.</th>
+        <th title="Voir l'argent">A</th>
+        <th title="Voir les objets">O</th>
+        <th title="Voir les membres">M</th>
+        <th title="Inviter un membre">Inv.</th>
+    </tr>
+    {% endif %}
+</thead>
+<tbody>
+{% for a in liste %}
+    <tr>
+        <td><a href="javascript:void(0)" onclick="displayFiche('aventurier',{{a.idaventurier.id}})">{{a.idaventurier.nom}}</a></td>
+        <td><span class="orgaapp-orga-titre orgaapp-orga-titre-{{a.idorganisation.id}}-{{a.idaventurier.id}}" data="{{a.idaventurier.id}}">{{a.titre}}</span></td>
+        <td>{{a.etat}}</td>
+        <td>
+{% if a.etat == 'demande' %}
+            {%if appm.actionPossible('validerMembre')%}<a href="javascript:void(0);" onclick="organisation_mbsetetat('{{ path('organisationapp_validerdemande',{orga:orga.id,id:a.idaventurier.id,valid:1}) }}','{{ path('organisationapp_listemembre',{'id':orga.id,actif:actif}) }}',$('#listeMembre{{pkey}}').parent())">Accepter</a>{% endif %}
+            {%if appm.actionPossible('bannirMembre')%} <a href="javascript:void(0);" onclick="organisation_mbsetetat('{{ path('organisationapp_validerdemande',{orga:orga.id,id:a.idaventurier.id,valid:0}) }}','{{ path('organisationapp_listemembre',{'id':orga.id,actif:actif}) }}',$('#listeMembre{{pkey}}').parent())">Refuser</a>{% endif %}
+{% elseif a.etat == 'invite' %}
+            <a href="javascript:void(0);" onclick="organisation_mbsetetat('{{ path('organisationapp_validerdemande',{orga:orga.id,id:a.idaventurier.id,valid:0}) }}','{{ path('organisationapp_listemembre',{'id':orga.id,actif:actif}) }}',$('#listeMembre{{pkey}}').parent())">Refuser</a>
+{% elseif a.etat in ['refus','ancien','exclu'] %}
+            {%if appm.actionPossible('inviterMembre')%}<a href="javascript:void(0);" onclick="organisation_mbsetetat('{{ path('organisationapp_inviter',{orga:orga.id,id:a.idaventurier.id}) }}','{{ path('organisationapp_listemembre',{'id':orga.id,actif:actif}) }}',$('#listeMembre{{pkey}}').parent())">re-Inviter</a>{%endif%}
+            {%if appm.actionPossible('gererDroits')%}<a href="javascript:void(0);" onclick="organisation_mbsetetat('{{ path('organisationapp_radier',{orga:orga.id,id:a.idaventurier.id}) }}','{{ path('organisationapp_listemembre',{'id':orga.id,actif:actif}) }}',$('#listeMembre{{pkey}}').parent())" title="Radier signifie que le membre ne sera plus inscrits sur aucune liste de la guilde. Il pourra à nouveau faire une demande d'inscription ou se faire inviter.">Radier</a>{%endif%}
+{% elseif appm.actionPossible('bannirMembre') %}
+            <a href="javascript:void(0);" onclick="organisation_mbsetetat('{{ path('organisationapp_bannir',{id:a.idaventurier.id,orga:orga.id}) }}','{{ path('organisationapp_listemembre',{'id':orga.id,actif:actif}) }}',$('#listeMembre{{pkey}}').parent())">Bannir</a>
+{% endif %}
+            {# @TODO <a href="javascript:void(0);" onclick="">Msg</a> #}
+        </td>
+{% if appm.actionPossible('gererDroits') and actif %}
+        {% for d in droits %}
+                <td><input id="orgambdroitcb-o{{a.idorganisation.id}}-a{{a.idaventurier.id}}-d{{d}}" type="checkbox" name="{{d}}" value="1" onchange="organisation_mbsetdroit({{a.idorganisation.id}},{{a.idaventurier.id}},'{{d}}',$(this).is(':checked'))" {% if a.is(d) %}checked="checked"{% endif %}/></td>
+        {% endfor %}
+ {% endif %}                   
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+
+
+<div id="listeMembre{{pkey}}-pager" class="pager"> <form> <span class="first pointer">&lt;&lt;</span> <span class="prev pointer">&lt;</span> <span class="smaller pagedisplay"></span> <span class="pointer next">&gt;</span> <span class="pointer last">&gt;&gt;</span> </form></div>
+
+<script>
+$('#listeMembre{{pkey}} > thead > tr > th ').tooltip();
+$(document).ready(function() {
+$("#listeMembre{{pkey}}").tablesorter({widthFixed:true,widgets:["zebra"]})
+	.tablesorterPager({container: $("#listeMembre{{pkey}}-pager"), output: "{page} / {totalPages}"});
+});
+</script>
+
+{% if appm.actionPossible('gererTitre') %}
+<script> $('.orgaapp-orga-titre').editable(function(value, settings){
+    var myobj = this;
+
+    /* console.log($(this));
+     console.log($(this).attr('class'));
+     console.log(value);
+     console.log(settings);*/
+    var id = $(this).attr('data');
+    start_loading();
+    $.get (Routing.generate('organisationapp_settitre',{orga:{{orga.id}},id:id,titre:value}))
+        .done(function(data){  })
+        .fail(function (err) {
+            // console.log(myobj.revert);
+            $(myobj).html(myobj.revert);
+            set_error($(err.responseText).find('h1').html());
+        })
+        .always(function(){ stop_loading(); });
+
+     return(value);
+  },{
+      tooltip   : 'Cliquer pour éditer...'
+  });
+</script>
+{% endif %}

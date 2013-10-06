@@ -1,0 +1,6 @@
+<div id="aventurier-organiastions-conteneur">
+
+    <div>{{ render(controller('ndjDGameBundle:Organisation:liste',{cat:'guilde'})) }}</div>
+{# <button onclick="set_dialog({title:'Créer un groupe',height:300,width:400},'{{path('organisation_creer',{'cat':'group'})}}')">Créer un groupe</button> #}
+    <button onclick="set_dialog({title: 'Créer une organisation, guilde, etc', height: 600, width: 800}, '{{path('organisation_creer',{'cat':'guilde'})}}')">Créer une organisation</button>
+</div>

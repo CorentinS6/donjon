@@ -1,0 +1,41 @@
+{% if liste|length == 0 %}
+<p>Il n'y a aucune organisation.</p>
+{% else %}
+<table id="listeOrganisation">
+<thead>
+<tr>
+<th>Nom</th>
+<th>Chef</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+{% for o in liste %}
+	<tr>
+		<td title="{{o.description|nl2br}}"><a href="javascript:void(0)" onclick="displayFiche('organisation',{{o.id}})">{{o.nom}}</a></td>
+		<td>
+		{% if o.public %} <a href="javascript:void(0)" onclick="displayFiche('aventurier',{{o.chef.id}})">{{o.chef.nom}}</a> 
+		{% else %} ? {% endif %}
+		</td>
+		<td>
+			{% if o.public %} Demande d'adhésion {% endif %}
+			Envoyer un message
+                        {% if o.isMembreActif(aventurier) %}
+                        <a href="javascript:void(0);" onclick="organisation_panel({{o.id}},'{{o.nom}}')">Voir</a>
+                        {% endif %}
+		</td>
+	</tr>
+{% endfor %}
+</tbody>
+</table>
+
+
+<div id="listeOrganisation-pager" class="pager"> <form> <span class="first pointer">&lt;&lt;</span> <span class="prev pointer">&lt;</span> <span class="smaller pagedisplay"></span> <span class="pointer next">&gt;</span> <span class="pointer last">&gt;&gt;</span> </form></div>
+
+<script>
+$('#listeOrganisation > tbody > tr > td ').tooltip();
+$(document).ready(function() {
+$("#listeOrganisation").tablesorter({widthFixed:true,widgets:["zebra"]})
+	.tablesorterPager({container: $("#listeOrganisation-pager"), output: "{page} / {totalPages}"});
+});</script>
+{% endif %}

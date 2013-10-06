@@ -1,0 +1,79 @@
+{% set appm = orga.getOrganisationAppartenance(aventurier) %}
+<div id="aventurier-orga-tabs">
+<ul>
+    <li><a href="#orga-tabs-1">Généralité</a></li>
+    <li><a href="#orga-tabs-2">Vous</a></li>
+    <li><a href="#orga-tabs-3">Membres actifs</a></li>
+    <li><a href="#orga-tabs-4">Membres inactifs</a></li>
+    {# <li><a href="#orga-tabs-5">Inventaire</a></li> #}
+</ul>
+
+{# résumé #}
+<div id="orga-tabs-1">
+    <div>{% include 'ndjDGameBundle:Organisation:fiche.html.twig' with {orga:orga,aventurier:aventurier} %}</div>
+    <div></div>
+</div>
+        
+{# appartenance #}
+<div id="orga-tabs-2">
+    {% if appm.is('chef') %}<strong>Vous êtes actuellement le chef de la guilde.</strong>{% endif %}
+    <div>Votre titre : {% if appm.titre is not empty %}{{appm.titre}}{% else %}<i>Aucun</i>{%endif%}</div>
+    <div title="Cacher votre appartenance signifie que votre appartenance sera cachée aux membres extérieurs à l'organisation.">
+        <label for="orgappmbcache">Cacher votre appartenance : </label><input type="checkbox" onchange="organisation_mbsetcacher({{appm.idorganisation.id}},$(this).is(':checked'))" id="orgappmbcache" {% if appm.cacher %}checked="checked"{%endif%}/>
+    </div>
+    <div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Vous avez les <u>droits</u> suivants...</th>
+                    <th>... les <u>actions</u> suivantes vous sont donc accessibles :</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <ul>
+                    {% for d in appm.getDroits()|split(',') %}
+                                <li>{{ appm.getDroitLabel(d) }}</li>
+                    {% endfor %}
+                                </ul>
+                    </td>
+                    <td>
+                        <ul>
+                    {% for a in appm.getActionsPossibles() %}
+                                <li>{{ appm.getActionLabel(a) }}</li>
+                    {% endfor %}
+                                </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+     </div>
+</div>
+        
+{# membre #}
+<div id="orga-tabs-3">
+{% if appm.actionPossible('listeMembre') %}
+        {% include 'ndjDGameBundle:Organisation:listemembre.html.twig' with {orga:orga,actif:1,liste:orga.getMembresActif()} %}
+{% else %}
+        <p>Vous n'avez pas accès à la liste des membres.</p>
+{% endif %}
+</div>
+
+{# membre autre #}
+<div id="orga-tabs-4">
+{% if appm.actionPossible('listeMembre') %}
+        {% include 'ndjDGameBundle:Organisation:listemembre.html.twig' with {orga:orga,actif:0,liste:orga.getMembresInactif()} %}
+{% else %}
+        <p>Vous n'avez pas accès à la liste des membres.</p>
+{% endif %}
+</div>
+
+{# inventaire #}
+{#<div id="orga-tabs-5">
+<i>à venir !</i>
+</div>#}
+
+</div>
+
+<script> $(function() { $( "#aventurier-orga-tabs" ).tabs({ heightStyle: "fill" }); }); </script>

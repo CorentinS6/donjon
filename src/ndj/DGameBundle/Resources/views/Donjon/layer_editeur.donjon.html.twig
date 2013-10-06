@@ -1,0 +1,22 @@
+{% extends 'ndjDGameBundle:GameDonjon:layer_editeur.html.twig' %}
+{% block editeur_body %}
+<div id="gEditDonjon" class="center overa w90 ui-widget-content ui-corner-all pad1" style="margin-top:10px;">
+<h1>Editer le donjon</h1>
+<table id="tableListeEtage">
+<tr><th>Niveau</th><th>Nom<div><span class="smaller">(cliquer sur le nom pour le modifier)</span></div></th><th>Salles</th><th>&eacute;diter</th></tr>
+<tr><td colspan="3"><a href="javascript:addEtage('p');">Ajouter un &eacute;tage</a></td></tr>
+{% for e in etages %}
+<tr>
+	<td>Niveau {{ e.getniveau }}</td>
+	<td><div id="editInPlace_{{e.id}}">{{e.nom|raw}}</div></td>
+	<td>{{e.getPieces|length}}</td>
+	<td><a href="#editeur?e={{e.id}}" onclick="gLoadTab($(this).attr('href'));">
+		<img src="{{ asset('bundles/ndjdgame/images/interface/modif.gif') }}" title="Editer {{e.nom}}" align="absmiddle"/></a>
+	</td>
+</tr>
+{% endfor %}
+<tr><td colspan="3"><a href="javascript:addEtage('m');">Ajouter un sous-sol</a></td></tr>
+</table>
+</div>
+<script>$(document).ready(function(){ setClickable(); });</script>
+{% endblock editeur_body %}

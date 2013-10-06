@@ -1,0 +1,46 @@
+{% extends 'ndjDAdminBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+    <h1>Stats</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Usr</th>
+                <td>{{ entity.usr }}</td>
+            </tr>
+            <tr>
+                <th>Cle</th>
+                <td>{{ entity.cle }}</td>
+            </tr>
+            <tr>
+                <th>Val</th>
+                <td>{{ entity.val }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('stats') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('stats_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('stats_delete', { 'id': entity.id }) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}

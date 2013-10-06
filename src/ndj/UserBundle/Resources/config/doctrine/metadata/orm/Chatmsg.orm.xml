@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Chatmsg" table="CHATMSG">
+    <id name="idmessage" type="integer" column="idMESSAGE">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="mtime" type="integer" column="MTIME" nullable="false"/>
+    <field name="auteur" type="string" column="AUTEUR" length="10" nullable="true"/>
+    <field name="destinataire" type="string" column="DESTINATAIRE" length="10" nullable="true"/>
+    <field name="message" type="string" column="MESSAGE" length="255" nullable="false"/>
+  </entity>
+</doctrine-mapping>

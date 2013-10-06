@@ -1,0 +1,53 @@
+{% if o.idobjets.isImg() %} <img src="{{asset(o.idobjets.getImg())}}" class="right" align="absmiddle"  />{% endif %}
+<h2>{{o.nom}} ({{o.idobjets.frequence|rarete}})</h2>
+<p>Type : {{o.idobjets.cat}}</p>
+<p>Qualité : {{o.qualite|qualite}}</p>
+<p>{{o.idobjets.description}}</p>
+{% if o.idobjets.degat != '' %}<p>Dégâts : {{o.idobjets.degat}} </p>{% endif %} 
+{# //<p>Age : '.$o->getAGE().'</p> #}
+{% if o.bonus != '' %}<p>Bonus :  {{o.bonus}} </p>{% endif %} 
+<p>Usure :  {{o.usure}}</p>
+{% if o.envoutement != '' %}<p>Envoutement :  {{o.envoutement}} </p>{% endif %} 
+
+<p>Prix : {{o.calculerPrix()|or}}</p>
+
+{% if button == 'buy' %}
+<script>
+    $(function() {
+    	$( "#dialog-confirm-inventaire-{{o.id}}" ).dialog({
+            resizable: false,
+            //height:140,
+            autoOpen:false,
+            modal: true,
+            buttons: {
+                "Acheter": function() {
+                	$.get(Routing.generate('commerce_achat',{'type':'inventaire','id':{{o.id}} }), function(data) {
+						if (data!='1')
+						{
+							alert(data);
+						}
+						else
+						{
+							$("#liste-inventaire-vente-{{o.id}}").remove();
+							$("#marcheDescription{{mode}}").html("Tu as acheté un(e) {{o.nom}} !");
+							updateAffichageDonneeNoVal("PACT");
+							updateAffichageDonneeNoVal("ARGENT");
+						}
+					});
+                    $( this ).dialog( "close" );
+                },
+                "Annuler": function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    
+    	$("#buttonDialog-confirm-inventaire-{{o.id}}").button().click(function() {
+                 $( "#dialog-confirm-inventaire-{{o.id}}" ).dialog("open");
+            });
+    	});
+    </script>
+<div id="dialog-confirm-inventaire-{{o.id}}" title="Confirmes-tu ton achat ?"><p>Veux-tu vraiment acheter {{o.nom}} pour {{o.calculerPrix()|or}} PO ?</p></div>
+<input type="button" id="buttonDialog-confirm-inventaire-{{o.id}}" value="Acheter">
+
+{% endif %}

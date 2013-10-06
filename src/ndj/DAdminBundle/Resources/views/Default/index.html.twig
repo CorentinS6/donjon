@@ -1,0 +1,10 @@
+Hello {{app.user.username}} !
+
+<table>
+{% for c in ctrl %}
+<tr>
+	<td><a href="{{path(c|lower)}}">{{c}}</a></td>
+	<td><a href="{{path((c|lower)~'_new')}}">New</a></td>
+</tr>
+{% endfor %}
+</table>

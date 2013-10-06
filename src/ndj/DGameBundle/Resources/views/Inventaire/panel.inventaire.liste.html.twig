@@ -1,0 +1,7 @@
+<ul class="aventurier-inventaire-connected">
+{% for o in liste %}
+<li class="ui-state-default invcat-{{o.idobjets.cat|str_replace(' ','_')}}" id="inventaireliaventurier#{{o.id}}" ondblclick="displayFiche('inventaire','{{o.id}}');">
+{% if o.idobjets.isImg() %} <img src="{{asset(o.idobjets.getImg())}}" title="{{o.nom}} (double-clique pour afficher la fiche)"/>{% else %}({{o.nom}}){% endif %}
+</li>
+{% endfor %}
+</ul>

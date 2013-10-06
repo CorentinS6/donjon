@@ -1,0 +1,87 @@
+{% extends 'ndjDAdminBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+    <h1>Aventurier list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Acrobatie</th>
+                <th>Bagarre</th>
+                <th>Charme</th>
+                <th>Acuite</th>
+                <th>Age</th>
+                <th>Experience</th>
+                <th>Renommee</th>
+                <th>Renommeemax</th>
+                <th>Pvie</th>
+                <th>Pviemax</th>
+                <th>Argent</th>
+                <th>Mana</th>
+                <th>Manamax</th>
+                <th>Pact</th>
+                <th>Pdep</th>
+                <th>Position</th>
+                <th>Posx</th>
+                <th>Posy</th>
+                <th>Pouvoirs</th>
+                <th>Talents</th>
+                <th>Envoutement</th>
+                <th>Points</th>
+                <th>Etat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('aventurier_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nom }}</td>
+                <td>{{ entity.acrobatie }}</td>
+                <td>{{ entity.bagarre }}</td>
+                <td>{{ entity.charme }}</td>
+                <td>{{ entity.acuite }}</td>
+                <td>{{ entity.age }}</td>
+                <td>{{ entity.experience }}</td>
+                <td>{{ entity.renommee }}</td>
+                <td>{{ entity.renommeeMax }}</td>
+                <td>{{ entity.pvie }}</td>
+                <td>{{ entity.pvieMax }}</td>
+                <td>{{ entity.argent }}</td>
+                <td>{{ entity.mana }}</td>
+                <td>{{ entity.manaMax }}</td>
+                <td>{{ entity.pact }}</td>
+                <td>{{ entity.pdep }}</td>
+                <td>{{ entity.position }}</td>
+                <td>{{ entity.posx }}</td>
+                <td>{{ entity.posy }}</td>
+                <td>{{ entity.pouvoirs }}</td>
+                <td>{{ entity.talents }}</td>
+                <td>{{ entity.envoutement }}</td>
+                <td>{{ entity.points }}</td>
+                <td>{{ entity.etat }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('aventurier_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('aventurier_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('aventurier_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

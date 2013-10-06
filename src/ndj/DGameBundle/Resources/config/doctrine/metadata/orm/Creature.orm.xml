@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Creature" table="CREATURE">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nom" type="string" column="NOM" length="255" nullable="false"/>
+    <field name="description" type="string" column="DESCRIPTION" length="255" nullable="false"/>
+    <field name="intelligente" type="boolean" column="INTELLIGENTE" nullable="false"/>
+    <field name="acrobatie" type="smallint" column="ACROBATIE" nullable="false"/>
+    <field name="bagarre" type="smallint" column="BAGARRE" nullable="false"/>
+    <field name="charme" type="smallint" column="CHARME" nullable="false"/>
+    <field name="acuite" type="smallint" column="ACUITE" nullable="false"/>
+    <field name="vie" type="string" column="VIE" length="45" nullable="false"/>
+    <field name="degat" type="string" column="DEGAT" length="45" nullable="false"/>
+    <field name="unique" type="boolean" column="UNIQUE" nullable="false"/>
+    <field name="pouvoirs" type="string" column="POUVOIRS" length="45" nullable="true"/>
+    <field name="prixAchat" type="float" column="PRIX_ACHAT" nullable="false"/>
+    <field name="prixEntretien" type="float" column="PRIX_ENTRETIEN" nullable="false"/>
+    <many-to-one field="idparent" target-entity="Creature">
+      <join-columns>
+        <join-column name="idPARENT" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

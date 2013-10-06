@@ -1,0 +1,9 @@
+ndj_dgame_homepage:
+    pattern:  /
+    defaults: { _controller: ndjDGameBundle:Default:index }
+
+# import routes from a controller directory
+game:
+    resource: "@ndjDGameBundle/Controller"
+    type:     annotation
+

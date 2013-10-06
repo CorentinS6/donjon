@@ -1,0 +1,18 @@
+{% block chatline %}
+{% set messagetype = message.gettype %}
+<div class="chat-line chat-line-{{ messagetype }}" id="chat-message-{{ message.id }}">
+	{% if messagetype=='public' %}
+	{% set nom = render(controller("ndjDGameBundle:GameCommon:getPlayerCaracFromCode", { 'code': message.auteur,'carac':'getnom'})) %}
+<b><a href="javascript:void(0);" onclick="$('#chat-inputmessage').val('@{{nom}} ')" title='{{nom}}'>{{nom|str_troncate(15)}}</a></b> : 
+	{% elseif messagetype=='prive' %}
+{% set noma = render(controller("ndjDGameBundle:GameCommon:getPlayerCaracFromCode", { 'code': message.auteur,'carac':'getnom'})) %}
+{% set nomd = render(controller("ndjDGameBundle:GameCommon:getPlayerCaracFromCode", { 'code': message.destinataire,'carac':'getnom'})) %}
+{% set moi = render(controller("ndjDGameBundle:GameCommon:getCurrentPlayerCaracAction", {'carac':'getnom'})) %}
+{% if moi==noma %}
+<b>&agrave; <a href="javascript:void(0);" onclick="$('#chat-inputmessage').val('@{{nomd}} ')" title="{{nomd}}">{{nomd|str_troncate(15)}}</a></b> : 
+{% else %}
+<b>de <a href="javascript:void(0);" onclick="$('#chat-inputmessage').val('@{{noma}} ')" title="{{noma}}">{{noma|str_troncate(15)}}</a></b> : 
+{% endif %}
+	{% endif %}
+{{ message.message }}</div>
+{% endblock chatline %}

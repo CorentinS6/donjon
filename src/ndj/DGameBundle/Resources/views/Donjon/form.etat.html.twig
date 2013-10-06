@@ -1,0 +1,6 @@
+<h3>Modifier l'état du donjon</h3>
+
+  <form method="post" {{ form_enctype(form) }} onsubmit="return donjon_setetat(this)">
+    {{ form_widget(form) }}
+    <input type="submit" />
+  </form>

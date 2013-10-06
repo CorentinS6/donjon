@@ -1,0 +1,59 @@
+{% extends 'ndjDAdminBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+    <h1>Donjon list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Datecreation</th>
+                <th>Dateouverture</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Argent</th>
+                <th>Etat</th>
+                <th>Pact</th>
+                <th>Renommee</th>
+                <th>Renommeemax</th>
+                <th>Experience</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('donjon_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{% if entity.dateCreation %}{{ entity.dateCreation|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.dateOuverture %}{{ entity.dateOuverture|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ entity.nom }}</td>
+                <td>{{ entity.description }}</td>
+                <td>{{ entity.argent }}</td>
+                <td>{{ entity.etat }}</td>
+                <td>{{ entity.pact }}</td>
+                <td>{{ entity.renommee }}</td>
+                <td>{{ entity.renommeeMax }}</td>
+                <td>{{ entity.experience }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('donjon_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('donjon_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('donjon_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

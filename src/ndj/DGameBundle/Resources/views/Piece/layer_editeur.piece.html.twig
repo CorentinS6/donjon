@@ -1,0 +1,237 @@
+{% extends 'ndjDGameBundle:GameDonjon:layer_editeur.html.twig' %}
+{% block editeur_body %}
+<script type="text/javascript" src="{{asset('bundles/ndjdgame/js/gardien.maplib.20121218.js')}}"></script>
+<div id="gEditPiece" class="h100">
+
+	<div id="gardien-editeur-toolbar" class="ui-widget-header">
+	
+		<div class="smaller txtcenter w100 nobr" style="height:30px;">
+			<a href="#editeur?e={{piece.idetage.id}}" onclick="gLoadTab($(this).attr('href'));">Retour à {{piece.idetage.nom}}</a> | 
+			<span class="smaller">
+				{% include 'ndjDGameBundle:Piece:selector.html.twig' with {'options':' id=gardien-editeur-salle-selector onchange=gGotoEMap($(this).val()) ','pieces':piece.iddonjon.getpieces(),'default':piece.id} %}
+			</span>
+			<span> | Barre d'outils : </span>
+				<button id="gardien-editeur-help" title="Aide" onclick="set_dialog({title:'Aide'},'index/aide?p=4')">Aide</button>
+			<span>
+				<button id="gardien-editeur-save" title="Sauvegarder la salle" class="smaller2">Save</button><input type="checkbox" id="gardien-editeur-save2" checked="checked" /><label for="gardien-editeur-save2">Save</label>
+			</span>
+			<span id="gardien-editeur-pensel">
+    			<input type="radio" id="gepp" name="ge-pensel" value="p" checked="checked" title="Outils pinceau" /><label for="gepp">Outils pinceau</label><input type="radio" id="gepr" name="ge-pensel" value="r" title="Outil rectangle" /><label for="gepr">Outil rectangle</label>
+			</span>
+			<span id="gardien-editeur-layerselect">
+				<input type="radio" id="gel1" name="ge-layerselect" checked="checked" /><label for="gel1">Décors (Inf.)</label><input type="radio" id="gel2" name="ge-layerselect" /><label for="gel2">Décors (Sup. 1)</label><input type="radio" id="gel3" name="ge-layerselect" /><label for="gel3">Décors (Sup. 2)</label><input type="radio" id="gel4" name="ge-layerselect" /><label for="gel4">Objets</label><input type="radio" id="gel5" name="ge-layerselect" /><label for="gel5">Perso</label><input type="radio" id="gel6" name="ge-layerselect" /><label for="gel6">Actions</label><input type="radio" id="gel8" name="ge-layerselect" /><label for="gel8">Aperçu</label>
+			</span>
+		</div>
+    		
+    </div>
+	<div id="gardien-editeur-wrapper" style="position:absolute;top:30px;bottom:0;" class="smaller w100">
+	
+		<div id="gardien-editeur-sidepanel" class="h100 w30 right">
+			{# proprietes #}
+			<div id="gardien-editeur-sidepanel-prop" class="ui-layout-north bgw smaller">
+	
+				Etage : {{piece.idetage.nom}} (Niveau {{piece.idetage.niveau}})<br />
+				Position : x={{piece.posx}} , y={{piece.posy}}<br />
+				Taille : {{piece.taillex}},{{piece.tailley}}
+			
+				<hr />
+				Nom : <span id="propeditPiece_Nom">{{piece.nom}}</span><br />
+				Etat : <span id="propeditPiece_Etat">{% include 'ndjDGameBundle:Piece:etats.selector.html.twig' with {'piece':piece, 'name':'ETAT', 'plus':"onchange=piece_Etat($(this))"} %}</span>
+				<br />
+				<table><tr>
+					<td>Lumi&egrave;re :</td>
+					<td class="smaller"> Eteinte - </td>
+					<td><div style="width:150px;" id="propeditPiece_Lum" title="{{piece.lumiere}}"></div></td>
+					<td> + Allum&eacute;e </td>
+				</tr></table>
+				{# <!-- @TODO : Ambiance : <span id="propeditPiece_Amb">TODO</span> --> #}
+
+    			
+			</div>
+			{# libraiaire #}    		
+			<div id="gardien-editeur-sidepanel-libs" class="ui-layout-center bgw smaller">
+				<div class="ge_lib_wrapper ge_lib_wrapper-6">
+					{# tile::getLibAction(piece.Actions, piece.idPIECE) #}
+					{{ render(controller('ndjDGameBundle:Piece:interfaceEditeurPieceActionLibs' , {'id':piece.id} )) }}
+					{# template render #}
+				</div>
+				<div id="ge_sol_libs-wrapper" class="ge_sol_wrapper"></div>
+				<div id="ge_mobilier_libs-wrapper" class="ge_mobilier_wrapper"></div>
+			</div>
+			{# tree #}
+			<div id="gardien-editeur-sidepanel-tree" class="ui-layout-south bgw smaller">
+				<div id="ge_sol_tree-wrapper" class="ge_sol_wrapper"></div>
+				<div id="ge_mobilier_tree-wrapper" class="ge_mobilier_wrapper"></div>
+			</div>
+		</div>
+	
+	<div id="gardien-editeur-mapwrapper" class="w70 h100"></div>
+	
+</div>
+    	
+<script>
+
+start_loading();
+function piece_Etat(o)
+{
+	val = o.val();
+	$.post(Routing.generate('piece_setetat',{'id':{{piece.id}},'e':val}), function(data) {
+		d = data.split(":");
+		if (d[0]==0) {
+			etat = parseInt(d[1]);
+			if (etat<0) etat=-3;
+			o.val(etat);
+			set_error(d[2]);
+		} else {
+			set_info(d[1]);
+		}
+	});
+}
+
+$("#propeditPiece_Lum").slider({
+	value: {{piece.lumiere}},
+	min: 0,
+	max: 10,
+	step: 1,
+	slide: function( event, ui ) {
+		// @todo : live démo
+		$(this).attr('title', parseInt(ui.value)/10);
+		$.post(Routing.generate('piece_setLumiere',{'id':{{piece.id}},'l':ui.value}),function(data){
+			if (data!='ok') set_error(data);
+		});
+	}
+});
+
+//if (map!=null && map!=undefined) map.destroy();
+
+
+$(function(){
+    $('#gardien-editeur-mapwrapper').createMap({name:"carte_editeur",mode:"edit"}).importMap({{ piece.json | raw }});
+});
+/*
+map = new Map({{piece.id}}, {{piece.taillex}}, {{piece.tailley}});	
+map.displayMode = 'editor';
+map.setInitialPosition('0', '0');
+map.createMapStructure('#gardien-editeur-mapwrapper');
+map.createMapElements('{{piece.couchesol}}', '{{piece.couchesol2}}', '{{piece.couchemobilier}}');
+*/
+
+$(function(){
+	// TOOLBOX
+	// save
+	$('#gardien-editeur-save').button({ text:false, icons:{primary:"ui-icon-disk"}}).click(function(){ __g_save(); });
+	$('#gardien-editeur-save2').button({label:'<img src="{{asset('bundles/ndjdgame/images/interface/wait3.gif')}}" />'}).change(function(){
+		if ($(this).is(':checked')) {
+			__g_save_Counter(__g_save_Counter_init);
+		} else {
+			__g_save_Counter_stop();
+		}
+	});
+	$('#gardien-editeur-save').parent().buttonset();
+	__g_save_Counter(__g_save_Counter_init);
+	// help
+	$('#gardien-editeur-help').button({ text:false, icons:{primary:"ui-icon-help"}});
+	// dessin
+	$('#gepp').button({ text:false, icons:{primary:"ui-icon-pencil"}});
+	$('#gepr').button({ text:false, icons:{primary:"ui-icon-arrow-4-diag"}});
+	// couche
+	$('#gardien-editeur-pensel').buttonset();
+	$('#gardien-editeur-layerselect').buttonset().change(function(){
+		var i = $("#gardien-editeur-layerselect input:checked").attr('id').substring(3);
+		gLoadCouche(parseInt(i));
+	});
+});
+
+function savePieceNom(obj, cancel)
+{
+	var t = '';
+	if (!cancel)
+	{
+		t = $(obj).parent().siblings(0).val();
+		
+		if (t == '' || t == null)
+		{
+			alert("Le nom ne peut pas être vide !");
+			return;
+		}
+		
+		$.post(Routing.generate('piece_setnom',{'nom': t, 'id': {{piece.id}} }), function(txt){
+			tmp = txt.split(':');
+			if (txt[0]=='1') {
+				t = txt.substring(2);
+				$('#eRightPannel h1').html(t);
+			} else {
+				alert(txt);
+				return;
+			}
+		});
+	}
+	else
+	{
+		t = cancel;
+	}
+	
+	$(obj).parent().parent().after('<span id="propeditPiece_Nom">'+t+'</div>').remove();
+	
+	setEditablePieceProp();
+}
+	
+function setEditablePieceProp()
+{
+	$('span[id^="propeditPiece_"]').click(function(){
+		var tmp = $(this).attr('id').split("_");
+		var prop =  tmp[1];
+		if (prop=='Nom') {
+			var textarea = '<span><input type="text" name="NOM" value="' + $(this).text() + '"/>';
+			var button = ' <span><input type="button" value="Ok" class="saveButton smaller" /> <input type="button" value="Annuler" class="cancelButton smaller"/></span></span>';
+			var revert = $(this).html(); 
+	
+			$(this).after(textarea+button).remove();
+	 
+			$('.saveButton').click(function(){savePieceNom(this, false);});
+			$('.cancelButton').click(function(){savePieceNom(this, revert);});
+		}
+	}).mouseover(function() {
+		$(this).addClass("editable");
+	})		
+	.mouseout(function() {
+		$(this).removeClass("editable");
+	});
+}
+
+
+
+$(document).ready(function () {
+	setEditablePieceProp();
+	$('#gardien-editeur-sidepanel').layout({
+		defaults: {
+			fxName:               "slide"
+			, fxSpeed:               "slow"
+   			, initClosed:            false
+   			, spacing_closed:        14
+   			, togglerLength_closed:  "100%"
+			, applyDefaultStyles: false
+			, resizable:true
+			, closable:true
+   		},
+		north: {
+			size:'30%'
+   		},
+		center: {
+			size:'60%'
+			, closable:false
+   		},
+		south: {
+			size:'15%'
+   		}
+	});
+	
+	gLoadCouche(1);
+	
+	//$('#gardien-editeur-toolbar').tooltip();
+
+	stop_loading();
+
+});
+</script>
+{% endblock editeur_body %}

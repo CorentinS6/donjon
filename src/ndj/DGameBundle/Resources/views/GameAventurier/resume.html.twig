@@ -1,0 +1,62 @@
+<table class="smaller2" cellpadding="0" cellspacing="0" style="margin-left:50px;">
+    <tr>
+
+        <td>
+            <div style="background:#fff;width:30px;height:30px;border-radius:15px;margin:0 auto;" title="{{aventurier.nom}}" class="txtcenter">
+                <img src="{{asset('bundles/ndjdgame/images/creatures/aventurier.gif')}}" width="20" align="absmiddle" style="margin-top:3px;" />
+            </div>
+        </td>
+
+        <td>&nbsp;</td>
+        <td>
+            Niveau <span class="data-aventurier-NIVEAU">{{ aventurier.experience | level }}</span>
+        </td>
+
+        <td width="15">&nbsp;</td>
+        <td><img src="{{asset('bundles/ndjdgame/images/gicon/vie.png')}}" width="25" align="absmiddle" /></td>
+        <td> <div class="progressbar-PV" style="height:7px;width:100px;"></div></td>
+
+        <td width="15">&nbsp;</td>
+        <td><img src="{{asset('bundles/ndjdgame/images/gicon/xp.png')}}" width="25" align="absmiddle" /></td>
+        <td> <div class="progressbar-XP" style="height:7px;width:100px;"></div></td>
+
+        <td width="15">&nbsp;</td>
+        <td>
+            <img src="{{asset('bundles/ndjdgame/images/gicon/po.png')}}" width="25" align="absmiddle" /><span class="data-aventurier-ARGENT">{{aventurier.argent|number_format(2,',',' ')}} PO</span>
+        </td>
+        <td width="30">&nbsp;</td>
+        <td>
+            <img src="{{asset('bundles/ndjdgame/images/gicon/pa.png')}}" width="25" align="absmiddle" title="Points d'action" /> <span class="data-aventurier-PACT">{{aventurier.pact}}</span>
+        </td>
+
+        <td width="15">&nbsp;</td>
+        <td>
+            <img src="{{asset('bundles/ndjdgame/images/gicon/pd.png')}}" width="25" align="absmiddle" title="Points de déplacement" /> <span class="data-aventurier-PDEP">{{aventurier.pdep}}</span>
+        </td>
+        <td width="30">&nbsp;</td>
+        <td>Position : <span class="data-aventurier-POSITION">{{aventurier.displayposition|raw}}</span>
+        </td>
+
+
+        <td>
+            
+            <div id="aventurier-sidepanel-fiche-button" class="aventurier-body-sidepanel-button" onclick="aventurier_showpan('fiche');">
+                <img width="25" src="{{asset('bundles/ndjdgame/images/gicon/fiche.png')}}" title="Fiche" />
+            </div>
+            <div id="aventurier-sidepanel-inventaire-button" class="aventurier-body-sidepanel-button" onclick="aventurier_showpan('inventaire');">
+                <img width="25" src="{{asset('bundles/ndjdgame/images/gicon/inventaire.png')}}" title="Inventaire"/>
+            </div>
+            <div id="aventurier-sidepanel-relations-button" class="aventurier-body-sidepanel-button" onclick="aventurier_showpan('relations');"">
+                R
+            </div>
+            <div id="aventurier-sidepanel-organisations-button" class="aventurier-body-sidepanel-button" onclick="aventurier_showpan('organisations');">
+                O
+            </div>
+            <div id="aventurier-sidepanel-stats-button" class="aventurier-body-sidepanel-button" onclick="aventurier_showpan('stats');">
+                S
+            </div>
+            
+        </td>
+
+    </tr>
+</table>

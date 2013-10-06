@@ -1,0 +1,86 @@
+{% extends 'ndjDAdminBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+    <h1>Creature</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ entity.nom }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ entity.description }}</td>
+            </tr>
+            <tr>
+                <th>Intelligente</th>
+                <td>{{ entity.intelligente }}</td>
+            </tr>
+            <tr>
+                <th>Acrobatie</th>
+                <td>{{ entity.acrobatie }}</td>
+            </tr>
+            <tr>
+                <th>Bagarre</th>
+                <td>{{ entity.bagarre }}</td>
+            </tr>
+            <tr>
+                <th>Charme</th>
+                <td>{{ entity.charme }}</td>
+            </tr>
+            <tr>
+                <th>Acuite</th>
+                <td>{{ entity.acuite }}</td>
+            </tr>
+            <tr>
+                <th>Vie</th>
+                <td>{{ entity.vie }}</td>
+            </tr>
+            <tr>
+                <th>Degat</th>
+                <td>{{ entity.degat }}</td>
+            </tr>
+            <tr>
+                <th>Unique</th>
+                <td>{{ entity.unique }}</td>
+            </tr>
+            <tr>
+                <th>Pouvoirs</th>
+                <td>{{ entity.pouvoirs }}</td>
+            </tr>
+            <tr>
+                <th>Prixachat</th>
+                <td>{{ entity.prixAchat }}</td>
+            </tr>
+            <tr>
+                <th>Prixentretien</th>
+                <td>{{ entity.prixEntretien }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('creature') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('creature_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('creature_delete', { 'id': entity.id }) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}

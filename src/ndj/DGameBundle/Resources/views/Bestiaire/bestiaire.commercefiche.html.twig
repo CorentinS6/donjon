@@ -1,0 +1,66 @@
+{% if o.idcreature.isImg() %} <img src="{{asset(o.idcreature.getImg())}}" class="right" align="absmiddle"  />{% endif %}
+<h2>{{o.prenom}}</h2>
+{% if o.prenom!=o.idcreature.nom %}<p>Créature : {{o.idcreature.nom}}</p> {% endif %}
+{% if o.idcreature.description != '' %}<p>Description : {{o.idcreature.description}}</p> {% endif %}
+<p>Renommée : {{o.renommee|renommee}}</p>
+<p>Expérience : niveau {{o.experience|level}} ({{o.experience}} pt.)</p>
+
+<p>Acrobatie : {{o.acrobatie|carac}}</p>
+<p>Bagarre : {{o.bagarre|carac}}</p>
+<p>Charme : {{o.charme|carac}}</p>
+<p>Acuité : {{o.acuite|carac}}</p>
+
+<p>Vie : {{o.pvie ~ '/' ~ o.pviemax}}</p>
+<p>Dégâts : {{o.idcreature.degat}}</p>
+
+{% if mode == 'Monstre' %}
+<p>Prix d'achat : {{o.calculerPrix()|or}}</p>
+<p>Prix d'entretien : {{o.cout|or}} par tour</p>
+{% elseif mode == 'Pnj' %}
+<p>Prix d'embauche : {{o.calculerPrix()|or}}</p>
+<p>Salaire : {{o.cout|or}} par tour</p>
+{% endif %}
+
+{% if o.pouvoirs != '' %}<p>Pouvoirs: {{o.pouvoirs}}</p>{% endif %}
+{% if o.talents != '' %}<p>Talents: {{o.talents}}</p>{% endif %}
+{% if o.envoutement != '' %}<p>Envoutements: {{o.envoutement}}</p>{% endif %}
+
+{% if button == 'buy' %}
+<script>
+    $(function() {
+    	$( "#dialog-confirm-bestiaire-{{o.id}}" ).dialog({
+            resizable: false,
+            //height:140,
+            autoOpen:false,
+                modal: true,
+                buttons: {
+                "Acheter": function() {                
+                $.get(Routing.generate('commerce_achat',{'type':'bestiaire','id':{{o.id}} }), function(data) {
+                if (data!='1')
+                {
+                	alert(data);
+		        }
+		        else
+		        {
+			        $("#liste-bestiaire-vente-{{o.id}}").remove();
+			        $("#marcheDescription{{mode}}").html('Tu avez acheté "{{o.prenom}}" !');
+							updateAffichageDonneeNoVal("PACT");
+							updateAffichageDonneeNoVal("ARGENT");
+		        }
+        });
+        	$( this ).dialog( "close" );
+       },
+        "Annuler": function() {
+        	$( this ).dialog( "close" );
+        }
+        }
+        });
+	        $("#buttonDialog-confirm-bestiaire-{{o.id}}").button().click(function() {
+	        	$( "#dialog-confirm-bestiaire-{{o.id}}" ).dialog("open");
+	        });
+        });
+        </script>
+        <div id="dialog-confirm-bestiaire-{{o.id}}" title="Confirmes-tu ton achat ?"><p>Veux-tu vraiment acheter {{o.prenom}} pour {{o.calculerprix()|or}} PO ?</p></div>
+    	<input type="button" id="buttonDialog-confirm-bestiaire-{{o.id}}" value="Acheter">
+    
+{% endif %}

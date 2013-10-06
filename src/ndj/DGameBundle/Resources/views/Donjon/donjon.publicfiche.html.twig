@@ -1,0 +1,42 @@
+<table class="width_cent">
+<tr>
+	<td colspan="2"><b>{{donjon.nom}}</b></td>
+</tr>
+
+<tr>
+	<td colspan="2">Créé le {{donjon.dateCreation|date('d/m/Y')}}</td>
+</tr>
+<tr><td colspan="2">Niveau {{donjon.experience|level}}</td></tr>			
+
+{% if is_granted('ROLE_MODO') %}
+<tr><td colspan="2" class="smaller">#{{donjon.id}}<br />Argent : {{donjon.Argent|or}}</td></tr>
+{% endif %}
+
+			<tr><td colspan="2">{{donjon.description|raw}}</td></tr>
+			<tr><td>Etat</td><td>{{donjon.etat}}</td></tr>
+			<tr><td>Renommée</td><td>{{donjon.renommee|renommee}}</td></tr>
+<tr>
+	<td>Niveaux : </td>
+	<td>{{donjon.getetages|length}}</td>
+</tr>
+<tr>
+	<td>Salles : </td>
+	<td>
+		<div>{{donjon.getpieces()|length}} au total.</div> {# array_count_val('etat','2') #}
+		<div>{{ donjon.getpieces()|array_count_val('etat','2')+
+				donjon.getpieces()|array_count_val('etat','-3')+
+				donjon.getpieces()|array_count_val('etat','-2') }} ouverte(s).</div>
+		<div>{{donjon.getpieces()|array_count_val('etat','-1')}} en maintenance.</div>
+		<div>{{donjon.getpieces()|array_count_val('etat','1')}} en constuction.</div>
+	</td>
+</tr>
+<tr><td>Superficie : </td><td>{{donjon.getSuperficie}}</td></tr>					
+<tr><td>Argent dans les salles :</td><td>{{donjon.getARGENT_AU_SOL()|or}}</td></tr>
+<tr><td>Objets dans les salles :</td><td>{{
+	donjon.getinventaires()|length
+	- donjon.getinventaires()|array_count_val('position','{I}')
+	- donjon.getinventaires()|array_count_val('position','{V}')
+	}}</td></tr>
+<tr><td>Monstres dans les salles :</td><td>{{donjon.getbestiaires|array_count_val('repos','0')}}</td></tr>	
+			
+</table>

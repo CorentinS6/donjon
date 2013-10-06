@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Inventaire" table="INVENTAIRE">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nom" type="string" column="NOM" length="255" nullable="false"/>
+    <field name="age" type="smallint" column="AGE" nullable="false"/>
+    <field name="bonus" type="string" column="BONUS" length="255" nullable="true"/>
+    <field name="usure" type="boolean" column="USURE" nullable="false"/>
+    <field name="qualite" type="boolean" column="QUALITE" nullable="false"/>
+    <field name="position" type="string" column="POSITION" length="45" nullable="true"/>
+    <field name="envoutement" type="string" column="ENVOUTEMENT" length="255" nullable="true"/>
+    <many-to-one field="idcompte" target-entity="Banque">
+      <join-columns>
+        <join-column name="idCOMPTE" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idpiece" target-entity="Piece">
+      <join-columns>
+        <join-column name="idPIECE" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idbestiaire" target-entity="Bestiaire">
+      <join-columns>
+        <join-column name="idBESTIAIRE" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idaventurier" target-entity="Aventurier">
+      <join-columns>
+        <join-column name="idAVENTURIER" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="iddonjon" target-entity="Donjon">
+      <join-columns>
+        <join-column name="idDONJON" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idobjets" target-entity="Objets">
+      <join-columns>
+        <join-column name="idOBJETS" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,32 @@
+<div class="smaller2 left overa carte-liste-element carte-liste-element-carte_aventurier" style="width:250px;height:100px;max-height:100px;"></div>
+<div class="left txtcenter smaller" style="height:100px;width:100px;">
+<table style="margin:0;width:95px;height:95px;border:2px solid #000;border-radius:50px;">
+<tr>
+<td class="w25"></td>
+<td class="w50">
+<button onclick="Av_deplacer('n');" title="MAJ + Fléche HAUT" class="ui-button ui-default-state"><span class="ui-icon ui-icon-circle-arrow-n"></span></button>
+</td>
+<td class="w25"></td>
+</tr>
+<tr>
+<td>
+<button onclick="Av_deplacer('w');" title="MAJ + Fléche GAUCHE" class="ui-button ui-default-state"><span class="ui-icon ui-icon-circle-arrow-w"></span></button>
+</td>
+<td>
+<button onclick="Av_mapForceReload();" class="ui-button ui-default-state" title="Rechargement de la carte">
+<span class="ui-icon ui-icon-refresh left"></span><span id="aventurier-timebeformapreload" class="smaller2">0</span>
+</button>
+</td>
+<td>
+<button onclick="Av_deplacer('e');" title="MAJ + Fléche DROITE" class="ui-button ui-default-state"><span class="ui-icon ui-icon-circle-arrow-e"></span></button>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<button onclick="Av_deplacer('s');" title="MAJ + Fléche BAS" class="ui-button ui-default-state"><span class="ui-icon ui-icon-circle-arrow-s"></span></button>
+</td>
+<td></td>
+</tr>
+</table>
+</div>

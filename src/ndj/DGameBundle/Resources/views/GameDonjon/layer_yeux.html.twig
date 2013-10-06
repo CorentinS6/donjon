@@ -1,0 +1,20 @@
+<div class="right w40 bgd h100" id="salle-yeux-right-panel">
+	<h1>La salle des yeux</h1>
+	
+	Salle :
+	 {% include 'ndjDGameBundle:Piece:selector.html.twig' with {'pieces':donjon.getpieces,'options':' name=idPIECE  id=salle-yeux-salle-selector'} %}
+	 <input type="button" id="salle-yeux-salle-valid" value="Afficher" />
+	<!--
+	 <select name="idPIECE"  id="salle-yeux-salle-selector"><optgroup label="Niveau 4 : 4&egrave;me &eacute;tage"></optgroup><optgroup label="Niveau 3 : 3&egrave;me &eacute;tage"></optgroup><optgroup label="Niveau 2 : 2&egrave;me &eacute;tage"></optgroup><optgroup label="Niveau 1 : 1er  &eacute;tage"><option value="7">Fen</option></optgroup><optgroup label="Niveau 0 : Rez de chauss&eacute;"><option value="1">EntrÃ©e</option><option value="2">Le grand couloir</option><option value="3">Le passage</option><option value="4">La halte</option></optgroup><optgroup label="Niveau -1 : 1er sous-sol"></optgroup><optgroup label="Niveau -2 : 2&egrave;me sous-sol"></optgroup>
+	 </select>
+	 -->
+	<div class="smaller2">
+	Selecteur de salle (via &lt;select> + rechercher ajax ?).
+	Carte (avec PJÂ /Â PNJ, OBJET... voir selection de calque/Affichage objets cachÃ©s,etc)
+	fiche descriptive qui apparait au besoin,<br />laisse la place Ã  la carte sinon
+	</div>
+	
+	<div class="center w90 carte-liste-element"></div>
+</div>		
+	
+<div id="salle-yeux-map-wrapper" class="w60 h100 bgl"></div>

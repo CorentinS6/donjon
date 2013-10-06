@@ -1,0 +1,65 @@
+<div id="economat-or-deposer-dialog">
+	<p>
+    	<label for="spinner-ECO-DEPOSER-PO">Déposer</label>
+    	<input id="spinner-ECO-DEPOSER-PO" name="value" value="0" size="6" /> PO
+	</p>
+	<p>
+		Dans 
+		{{ render(controller('ndjDGameBundle:Piece:selector',{iddonjon:app.session.get('iddonjon'),options:" id=economat-or-salle-selector name=idpiece"})) }}
+	</p>
+	<p>
+    	Position (X,Y)
+    	<input id="spinner-ECO-DEPOSER-X" name="value" value="0" size="3" />,<input id="spinner-ECO-DEPOSER-Y" name="value" value="0" size="3" />
+	</p>
+	<p>
+		<input type="button" id="button-ECO-DEPOSER" value="Déposer" onclick="EconomatClickDeposer()"/>
+	</p>
+</div>
+
+<h1>Gestion de ton Or</h1>
+
+<div>Or dans tes coffres : <pan class="data-donjon-ARGENT">{{or_in|number_format(2,',',' ')}} PO</span></div>
+<div>Or dans tes salles : <span class="data-donjon-ARGENT_AU_SOL">{{or_out|number_format(2,',',' ')}} PO</span></div>
+
+
+<a href="javascript:void(0);" onclick="$('#economat-or-deposer-dialog').dialog('open')">Déposer de l'or dans tes salles</a>
+
+{% if pieces_or | length > 0 %}
+<div id="tableArgentAuSol">
+<table id="tableArgentAuSolTable"><caption>L'or dans tes salles : </caption>
+<thead><tr><th>Niveau</td><th>Salle</td><th>Position</th><th>Or</th><th>Action</th></tr></thead><tbody>
+{% for p in pieces_or %}
+<tr><td>{{p.piece.idetage.nom}}</td><td>{{p.piece.nom}}</td><td>{{p.x}},{{p.y}}</td><td>{{p.or|number_format(2,',',' ')}} PO</td>
+<td><a href="javascript:void(0);" onclick="ramasserOr('{{p.piece.id}}','{{p.x}}','{{p.y}}','{{p.or}}');">Ramasser</a></td>
+</tr>
+{% endfor %}
+</tbody></table>
+
+<div id="tableArgentAuSolTable-pager" class="pager"> <form> <span class="first pointer">&lt;&lt;</span> <span class="prev pointer">&lt;</span> <span class="smaller pagedisplay"></span> <span class="pointer next">&gt;</span> <span class="pointer last">&gt;&gt;</span> </form></div>
+<script>
+$(function(){			
+	$("#tableArgentAuSolTable").tablesorter({headers: { 3: {sorter:"PO"  } }}).tablesorterPager({container:$('#tableArgentAuSolTable-pager'), output: "{page} / {totalPages}"});
+}); 
+</script>
+</div>
+{% else %}
+<p>Pas d'or dans tes salles.</p>
+{% endif %}
+
+<script>
+$(function() {
+	$("#economat-or-deposer-dialog").dialog({
+		autoOpen:false,
+		modal:true,
+		resizable:false,
+		title:"Déposer de l'or",
+		closeOnEscape:true,
+		width:350
+	});
+	$( "#spinner-ECO-DEPOSER-PO" ).spinner({ min:0, max: {{or_in}} });
+    $( "#spinner-ECO-DEPOSER-X" ).spinner({ min:0, max: 100 });
+    $( "#spinner-ECO-DEPOSER-Y" ).spinner({ min:0, max: 100 });
+    $( "#button-ECO-DEPOSER" ).button();
+});
+</script>
+<script> updateAffichageDonneeNoVal("PACT"); </script>

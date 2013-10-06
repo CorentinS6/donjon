@@ -1,0 +1,8 @@
+<!-- Icon -->
+<div id="aventurier-sidepanel-{{panel.code}}-button" class="aventurier-body-sidepanel-button" onclick="aventurier_showpan('{{panel.code}}');" style="top:{{ 50+(panel.pos*(30+5)) }}px;">
+<img width="25" src="{{asset('bundles/ndjdgame/images/gicon/' ~ panel.code ~ '.png')}}" title="{{panel.label}}" alt="{{panel.label|first}}" />
+</div>
+<!-- Panel -->
+<div id="aventurier-sidepanel-{{panel.code}}" class="aventurier-body-sidepanel hide ui-widget-content ui-corner-all">
+{% block panel_body %}{% endblock %}
+</div>

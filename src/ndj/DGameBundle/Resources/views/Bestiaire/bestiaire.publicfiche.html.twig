@@ -1,0 +1,29 @@
+<table class="width_cent">
+<tr>
+	<td colspan="2">
+	{% if bestiaire.idcreature.isImg() %} <img src="{{ asset( bestiaire.idcreature.getimg ) }}" class="right" align="absmiddle" /> {% endif %}
+	<b>{{bestiaire.prenom}}</b></td>
+</tr>
+
+<tr><td colspan="2">Niveau {{bestiaire.experience|level}}</td></tr>			
+
+{% if is_granted('ROLE_MODO') %}<tr><td colspan="2" class="smaller">#{{bestiaire.id}}<br />Position : {{bestiaire.displayposition()|raw}}</td></tr>{% endif %}
+
+<tr><td>Peuple :</td><td>{{bestiaire.idcreature.nom}}</td></tr>
+	
+<tr><td>Acrobatie</td><td>{{bestiaire.acrobatie|carac}}</td></tr>
+<tr><td>Bagarre</td><td>{{bestiaire.bagarre|carac}}</td></tr>
+<tr><td>Charme</td><td>{{bestiaire.charme|carac}}</td></tr>
+<tr><td>Acuité</td><td>{{bestiaire.acuite|carac}}</td></tr>
+<tr><td>Age</td><td>{{bestiaire.age}}</td></tr>		
+<tr><td>Renommée</td><td>{{bestiaire.renommee|renommee}}</td></tr>	
+<tr><td>Vie</td><td>{{bestiaire.pvie}}/{{bestiaire.pviemax}}</td></tr>	
+<tr><td>Dégât :</td><td>{{bestiaire.idcreature.degat}}</td></tr>
+
+{% if bestiaire.pouvoirs!='' %} <tr><td>Pouvoirs :</td><td>{{bestiaire.pouvoirs}}</td></tr>{% endif %}
+{% if bestiaire.talents!='' %} <tr><td>Talents :</td><td>{{bestiaire.talents}}</td></tr>{% endif %}
+{% if bestiaire.envoutement!='' %} <tr><td>Envoutements :</td><td>{{bestiaire.envoutement}}</td></tr>{% endif %}
+
+<tr><td>Prix :</td><td>{{bestiaire.calculerprix|or}}</td></tr>
+<tr><td>Entretien :</td><td>{{bestiaire.cout|or}}</td></tr>
+</table>

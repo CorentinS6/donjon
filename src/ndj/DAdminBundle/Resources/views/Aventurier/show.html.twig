@@ -1,0 +1,130 @@
+{% extends 'ndjDAdminBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+    <h1>Aventurier</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ entity.nom }}</td>
+            </tr>
+            <tr>
+                <th>Acrobatie</th>
+                <td>{{ entity.acrobatie }}</td>
+            </tr>
+            <tr>
+                <th>Bagarre</th>
+                <td>{{ entity.bagarre }}</td>
+            </tr>
+            <tr>
+                <th>Charme</th>
+                <td>{{ entity.charme }}</td>
+            </tr>
+            <tr>
+                <th>Acuite</th>
+                <td>{{ entity.acuite }}</td>
+            </tr>
+            <tr>
+                <th>Age</th>
+                <td>{{ entity.age }}</td>
+            </tr>
+            <tr>
+                <th>Experience</th>
+                <td>{{ entity.experience }}</td>
+            </tr>
+            <tr>
+                <th>Renommee</th>
+                <td>{{ entity.renommee }}</td>
+            </tr>
+            <tr>
+                <th>Renommeemax</th>
+                <td>{{ entity.renommeeMax }}</td>
+            </tr>
+            <tr>
+                <th>Pvie</th>
+                <td>{{ entity.pvie }}</td>
+            </tr>
+            <tr>
+                <th>Pviemax</th>
+                <td>{{ entity.pvieMax }}</td>
+            </tr>
+            <tr>
+                <th>Argent</th>
+                <td>{{ entity.argent }}</td>
+            </tr>
+            <tr>
+                <th>Mana</th>
+                <td>{{ entity.mana }}</td>
+            </tr>
+            <tr>
+                <th>Manamax</th>
+                <td>{{ entity.manaMax }}</td>
+            </tr>
+            <tr>
+                <th>Pact</th>
+                <td>{{ entity.pact }}</td>
+            </tr>
+            <tr>
+                <th>Pdep</th>
+                <td>{{ entity.pdep }}</td>
+            </tr>
+            <tr>
+                <th>Position</th>
+                <td>{{ entity.position }}</td>
+            </tr>
+            <tr>
+                <th>Posx</th>
+                <td>{{ entity.posx }}</td>
+            </tr>
+            <tr>
+                <th>Posy</th>
+                <td>{{ entity.posy }}</td>
+            </tr>
+            <tr>
+                <th>Pouvoirs</th>
+                <td>{{ entity.pouvoirs }}</td>
+            </tr>
+            <tr>
+                <th>Talents</th>
+                <td>{{ entity.talents }}</td>
+            </tr>
+            <tr>
+                <th>Envoutement</th>
+                <td>{{ entity.envoutement }}</td>
+            </tr>
+            <tr>
+                <th>Points</th>
+                <td>{{ entity.points }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ entity.etat }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('aventurier') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('aventurier_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('aventurier_delete', { 'id': entity.id }) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}

@@ -1,0 +1,42 @@
+<div id="chat-layer">
+	<div id="chat-closebutton" class="pointer" onclick="toggleChat()">
+		<span class="ui-icon ui-icon-comment"></span>
+	</div>
+	<table id="chat-main" class="hide">
+		<tr>
+			<td id="chat-mainwrapper">
+			</td>
+			<td rowspan="2" id="chat-lists" class="hide">
+				<div>
+					<button onclick="$('#chat-inputmessage').val('/help'); chat_send_message();" class="right">?</button>
+					<div>
+						Filtres :<br />
+						<input type="checkbox" id="chat_cb_showhide_system" onchange="__chat_togglemessage(0);" class="chat-line-system" title="Afficher/Cacher les messages système" checked="checked" />
+						<label for="chat_cb_showhide_system">Système</label><br />
+						<input type="checkbox" id="chat_cb_showhide_public" onchange="__chat_togglemessage(1);" class="chat-line-public" title="Afficher/Cacher les messages publiques" checked="checked" />
+						<label for="chat_cb_showhide_public">Public</label><br/>
+						<input type="checkbox" id="chat_cb_showhide_prive" onchange="__chat_togglemessage(2);" class="chat-line-prive" title="Afficher/Cacher les messages privés" checked="checked" />
+						<label for="chat_cb_showhide_prive">Privé</label><br/>
+	        		</div>
+						
+				</div>
+				Connectés :
+				
+				<div class="chat-lists"></div>
+				
+			</td>
+			<td rowspan="2">
+				<div id="chat-lists-closebutton" class="pointer" onclick="$('#chat-lists').slideToggle();">
+					<span class="ui-widget-content ui-corner-right ui-icon ui-icon-person"></span>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td id="chat-formwrapper">
+				<input type="text" id="chat-inputmessage" value="" class="chat-inputtext" />
+				<input type="hidden" id="chat-input-lastmsg" value="0" />
+			</td>
+		</tr>
+	</table>
+</div>
+<script>$('#chat-main').resizable({ minWidth:300, minHeight:150, maxHeight:500, maxWidth:800, handles:'ne' });</script>

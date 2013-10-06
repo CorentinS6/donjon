@@ -1,0 +1,106 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+<div class="w80 center pad1 ui-widget-content ui-corner-all">
+<p class="txtcenter"><button onclick="cours_prev()"><</button><button onclick="cours_next()">></button></p>
+			<div id="coursdonjon_0" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p><b>Il y a les bons et les mauvais donjon !</b><br />
+				Bha oui ! <b>Un mauvais donjon</b>, c'est... bha c'est un mauvais donjon quoi, c'est pourri...
+				On se fait tuer trop facilement, ou au contraire, c'est trop facile de le terminer !<br/>
+				En revanche, <b>un bon donjon</b>, bha un bon donjon c'est... et bien... en fait heu !.<br />
+				Bha oui tiens, c'est quoi un bon donjon ? 
+				Pour répondre à cette excellente mais difficile question, demandons à l'expert suprème,
+				<b>LE</b> Gardien, j'ai nommé Yacinthe de Cavalère !</p>
+			</div>
+			<div id="coursdonjon_1" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter"><img src="{{ asset('bundles/ndjdgame/images/cours_donjon/zenith_01_a.png') }}" /></p>
+			</div>
+			<div id="coursdonjon_2" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter"><img src="{{ asset('bundles/ndjdgame/images/cours_donjon/zenith_01_b.png') }}" /></p>
+			</div>
+			<div id="coursdonjon_3" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter"><img src="{{ asset('bundles/ndjdgame/images/cours_donjon/zenith_01_c.png') }}" /></p>
+			</div>
+			<div id="coursdonjon_4" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter"><img src="{{ asset('bundles/ndjdgame/images/cours_donjon/zenith_01_d.png') }}" /></p>
+			</div>
+			<div id="coursdonjon_5" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter"><img src="{{ asset('bundles/ndjdgame/images/cours_donjon/zenith_01_e.png') }}" /></p>
+			</div>
+			<div id="coursdonjon_6" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter"><img src="{{ asset('bundles/ndjdgame/images/cours_donjon/zenith_01_f.png') }}" /></p>
+			</div>
+			<div id="coursdonjon_7" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter"><img src="{{ asset('bundles/ndjdgame/images/cours_donjon/zenith_01_g.png') }}" /></p>
+			</div>
+			
+			<div id="coursdonjon_8" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter">
+					<b>Ouaaa</b> ! Ca à l'air cool un bon donjon !<br/>
+					<b>Mais comment on fait alors ?</b> 
+				</p>
+			</div>
+			<div id="coursdonjon_9" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter"><img src="{{ asset('bundles/ndjdgame/images/cours_donjon/parade_01_a.png') }}" /></p>
+			</div>
+			<div id="coursdonjon_10" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter"><img src="{{ asset('bundles/ndjdgame/images/cours_donjon/parade_01_b.png') }}" /></p>
+			</div>
+			<div id="coursdonjon_11" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter"><img src="{{ asset('bundles/ndjdgame/images/cours_donjon/parade_01_c.png') }}" /></p>
+			</div>
+			<div id="coursdonjon_12" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter"><img src="{{ asset('bundles/ndjdgame/images/cours_donjon/parade_01_d.png') }}" /></p>
+			</div>
+			<div id="coursdonjon_13" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter"><img src="{{ asset('bundles/ndjdgame/images/cours_donjon/parade_01_e.png') }}" /></p>
+			</div>
+			<div id="coursdonjon_14" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter"><img src="{{ asset('bundles/ndjdgame/images/cours_donjon/parade_01_f.png') }}" /></p>
+			</div>
+			<div id="coursdonjon_15" class="hide">
+				<h1>C'est quoi un bon donjon...</h1>
+				<p class="txtcenter">Ok ? Pour le reste, on verra avec la pratique !</p>
+				<p class="txtcenter"><b><a href="{{ path('donjon_creation') }}">Cliquez ici pour créer ton donjon</a></b></p>
+			</div></div>    <script>
+    var ntablo = 16;
+    var curtablo = 0;
+    function cours_set(n) {
+    	for(i=0;i<ntablo;i++) {
+    		$('#coursdonjon_'+i).fadeOut(250);
+    	}
+    	$('#coursdonjon_'+n).delay(250).slideDown(250);
+    }
+    function cours_prev() {
+    	prev = curtablo - 1;
+    	if (prev<0) return;
+    	cours_set(prev);
+    	curtablo=prev
+    }
+    function cours_next() {
+    	next = curtablo + 1;
+    	if (next>=ntablo) return;
+    	cours_set(next);
+    	curtablo=next
+    }
+    $(function(){
+    	cours_set(0);
+    })
+    </script>
+{% endblock body %}

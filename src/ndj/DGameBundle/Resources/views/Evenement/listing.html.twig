@@ -1,0 +1,5 @@
+{% set i=0 %}
+{% for e in evenements %}
+<tr class="{{ cycle(['odd', 'even'], i) }}"><td>{{e.dt|date('d/m/Y H:i:s')}}</td><td>{{e.content}}</td></tr>
+{% set i=i+1 %}
+{% endfor %}

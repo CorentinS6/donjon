@@ -1,0 +1,10 @@
+ndj_user_homepage:
+    pattern:  /
+    defaults: { _controller: ndjUserBundle:User:index }
+
+# import routes from a controller directory
+users:
+    resource: "@ndjUserBundle/Controller"
+    type:     annotation
+
+    

@@ -1,0 +1,14 @@
+<table>
+<tbody>
+	<tr>
+		<td>Nom : </td> <td>{{orga.nom}}</td>
+	<tr>
+		<td>Description : </td> <td>{{orga.description|nl2br}}</td>
+	</tr>
+	{% if orga.isMembreActif(aventurier) or (orga.public and not orga.chef.cacher)  %}
+	<tr>
+		<td>Chef : </td> <td><a href="javascript:void(0)" onclick="displayFiche('aventurier',{{orga.chef.idaventurier.id}})">{{orga.chef.idaventurier.nom}}</a></td>
+	</tr>
+	{% endif %}
+</tbody>
+</table>

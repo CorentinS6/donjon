@@ -1,0 +1,16 @@
+{% if pieces | length > 0 %}
+<select {{options}}>
+{% set lastoptgroup = '' %}
+{% for p in pieces %}
+	{% if p.idetage != lastoptgroup %}
+		{% if lastoptgroup!='' %}</optgroup>{% endif %}
+<optgroup label="{{p.idetage.nom}}">
+		{% set lastoptgroup=p.idetage %}
+	{% endif %}
+<option value="{{p.id}}"{% if default is defined and default==p.id %} selected="selected"{% endif %}>{{p.nom}}</option>
+{% endfor%}
+{% if lastoptgroup!='' %}</optgroup>{% endif %}
+</select>
+{% else %}
+Aucune salle
+{% endif %}

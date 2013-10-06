@@ -1,0 +1,53 @@
+{% extends 'ndjDAdminBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+    <h1>Inventaire list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Age</th>
+                <th>Bonus</th>
+                <th>Usure</th>
+                <th>Qualite</th>
+                <th>Position</th>
+                <th>Envoutement</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('inventaire_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nom }}</td>
+                <td>{{ entity.age }}</td>
+                <td>{{ entity.bonus }}</td>
+                <td>{{ entity.usure }}</td>
+                <td>{{ entity.qualite }}</td>
+                <td>{{ entity.position }}</td>
+                <td>{{ entity.envoutement }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('inventaire_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('inventaire_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('inventaire_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

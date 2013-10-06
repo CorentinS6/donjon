@@ -1,0 +1,52 @@
+<table class="tableauNumerique">
+	<caption>Tableau synthétique de tes richesses</caption>
+	<thead>
+		<tr>
+			<th></th>
+			<th>Dans les coffres</th>
+			<th>Dans les salles</th>
+			<th>Total</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><a href="javascript:void(0);" onclick="economatLoad('#economat?p=Or')">OR</a></td>
+			<td class="data-donjon-ARGENT">{{economat.or_in|or}}</td>
+			<td class="data-donjon-ARGENT_AU_SOL">{{economat.or_out|or}}</td>
+			<td>{{economat.or_sum|or}}</td>
+		</tr>
+		
+		<tr>
+			<td><a href="javascript:void(0);" onclick="economatLoad('#economat?p=Inventaire')">Objets</a></td>
+			<td>({{economat.inv_cpt_in}}) {{economat.inv_in|or}}</td>
+			<td>({{economat.inv_cpt_out}}) {{economat.inv_out|or}}</td>
+			<td>({{economat.inv_cpt_sum}}) {{economat.inv_sum|or}}</td>
+		</tr>
+		
+		<tr>
+			<td><a href="javascript:void(0);" onclick="economatLoad('#economat?p=Bestiaire')">Créature</a></td>
+			<td>({{economat.bes_cpt_in}}) {{economat.bes_in|or}}</td>
+			<td>({{economat.bes_cpt_out}}) {{economat.bes_out|or}}</td>
+			<td>({{economat.bes_cpt_sum}}) {{economat.bes_sum|or}}</td>
+		</tr>
+		
+		<tr>
+			<td>Total:</td>
+			<td>{{economat.sum_in|or}}</td>
+			<td>{{economat.sum_out|or}}</td>
+			<td><b>{{economat.total|or}}</b></td>
+		</tr>
+	</tbody>
+	</table>
+<div>Valeur approximative des murs : {{economat.val_mur|or}}</div>
+<div>Valeur approximative total de ton donjon : <b> {{economat.big_total|or}}</b></div>		
+<p><hr /></p>
+<table class="tableauNumerique">
+	<caption>tes dépenses régulières</caption>
+	<tbody>
+		<tr>
+			<td>Salaires et entretien des créatures</td>
+			<td>{{economat.salaires|or}}</td>
+		</tr>
+	</tbody>
+</table>

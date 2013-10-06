@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Bestiaire" table="BESTIAIRE">
+    <id name="idbestiaire" type="integer" column="idBESTIAIRE">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="idcreature" type="integer" column="idCREATURE" nullable="false"/>
+    <field name="iddonjon" type="integer" column="idDONJON" nullable="true"/>
+    <field name="prenom" type="string" column="PRENOM" length="45" nullable="false"/>
+    <field name="acrobatie" type="smallint" column="ACROBATIE" nullable="false"/>
+    <field name="bagarre" type="smallint" column="BAGARRE" nullable="false"/>
+    <field name="charme" type="smallint" column="CHARME" nullable="false"/>
+    <field name="acuite" type="smallint" column="ACUITE" nullable="false"/>
+    <field name="age" type="smallint" column="AGE" nullable="false"/>
+    <field name="experience" type="integer" column="EXPERIENCE" nullable="false"/>
+    <field name="renommee" type="smallint" column="RENOMMEE" nullable="false"/>
+    <field name="pvie" type="smallint" column="PVIE" nullable="false"/>
+    <field name="pvieMax" type="smallint" column="PVIE_MAX" nullable="false"/>
+    <field name="repos" type="boolean" column="REPOS" nullable="false"/>
+    <field name="aVendre" type="boolean" column="A_VENDRE" nullable="false"/>
+    <field name="cout" type="decimal" column="COUT" nullable="false"/>
+    <field name="position" type="string" column="POSITION" length="45" nullable="true"/>
+    <field name="pouvoirs" type="string" column="POUVOIRS" length="45" nullable="true"/>
+    <field name="talents" type="string" column="TALENTS" length="255" nullable="true"/>
+    <field name="envoutement" type="string" column="ENVOUTEMENT" length="255" nullable="true"/>
+    <field name="ordre" type="string" column="ORDRE" length="255" nullable="true"/>
+    <field name="points" type="integer" column="POINTS" nullable="false"/>
+  </entity>
+</doctrine-mapping>

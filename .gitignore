@@ -1,13 +1,24 @@
-# Bootstrap
-app/bootstrap*
-
-# Symfony directories
-vendor/*
-*/logs/*
-*/cache/*
-web/uploads/*
-web/bundles/*
-
-# Configuration files
-app/config/parameters.ini
-app/config/parameters.yml
+/nbproject/
+/bin/
+/src/Acme/
+/vendor/
+/app/config/parameters.yml
+/UPGRADE-2.3.md
+/composer.json
+/composer.phar
+/composer (copie).json
+/routes.txt
+/composer.lock
+/donjon1.sql
+/donjon1(1).sql
+/LICENSE
+/dbimport.sh
+/UPGRADE.md
+/notes_symfony.odt
+/README.md
+/UPGRADE-2.2.md
+/web/bundles/acmedemo/
+/app/logs/
+/app/cache/
+/web/bundles/ndjdgame/images/
+/src/ndj/DGameBundle/Resources/public/images/

@@ -1,0 +1,77 @@
+{# {X,Y,D,3/3,[PV+10][MANA+5][ENVOUTEMENT+...][]...} #}
+
+<div id="dialogLibNewAction" style="display:none;"></div>
+<input id="libNewAction" type="button" value="Nouvelle" />
+<div class="ge_layer_libs">
+{% for k, title in actionspossible %}
+	<span onclick="gSelectTileLib($(this))" tool="{{
+		(k=='I' or k=='W' or k=='V' or k=='Z' or k=='S' or k=='F') ? 'r' : 'p'
+	}}" action="{{k}}" title="{{title}}" style="background-image:url('{{asset('bundles/ndjdgame/images/interface/actions/'~k~'.png')}}')"></span>
+{% endfor %}
+</div>
+
+<script>
+$(document).ready(function(){
+	var a = (map!=undefined) ? map.libActionSelectedItem : "I";
+	gSelectTileLib($('.ge_layer_libs span[action="'+a+'"]'));
+});
+
+$("#libNewAction").button().click(function() {
+	loadInLayer(
+		Routing.generate("piece_actionform",{'id':{{piece.id}} })
+		,"#dialogLibNewAction");
+
+	$("#dialogLibNewAction").dialog({
+		modal:true,
+		closeOnEscape:true,
+		title:"Nouvelle action",
+		width:500,
+		resizable:false
+	});
+});
+</script>
+		
+
+{% if piece.actions|trim !='' %}		
+
+{% set actions = piece.actions | explodex('}{') %}
+<ul>
+{% for a in actions %}
+
+	{# if (is_null($a)||$a=='') continue; #}
+	{% set a = a|split(',') %}
+	{% set x = a[0] %}
+	{% set y = a[1] %}
+	{% set act = a[2] %}
+	
+	{% if act=='PO' %}
+		{% set label = a[3] ~ ' PO' %}
+	{% else %}
+		{% set label = actionspossible[act] %}
+	{% endif %}
+	
+	<li onmouseover="clignote( $( '#onmap-action-item-{{act}}-{{x}}-{{y}}' ) )" id="lib-action-item-{{act}}-{{x}}-{{y}}">
+		({{x}},{{y}}) {{label}}
+		<span class="ui-icon right ui-icon-close pointer" onclick="loadInLayer('{{ path('piece_unsetaction',{'id':piece.id,'x':x,'y':y,'a':act }) }}','#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6')"></span>
+	</li>
+{% endfor %}
+</ul>
+
+{% endif %}
+
+{#
+	'PO' 	=> 'PiÃÂ¨ce d\'or',				// {X,Y,PO,5}	: 5 PO
+	'I'		=> 'Case interdite',			// {X,Y,I}		: Case interdit
+	'W'		=> 'Case avec de l\'eau',		// {X,Y,W}		: Case d'eau
+	'V'		=> 'Case avec du vide',			// {X,Y,V}		: Case avec du vide
+	'EM'	=> 'Escalier qui monte',		// {X,Y,EM}		: Escalier qui monte
+	'ED'	=> 'Escalier qui descend',		// {X,Y,ED}		: Escalier qui descent
+	'P'		=> 'Passage (secret ou pas)',	// {X,Y,P,idP,X,Y} : passage secret vers piece#idP en X,Y
+	'M'		=> 'Message',					// {X,Y,M,"Message"} : affiche le message "Message" lorsque le personnage arrive
+	'MS'	=> 'Message survol',			// {X,Y,MS,"Message"} : affiche le message "Message" lors du survol de la sourie
+	'Z'		=> 'Zone de dÃÂ©part',			// {X,Y,Z}	: zone de dÃÂ©part du donjon
+	'S'		=> 'Zone de sortie',			// {X,Y,S}	: zone de sortie du donjon
+	'F'		=> 'Zone de fin',				// {X,Y,F}	: zone de fin du donjon
+	'D'		=> 'Action dynamique'			// {X,Y,D,[d],[a],[v]} : si le dÃÂ©clencheur d est activÃÂ©, on fait l'action a. [v] sont des variables.
+
+#}

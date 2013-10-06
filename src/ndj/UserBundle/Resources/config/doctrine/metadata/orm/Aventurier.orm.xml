@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Aventurier" table="AVENTURIER">
+    <id name="idaventurier" type="integer" column="idAVENTURIER">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="idmembre" type="integer" column="idMEMBRE" nullable="false"/>
+    <field name="idcreature" type="integer" column="idCREATURE" nullable="false"/>
+    <field name="nom" type="string" column="NOM" length="45" nullable="false"/>
+    <field name="acrobatie" type="smallint" column="ACROBATIE" nullable="false"/>
+    <field name="bagarre" type="smallint" column="BAGARRE" nullable="false"/>
+    <field name="charme" type="smallint" column="CHARME" nullable="false"/>
+    <field name="acuite" type="smallint" column="ACUITE" nullable="false"/>
+    <field name="age" type="smallint" column="AGE" nullable="false"/>
+    <field name="experience" type="integer" column="EXPERIENCE" nullable="false"/>
+    <field name="renommee" type="smallint" column="RENOMMEE" nullable="false"/>
+    <field name="renommeeMax" type="smallint" column="RENOMMEE_MAX" nullable="false"/>
+    <field name="pvie" type="smallint" column="PVIE" nullable="false"/>
+    <field name="pvieMax" type="smallint" column="PVIE_MAX" nullable="false"/>
+    <field name="argent" type="float" column="ARGENT" nullable="false"/>
+    <field name="mana" type="smallint" column="MANA" nullable="false"/>
+    <field name="manaMax" type="smallint" column="MANA_MAX" nullable="false"/>
+    <field name="pact" type="boolean" column="PACT" nullable="false"/>
+    <field name="pdep" type="boolean" column="PDEP" nullable="false"/>
+    <field name="position" type="string" column="POSITION" length="45" nullable="true"/>
+    <field name="pouvoirs" type="string" column="POUVOIRS" length="45" nullable="true"/>
+    <field name="talents" type="string" column="TALENTS" length="255" nullable="true"/>
+    <field name="envoutement" type="string" column="ENVOUTEMENT" length="255" nullable="true"/>
+    <field name="points" type="integer" column="POINTS" nullable="false"/>
+    <field name="etat" type="integer" column="ETAT" nullable="false"/>
+    <many-to-many field="idorganisation" target-entity="Organisation" inversed-by="idaventurier">
+      <join-table name="organisation_appartenance">
+        <join-columns>
+          <join-column name="idAVENTURIER" referenced-column-name="idAVENTURIER"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="idORGANISATION" referenced-column-name="idORGANISATION"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,54 @@
+{% extends 'ndjDAdminBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+    <h1>Banque</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Taillecoffre</th>
+                <td>{{ entity.tailleCoffre }}</td>
+            </tr>
+            <tr>
+                <th>Argent</th>
+                <td>{{ entity.argent }}</td>
+            </tr>
+            <tr>
+                <th>Argentmax</th>
+                <td>{{ entity.argentMax }}</td>
+            </tr>
+            <tr>
+                <th>Cout</th>
+                <td>{{ entity.cout }}</td>
+            </tr>
+            <tr>
+                <th>Etat</th>
+                <td>{{ entity.etat }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('banque') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('banque_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('banque_delete', { 'id': entity.id }) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}

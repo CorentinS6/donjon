@@ -1,0 +1,7 @@
+<select name='{{name}}' {{plus}}>
+{% for e,t in piece.getEtats() %}
+{% if e!=0 and e!=-1 and e!=-2 %}
+<option value="{{e}}"{{ ((e==piece.etat)? ' selected="selected"' : '') }}>{{t}}</option>
+{% endif %}
+{% endfor %}
+</select>

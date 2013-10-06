@@ -1,0 +1,39 @@
+{% extends 'ndjDGameBundle:GameDonjon:layer_editeur.html.twig' %}
+{% block editeur_body %}
+<div id="gEditEtage" class="h100">
+
+<div id="gEERightContent" class="overa right h100 w30 bgd">
+<span class="smaller right">[<a href="#editeur?donjon" onclick="gLoadTab($(this).attr('href'));">Retour au donjon</a>]</span>
+<h1>{{etage.nom}} (Niveau {{etage.niveau}})</h1>
+<div class="smaller">    
+	<p>Pour crééer une nouvelle salle, cliquez sur une case libre (Salle de 3x3 minimum - "ECHAP" pour annuler, coût : 1PC/case)</p>
+	<p>Survoler les salles déjà créées (en couleur sur le plan) pour avoir des informations</p>
+	<p>Doucle-cliquer sur une salle déjà  créée pour la modifier</p> 
+</div>
+
+<div id="ESalleInfo"></div>
+</div>
+
+<div id="gEELeftContent" class="overa w70 h100 bgl">
+
+<div id="tblcontent"><table class="etage center">
+
+<tr><th></th>
+	{% for x in 0..(etage.taille-1) %} <th>{{x}}</th> {% endfor %}
+</tr>
+
+{% for y in 0..(etage.taille-1) %}
+	<tr><th>{{y}}</th>
+	{% for x in 0..(etage.taille-1) %}
+		<td id="c{{x}}_{{y}}" class="etageTile"></td>
+	{% endfor %}
+	</tr>
+{% endfor %}
+
+</table></div>
+</div>
+
+<script type="text/javascript"> Donjon_eLoadPiece({{etage.id}}); initGridClick({{etage.id}}); </script>
+
+</div>
+{% endblock editeur_body %}

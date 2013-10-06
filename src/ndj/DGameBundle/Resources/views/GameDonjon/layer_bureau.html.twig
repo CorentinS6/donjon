@@ -1,0 +1,81 @@
+{% set etages = donjon.getetages() %}
+{% set pieces = donjon.getpieces() %}
+<div id="gBureau1" class="bgd h100 w40 right">
+<h1>{{ donjon.nom }}</h1>
+<table>
+	<tr>
+		<td colspan="2">Créé le {{donjon.dateCreation|date('d/m/Y')}}</td>
+	</tr>
+	
+	<tr>
+		<td>Etat actuel : </td>
+		<td class="data-donjon-ETAT">{{donjon.etat|etatd}}</td>
+		<td><a href="javascript:void(0);" onclick="set_layer(null,'{{ path('donjon_setetat') }}');">Modifier</a></td>
+	</tr>
+	
+	<tr>
+		<td>Exp&eacute;rience  : </td>
+		<td>{{ donjon.experience }} XP (Niveau {{ donjon.experience | level }})</td>
+	</tr>
+
+	<tr>
+		<td>Argent dans les coffres : </td>
+		<td><span class="data-donjon-ARGENT">{{donjon.argent|or}}</span></td>
+	</tr>
+
+	<tr>
+		<td>Renomm&eacute;e : </td>
+		<td>{{ donjon.renommee | renommee }}</td>
+	</tr>
+
+	<tr>
+		<td>Niveaux : </td>
+		<td>{{ etages | length }}</td>
+	</tr>
+
+	<tr>
+		<td>Salles : </td>
+		<td>
+			<div>{{ pieces | length }} au total.</div>
+
+			<div>{{ pieces | array_count_val('etat','2') }} ouverte(s).</div>
+			<div>{{ pieces | array_count_val('etat','-3') + pieces | array_count_val('etat','-2') }} fermetures prochaine(s).</div>
+			<div>{{ pieces | array_count_val('etat','-1') }} en maintenance.</div>
+			<div>{{ pieces | array_count_val('etat','1') }} en constuction.</div>
+		</td>
+	</tr>
+
+</table>
+</div>
+		
+<div id="gBureau2" class="bgl h100 w60">
+<h1>En ce moment dans le Donjon</h1>
+
+<div class="ui-widget-content ui-corner-all right w45 overa smaller box" style="height:200px;">
+Créatures les plus en difficultés
+<ul>
+{% for crea in creature_badway %}
+	<li>{{ crea.prenom }} ({{ crea.pvie }}/{{ crea.pviemax }})</li>
+{% endfor %}
+</ul>
+</div>
+
+<div class="ui-widget-content ui-corner-all w45 overa smaller box" style="height:200px;">
+{{ aventuriers_in | length }} aventurier(s) :
+<ul>
+{% for av in aventuriers_in %}	
+	<li><a href="javascript:void(0);" onclick="displayFiche('aventurier',{{ av.id }})">{{ av.nom }}</a> (niv. {{ av.experience | level }}) dans {{ av.idpiece.nom }} en {{ av.posx }},{{av.posy}}</li>
+{% endfor %}
+</ul>
+</div>
+
+<div class="ui-widget-content ui-corner-all w45 overa smaller box" style="height:200px;">
+<span class="hide data-donjon-evenement-listing-n">20</span>
+<table><tfoot><tr><th class="txtcenter smaller" colspan="2"><a href="javascript:void(0);" onclick="listing_evenement('{{donjon.id}}:d','.data-donjon-evenement-listing-n','.event-liste-{{donjon.id}}')">Voir les plus anciens...</a></th></tr></tfoot>
+<tbody class="event-liste-{{donjon.id}}">{% include 'ndjDGameBundle:Evenement:listing.html.twig' with {'evenements': evenements} %}</tbody>
+</table>
+</div>
+
+<div>Nombre aventuriers (avec détails, niveau, etc), monstres en actions (en difficulté), or/objets au sol, etc.</div>
+<div>Derniers événements... (objets trouvés)</div>
+</div>

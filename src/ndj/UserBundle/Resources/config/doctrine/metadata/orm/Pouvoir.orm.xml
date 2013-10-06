@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Pouvoir" table="POUVOIR">
+    <id name="idpouvoir" type="string" column="idPOUVOIR">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nom" type="string" column="NOM" length="30" nullable="false"/>
+    <field name="description" type="text" column="DESCRIPTION" nullable="false"/>
+    <field name="action" type="string" column="ACTION" length="45" nullable="false"/>
+    <field name="cat" type="string" column="CAT" nullable="false"/>
+  </entity>
+</doctrine-mapping>

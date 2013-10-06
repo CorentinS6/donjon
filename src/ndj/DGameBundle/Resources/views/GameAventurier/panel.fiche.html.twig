@@ -1,0 +1,58 @@
+<a href="javascript:void(0);" onclick="alert('Aide Carac')"><span class="ui-icon ui-icon-info right"></span></a>
+<table class="width_cent smaller">
+ 
+<tr>
+<td>{{aventurier.idcreature.getTypeLabel()|title}} :</td>
+<td>{{aventurier.idcreature.nom}}</td>
+</tr>
+ 
+ 
+<tr>
+<td>Acrobatie :</td>
+<td><span class="data-aventurier-ACROBATIE-TEXT">{{aventurier.acrobatie|carac}}</span> (<span class="data-aventurier-ACROBATIE">{{aventurier.acrobatie}}</span>)
+<button onclick="av_add_points('ACROBATIE')" class="av-add-points ui-button ui-state-default"><span class="ui-icon ui-icon-plus"></span></button> </td>
+</tr>
+<tr>
+<td>Charme :</td>
+<td><span class="data-aventurier-CHARME-TEXT">{{aventurier.charme|carac}}</span> (<span class="data-aventurier-CHARME">{{aventurier.acrobatie}}</span>)
+<button onclick="av_add_points('CHARME')" class="av-add-points ui-button ui-state-default"><span class="ui-icon ui-icon-plus"></span></button></td>
+</tr>
+<tr>
+<td>Bagarre :</td>
+<td><span class="data-aventurier-BAGARRE-TEXT">{{aventurier.bagarre|carac}}</span> (<span class="data-aventurier-BAGARRE">{{aventurier.bagarre}}</span>)
+<button onclick="av_add_points('BAGARRE')" class="av-add-points ui-button ui-state-default"><span class="ui-icon ui-icon-plus"></span></button></td>
+</tr>
+<tr>
+<td>Acuité :</td>
+<td><span class="data-aventurier-ACUITE-TEXT">{{aventurier.acuite|carac}}</span> (<span class="data-aventurier-ACUITE">{{aventurier.acuite}}</span>)
+<button onclick="av_add_points('ACUITE')" class="av-add-points ui-button ui-state-default"><span class="ui-icon ui-icon-plus"></span></button></td>
+</tr>
+
+<tr>
+<td>Renommée :</td>
+<td><span class="data-aventurier-RENOMMEE-TEXT">{{aventurier.renommee|renommee}} (<span class="data-aventurier-RENOMMEE">{{aventurier.renommee}}</span>)</td>
+</tr>
+
+<tr>
+<td>Vie :</td>
+<td><div class="progressbar-PV"><div class="right"><span class="data-aventurier-PV">{{aventurier.pvie}}</span> / <span class="data-aventurier-PV_MAX">{{aventurier.pviemax}}</span></div></div>
+</td>
+</tr>
+
+<tr>
+<td>Expérience :</td>
+<td><div class="progressbar-XP"><div class="right">Niveau <span class="data-aventurier-NIVEAU">{{aventurier.experience|level}}</span> (<span class="data-aventurier-EXPERIENCE">{{aventurier.experience}}</span> / <span class="data-aventurier-EXPERIENCE_NEXT_LEVEL">{{aventurier.experience|next_level}}</span>)</div></div>
+</td>
+</tr>
+
+<tr>
+<td>Or :</td>
+<td><span class="data-aventurier-ARGENT">{{aventurier.argent|number_format(2,',','')}} PO</span></td>
+</tr>
+<tr>
+<td>Points disponibles :</td>
+<td><span class="data-aventurier-POINTS">{{aventurier.points}}</span></td>
+</tr>
+</table>
+
+{% if aventurier.points == 0 %} <script> $(".av-add-points").hide(); </script> {% endif %}

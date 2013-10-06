@@ -1,0 +1,7 @@
+<form onsubmit="return false;">
+<input type="hidden" name="idBESTIAIRE" value="{{bestiaire.id}}" />
+<p>Choisir une salle : {% include 'ndjDGameBundle:Piece:selector.html.twig' with {'pieces':donjon.getpiecesopen,'options':' name=idPIECE'} %}</p>
+<p>A la position (x,y) : <input type="text" name="x" value="0" size="3" />, <input type="text" name="y" value="0" size="3" /></p>
+<p class="smaller">Ordre : <i>Todo</i></p>
+<input type="button" value="Placer" onclick="economat_bes_salle_submit($(this).parent());"/>
+</form>

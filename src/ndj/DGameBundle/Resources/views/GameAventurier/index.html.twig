@@ -1,0 +1,31 @@
+{% extends '::base.html.twig' %}
+{% block javascripts %}<script>modeDeJeu='a';</script>{{parent()}}<script> $.dGame.data.joueur = {{aventurier.toArray|json_encode|raw}};</script>{% endblock javascripts %}
+{% block body %}
+{% include 'ndjDGameBundle:GameCommon:chat.html.twig' %}	
+{% include 'ndjDGameBundle:GameCommon:topmenu.html.twig' %}
+{#<div id="aventurier-resume">{{ render(controller('ndjDGameBundle:GameAventurier:interfaceResume')) }}</div>#}
+<div id="aventurier-resume">{% include 'ndjDGameBundle:GameAventurier:resume.html.twig' with {'aventurier':aventurier} %}</div>
+<div id="aventurier-donjon" class="av-mode-donjon">{% include 'ndjDGameBundle:GameAventurier:donjon.html.twig' with {'aventurier':aventurier} %}<</div>
+<div id="aventurier-body">
+<div id="aventurier-body-mainpanel">{{ render(controller('ndjDGameBundle:GameAventurier:interfaceMain')) }}</div>
+{# Pano côté #}
+	<div id="aventurier-body-sidepanel-wrapper">
+	{% for panel in panels %}
+	<!-- Panel -->
+	<div id="aventurier-sidepanel-{{panel.code}}" class="aventurier-body-sidepanel hide ui-widget-content">
+	{{ render(controller('ndjDGameBundle:GameAventurier:interface' ~ panel.code )) }}
+	</div>
+	{% endfor %}
+	</div>
+</div> 
+<script>
+$( ".progressbar-PV" ).progressbar({
+            value:{{aventurier.pvie}},
+            max:{{aventurier.pviemax}}
+        });
+        $( ".progressbar-XP" ).progressbar({
+            value:{{xp[1]}},
+            max:{{xp[2]}}
+        });
+</script>
+{% endblock body %}

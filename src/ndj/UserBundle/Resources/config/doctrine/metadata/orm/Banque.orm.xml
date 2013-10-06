@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Banque" table="BANQUE">
+    <id name="idcompte" type="integer" column="idCOMPTE">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="idaventurier" type="integer" column="idAVENTURIER" nullable="false"/>
+    <field name="tailleCoffre" type="integer" column="TAILLE_COFFRE" nullable="false"/>
+    <field name="argent" type="float" column="ARGENT" nullable="false"/>
+    <field name="argentMax" type="float" column="ARGENT_MAX" nullable="false"/>
+    <field name="cout" type="float" column="COUT" nullable="false"/>
+    <field name="etat" type="string" column="ETAT" nullable="false"/>
+  </entity>
+</doctrine-mapping>

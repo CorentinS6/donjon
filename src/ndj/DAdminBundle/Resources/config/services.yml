@@ -1,0 +1,7 @@
+parameters:
+#    ndj_d_admin.example.class: ndj\DAdminBundle\Example
+
+services:
+#    ndj_d_admin.example:
+#        class: %ndj_d_admin.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -1,0 +1,65 @@
+{% extends 'ndjDAdminBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+    <h1>Creature list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Intelligente</th>
+                <th>Acrobatie</th>
+                <th>Bagarre</th>
+                <th>Charme</th>
+                <th>Acuite</th>
+                <th>Vie</th>
+                <th>Degat</th>
+                <th>Unique</th>
+                <th>Pouvoirs</th>
+                <th>Prixachat</th>
+                <th>Prixentretien</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('creature_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nom }}</td>
+                <td>{{ entity.description }}</td>
+                <td>{{ entity.intelligente }}</td>
+                <td>{{ entity.acrobatie }}</td>
+                <td>{{ entity.bagarre }}</td>
+                <td>{{ entity.charme }}</td>
+                <td>{{ entity.acuite }}</td>
+                <td>{{ entity.vie }}</td>
+                <td>{{ entity.degat }}</td>
+                <td>{{ entity.unique }}</td>
+                <td>{{ entity.pouvoirs }}</td>
+                <td>{{ entity.prixAchat }}</td>
+                <td>{{ entity.prixEntretien }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('creature_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('creature_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('creature_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

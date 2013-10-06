@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Evenement" table="EVENEMENT">
+    <id name="idevenement" type="integer" column="idEVENEMENT">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="dest" type="string" column="DEST" length="10" nullable="false"/>
+    <field name="content" type="text" column="CONTENT" nullable="false"/>
+    <field name="dt" type="datetime" column="DT" nullable="false"/>
+    <field name="read" type="integer" column="READ" nullable="false"/>
+    <field name="cat" type="integer" column="CAT" nullable="false"/>
+  </entity>
+</doctrine-mapping>

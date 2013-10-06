@@ -1,0 +1,7 @@
+{% extends 'ndjUserBundle::layout.html.twig' %}
+{% block content %}
+<h1>Groupe</h1>
+{% block fos_user_content %}
+{% include "ndjUserBundle:Group:list_content.html.twig" %}
+{% endblock fos_user_content %}
+{% endblock content %}

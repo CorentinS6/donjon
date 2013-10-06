@@ -1,0 +1,400 @@
+<div id="slider" class="ui-widget-content ui-corner-all o90 marche-{{type}}">
+
+{% if type == 'aventurier' %}
+<span class="left smaller2"><input type="button" value="Retour à la taverne" onClick="Av_AllerTaverne()"></span>
+<script>$(document).ready(function(){ $("#slider input:first").button() })</script>
+{% endif %}
+
+{# MENU #}
+<ul class="navigation">
+<li class="smaller">Les échoppes : </li>
+<li><a href="#marcheForge" class="amatic">La forge</a></li>
+<li><a href="#marcheBazar" class="amatic">Le Bazar</a></li>
+<li><a href="#marcheHerboriste" class="amatic">L'Herboristerie</a></li>
+{% if type == 'donjon' %}<li><a href="#marcheMonstre" class="amatic">Maché aux créatures</a></li>{% endif %}
+<li><a href="#marcheOccasion" class="amatic">Marché des occasions</a></li>
+</ul>
+
+{# BOUTIQUES #}			
+<div class="scroll">
+<div class="scrollContainer">
+
+	{########################
+	 # 				 		#
+	 # 		   FORGE		#
+	 # 				 		#
+	 ########################}
+
+	<div id="marcheForge" class="panel">
+	
+		{# listing #}
+		<table class="col2"><tr>
+		<td class="col">
+		<table id="tableListeForge"><thead><tr>
+		<th>Type</th><th>Nom</th><th>Qualité</th><th>Prix</th><th>Dégâts</th>
+		</thead><tbody>
+		{% for o in listeforge %}
+			<tr id="liste-inventaire-vente-{{o.id}}" onclick="loadInLayer('{{ 
+			path('commerce_description',
+				{ 	'class':'inventaire',
+					'mode':'Forge',
+					'type':'fiche',
+					'button':'buy',
+					'id': o.id }
+				) 
+			}}','#marcheDescriptionForge');">
+				<td>{{o.idobjets.cat | title}}</td>
+				<td>{{o.nom}}</td>
+				<td>{{o.qualite|qualite}}</td>
+				<td>{{o.calculerPrix()|or}}</td>
+				<td>{{o.idobjets.degat}}</td>
+			</tr>
+		{% endfor %}
+		</tbody></table>
+		
+		{# pager #}
+		<div id="tableListeForge-pager" class="pager"> <form> <span class="first pointer">&lt;&lt;</span> <span class="prev pointer">&lt;</span> <span class="smaller pagedisplay"></span> <span class="pointer next">&gt;</span> <span class="pointer last">&gt;&gt;</span> </form></div>
+	
+		<script> $(document).ready(function() {
+		$("#tableListeForge").tablesorter({widthFixed:true,widgets:["zebra"]})
+			.tablesorterPager({container: $("#tableListeForge-pager"), output: "{page} / {totalPages}"});
+		});</script>
+
+		</td>
+		
+		{# coté #}
+		<td class="col"><h2 class="title">La forge</h2>
+		<p>Tous les objets ne sont pas disponibles en permanance ici. Si tu ne trouves pas ce que tu cherches, va voir aux occasions ou reviens plus tard !</p>
+		<hr />
+		<div id="marcheDescriptionForge"></div>
+		</td>
+		</tr></table>
+	
+	</div>
+	
+	{########################
+	 # 				 		#
+	 # 	  	 FIN FORGE		#
+	 # 				 		#
+	 ########################}
+	 
+	 
+	 {########################
+	 # 				 		#
+	 # 		   BAZAR		#
+	 # 				 		#
+	 ########################}
+
+	<div id="marcheBazar" class="panel">
+	
+		{# listing #}
+		<table class="col2"><tr>
+		<td class="col">
+		<table id="tableListeBazar"><thead><tr>
+		<th>Type</th><th>Nom</th><th>Qualité</th><th>Prix</th><th>Dégâts</th>
+		</thead><tbody>
+		{% for o in listebazar %}
+			<tr id="liste-inventaire-vente-{{o.id}}" onclick="loadInLayer('{{ 
+			path('commerce_description',
+				{ 	'class':'inventaire',
+					'mode':'Bazar',
+					'type':'fiche',
+					'button':'buy',
+					'id': o.id }
+				) 
+			}}','#marcheDescriptionBazar');">
+				<td>{{o.idobjets.cat | title}}</td>
+				<td>{{o.nom}}</td>
+				<td>{{o.qualite|qualite}}</td>
+				<td>{{o.calculerPrix()|or}}</td>
+				<td>{{o.idobjets.degat}}</td>
+				
+			</tr>
+		{% endfor %}
+		</tbody></table>
+		
+		{# pager #}
+		<div id="tableListeBazar-pager" class="pager"> <form> <span class="first pointer">&lt;&lt;</span> <span class="prev pointer">&lt;</span> <span class="smaller pagedisplay"></span> <span class="pointer next">&gt;</span> <span class="pointer last">&gt;&gt;</span> </form></div>
+	
+		<script> $(document).ready(function() {
+		$("#tableListeBazar").tablesorter({widthFixed:true,widgets:["zebra"]})
+			.tablesorterPager({container: $("#tableListeBazar-pager"), output: "{page} / {totalPages}"});
+		});</script>
+
+		</td>
+		
+		{# coté #}
+		<td class="col"><h2 class="title">Le bazar</h2>
+		<p>Ici on trouve un peu de tout, et parfois rien !</p>
+		<hr />
+		<div id="marcheDescriptionBazar"></div>
+		</td>
+		</tr></table>
+	
+	</div>
+	
+	{########################
+	 # 				 		#
+	 # 	  	 FIN BAZAR		#
+	 # 				 		#
+	 ########################}
+	 
+	 
+	 {########################
+	 # 				 		#
+	 # 		   HERBO		#
+	 # 				 		#
+	 ########################}
+
+	<div id="marcheHerboriste" class="panel">
+	
+		{# listing #}
+		<table class="col2"><tr>
+		<td class="col">
+		<table id="tableListeHerbo"><thead><tr>
+		<th>Type</th><th>Nom</th><th>Qualité</th><th>Prix</th><th>Dégâts</th>
+		</thead><tbody>
+		{% for o in listeherbo %}
+			<tr id="liste-inventaire-vente-{{o.id}}" onclick="loadInLayer('{{ 
+			path('commerce_description',
+				{ 	'class':'inventaire',
+					'mode':'Herbo',
+					'type':'fiche',
+					'button':'buy',
+					'id': o.id }
+				) 
+			}}','#marcheDescriptionHerbo');">
+				<td>{{o.idobjets.cat | title}}</td>
+				<td>{{o.nom}}</td>
+				<td>{{o.qualite|qualite}}</td>
+				<td>{{o.calculerPrix()|or}}</td>
+				<td>{{o.idobjets.degat}}</td>
+				
+			</tr>
+		{% endfor %}
+		</tbody></table>
+		
+		{# pager #}
+		<div id="tableListeHerbo-pager" class="pager"> <form> <span class="first pointer">&lt;&lt;</span> <span class="prev pointer">&lt;</span> <span class="smaller pagedisplay"></span> <span class="pointer next">&gt;</span> <span class="pointer last">&gt;&gt;</span> </form></div>
+	
+		<script> $(document).ready(function() {
+		$("#tableListeHerbo").tablesorter({widthFixed:true,widgets:["zebra"]})
+			.tablesorterPager({container: $("#tableListeHerbo-pager"), output: "{page} / {totalPages}"});
+		});</script>
+
+		</td>
+		
+		{# coté #}
+		<td class="col"><h2 class="title">L'herboristerie</h2>
+		<p>Bienvenue ! Vous désirez ? Une potion ? Un objet spécial ?</p>
+		<hr />
+		<div id="marcheDescriptionHerbo"></div>
+		</td>
+		</tr></table>
+	
+	</div>
+	
+	{########################
+	 # 				 		#
+	 # 	  	 FIN HERBO		#
+	 # 				 		#
+	 ########################}
+	 
+	 {% if type == 'donjon' %}
+	 {########################
+	 # 				 		#
+	 # 		   MONSTRE		#
+	 # 				 		#
+	 ########################}
+
+	<div id="marcheMonstre" class="panel">
+	
+		{# listing #}
+		<table class="col2"><tr>
+		<td class="col">
+		<table id="tableListeMonstre"><thead><tr>
+		<th>Nom</th><th>Intelligent</th><th>Bagarre</th><th>Vie</th><th>Dégâts</th><th>Prix</th>
+		</thead><tbody>
+		{% for o in listemonstre %}
+			<tr id="liste-bestiaire-vente-{{o.id}}" onclick="loadInLayer('{{ 
+			path('commerce_description',
+				{ 	'class':'bestiaire',
+					'mode':'Monstre',
+					'type':'fiche',
+					'button':'buy',
+					'id': o.id }
+				) 
+			}}','#marcheDescriptionMonstre');">
+			
+				<td>{{o.prenom}}</td>
+				<td>{{o.idcreature.intelligente?'oui':'non'}}</td>
+				<td>{{o.bagarre|carac}}</td>
+				<td>{{o.pvie ~ '/' ~ o.pviemax}}</td>
+				<td>{{o.idcreature.degat}}</td>
+				<td>{{o.calculerprix()|or}}</td>
+			</tr>
+		{% endfor %}
+		</tbody></table>
+		
+		{# pager #}
+		<div id="tableListeMonstre-pager" class="pager"> <form> <span class="first pointer">&lt;&lt;</span> <span class="prev pointer">&lt;</span> <span class="smaller pagedisplay"></span> <span class="pointer next">&gt;</span> <span class="pointer last">&gt;&gt;</span> </form></div>
+	
+		<script> $(document).ready(function() {
+		$("#tableListeMonstre").tablesorter({widthFixed:true,widgets:["zebra"]})
+			.tablesorterPager({container: $("#tableListeMonstre-pager"), output: "{page} / {totalPages}"});
+		});</script>
+
+		</td>
+		
+		{# coté #}
+		<td class="col"><h2 class="title">Marché aux créatures</h2>
+		<p>Qui veut un monstre ? Des gros ? Des petits ? Des créatures intelligentes ou non ? ...</p>
+		<hr />
+		<div id="marcheDescriptionMonstre"></div>
+		</td>
+		</tr></table>
+	
+	</div>
+	
+	{########################
+	 # 				 		#
+	 # 	  	 FIN MONSTRE	#
+	 # 				 		#
+	 ########################}
+	 {% endif %}
+	 
+	 
+	 {########################
+	 # 				 		#
+	 # 		   OCCAZ		#
+	 # 				 		#
+	 ########################}
+
+	<div id="marcheOccasion" class="panel">
+	
+		{# listing #}
+		<table class="col2"><tr>
+		<td class="col">
+		<table id="tableListeOccasion"><thead><tr>
+		<th>Type</th><th>Nom</th><th>Qualité</th><th>Prix</th><th>Dégâts</th>
+		</thead><tbody>
+		{% for o in listeoccasion %}
+		
+			{% if o.idobjets is defined %}
+			
+				<tr id="liste-inventaire-vente-{{o.id}}" onclick="loadInLayer('{{ 
+				path('commerce_description',
+					{ 	'class':'inventaire',
+						'mode':'Occasion',
+						'type':'fiche',
+						'button':'buy',
+						'id': o.id }
+					) 
+				}}','#marcheDescriptionOccasion');">
+					<td>{{o.idobjets.cat | title}}</td>
+					<td>{{o.nom}}</td>
+					<td>{{o.qualite|qualite}}</td>
+					<td>{{o.calculerPrix()|or}}</td>
+					<td>{{o.idobjets.degat}}</td>
+					
+				</tr>
+			
+			{% elseif type == 'donjon' %}
+			
+				<tr id="liste-bestiaire-vente-{{o.id}}" onclick="loadInLayer('{{ 
+					path('commerce_description',
+						{ 	'class':'bestiaire',
+							'mode':'Occasion',
+							'type':'fiche',
+							'button':'buy',
+							'id': o.id }
+						) 
+					}}','#marcheDescriptionOccasion');">
+					
+					<td>{{o.idcreature.nom}}</td>
+					<td>{{o.prenom}}</td>
+					<td>Bagarre : {{o.bagarre|carac}} | Vie : {{o.pvie ~ '/' ~ o.pviemax}}</td>
+					<td>{{o.calculerprix()|or}}</td>
+					<td>{{o.idcreature.degat}}</td>
+				</tr>
+			
+			{% endif %}
+			
+		{% endfor %}
+			
+		</tbody></table>
+		
+		{# pager #}
+		<div id="tableListeOccasion-pager" class="pager"> <form> <span class="first pointer">&lt;&lt;</span> <span class="prev pointer">&lt;</span> <span class="smaller pagedisplay"></span> <span class="pointer next">&gt;</span> <span class="pointer last">&gt;&gt;</span> </form></div>
+	
+		<script> $(document).ready(function() {
+		$("#tableListeOccasion").tablesorter({widthFixed:true,widgets:["zebra"]})
+			.tablesorterPager({container: $("#tableListeOccasion-pager"), output: "{page} / {totalPages}"});
+		});</script>
+
+		</td>
+		
+		{# coté #}
+		<td class="col"><h2 class="title">Marché d'occasion</h2>
+		<p>Tu trouveras trouverez ici tout ce dont les aventuriers ou les donjons veulent se débarasser !</p>
+		<hr />
+		<div id="marcheDescriptionOccasion"></div>
+		</td>
+		</tr></table>
+	
+	</div>
+	
+	{########################
+	 # 				 		#
+	 # 	  	 FIN OCCAZ		#
+	 # 				 		#
+	 ########################}
+
+
+</div>
+</div>
+
+</div>
+
+<script> initMarche(); </script>
+
+
+
+{#
+
+foreach (self::$boutique as $i=>$n)
+{
+	if ( (($i=='monstre') && (self::$t != self::TYPE_DONJON)) ) { continue; }
+	
+	<div id="marcheFroge" class="panel">
+	
+		// liste des items
+		<table class="col2"><tr>
+		<td class="col">
+		<table id="tableListe'.ucfirst($i).'"><thead><tr>
+		self::__tableHeader($i);
+		</thead><tbody>';
+		self::__tableBody($i);
+		</tbody></table>
+		
+		// pager
+		self::getTablePager('tableListe'.ucfirst($i).'-pager')
+
+		<script> $(document).ready(function() {
+		$("#tableListe'.ucfirst($i).'").tablesorter({widthFixed:true,widgets:["zebra"]})';
+		.tablesorterPager({container: $("#tableListe'.ucfirst($i).'-pager"), output: "{page} / {totalPages}"});';
+		});</script>
+
+		</td>
+
+		<td class="col"><h2 class="title">La forge</h2>
+		<p>Description</p>
+		<hr />
+		<div id="marcheDescriptionForge"></div>
+		</td>
+		</tr></table>
+	
+	</div>
+}
+
+#}

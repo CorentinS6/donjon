@@ -1,0 +1,39 @@
+// chargement de la liste des pices dans l'etage
+
+function Donjon_loadPiece(idEtage)
+{
+		var req = new Ajax.Request('/~coco/donjon/www-dev/index.php/donjon/loadPieces?idETAGE='+idEtage, {
+  			onComplete: function(response) {
+    			// Handle the response content...
+    			r = response.responseJSON;
+    			for(i=0;i<r.length;i++)
+    			{
+    				
+    				p = r[i];
+					    				
+    				larg = p.Taille_x;
+    				haut = p.Taille_y;
+    				dep_x = p.PosX;
+    				dep_y = p.PosY;
+    				
+    				
+					
+					max_y = parseInt(dep_y) + parseInt(haut);
+					max_x = parseInt(dep_x) + parseInt(larg);
+					for(a = dep_y ; a < max_y ; a++)
+					{
+						for(b = dep_x ; b < max_x ; b++)
+						{
+							o = $('c'+b+'_'+a);							
+							o.addClassName('piece');
+							o.onclick = function() {
+								window.location.href = '/~coco/donjon/www-dev/index.php/donjon/editPiece?idPIECE=' + p.idPIECE ;
+							}
+							
+						}
+					}
+    				
+    			}
+  			}
+		});
+}
