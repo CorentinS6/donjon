@@ -22,3 +22,6 @@
 /app/cache/
 /web/bundles/ndjdgame/images/
 /src/ndj/DGameBundle/Resources/public/images/
+/web/bundles/
+/web/css/
+/web/js/
