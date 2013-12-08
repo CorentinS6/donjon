@@ -234,6 +234,7 @@ Array.prototype.diffo = function(a, strict) {
                         jso.data.tempon = [];
                         if (typeof(res) !== 'undefined' && typeof(res) !== 'null' && res != '') {
                             for (var i = 0; i < res.length; i++) {
+                                console.log("jso.trigger : "+res[i].code+"."+ res[i].data)
                                 jso.gtrigger(res[i].code, res[i].data);
                             }
                         }
@@ -884,7 +885,7 @@ Array.prototype.diffo = function(a, strict) {
                 if (data.aventuriers.length > 0)
                 {
                     var av_del = mapw.data("_aventuriers").diffo(data.aventuriers, false); // on récupère les aventuriers partis de la carte
-                    var av_upd = mapw.data("_aventuriers").diffo(data.aventuriers, true); // on récupère les aventuriers ayant bougé sur la carte
+                    var av_upd = data.aventuriers.diffo(mapw.data("_aventuriers"), true); // on récupère les aventuriers ayant bougé sur la carte
                     var av_new = data.aventuriers.diffo(mapw.data("_aventuriers"), false); // on récupère les nouveaux aventuriers de la carte
                  
                     // mise à jour du tableau des aventuriers actuellement sur la carte

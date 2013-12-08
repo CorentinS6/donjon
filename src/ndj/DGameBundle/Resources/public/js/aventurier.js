@@ -233,7 +233,7 @@ function Av_deplacer(d)
         __av_deplacement_autorise = false;
         var map = $.dGame.getMapByName("carte_aventurier");
         if (!map) {
-            console.log("objet map introuvable : déplacement impossible !")
+            console.error("objet map introuvable : déplacement impossible !")
             return;
         }
         var x = 0;
