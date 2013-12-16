@@ -174,7 +174,7 @@ Array.prototype.diffo = function(a, strict) {
                         var i = 0;
                         $('[data-source]').each(function() {
                             i++;
-                            this.addItem(this);
+                            $.dGame.jsobserver.addItem( $(this) );
                         });
                         console.log(i + " data-loaders.");
 
@@ -242,17 +242,26 @@ Array.prototype.diffo = function(a, strict) {
 
                     return this;
                 },
-                __jsoHandler: function(event) {
-                    var data = (typeof(event.data) == "undefined" || typeof(event.data) == "null") ? null : event.data;
+                __jsoHandler: function(event, data_in) {
+            
+                    var data = null;
+                    if (data_in != undefined && data_in != null && data_in != "null" && typeof(data_in) != "undefined")
+                        data = data_in;
+                    else if (data_in != undefined &&  typeof(event.data) != "undefined" && typeof(event.data) != "null")
+                        data = event.data;
 
                     //var src = event.split(".");
                     //var ev = src[0].split("_");
                     //var ns = (src.length == 2) ? src[1] : null;
                     var target = $(event.target);
+                    console.log(event)
+                    console.log(data_in)
+                    console.log("ev_type = "+event.type)
                     var ev = event.type.split("_");
                     var ns = event.namespace;
                     if (ev[0] == "aventurier" || ev[0] == "bestiaire" || ev[0] == "inventaire" || ev[0] == "donjon") {
-                        this.reload(event, data);
+                        console.log(ev[0]+"."+event+"("+data+")")
+                        $(this).reload(event, data);
                     } else if (ev[0] == "piece") {
                         if (ns == "reloadElements") {
                             target.loadElements();
@@ -271,6 +280,7 @@ Array.prototype.diffo = function(a, strict) {
                 // Ajoute un nouvelle "écouteur"
                 addItem: function(o) {
                     o.each(function(){
+                        // console.log("jso.addItem "+$(this).attr('data-source')+"."+$.dGame.jsobserver.__jsoHandler)
                         $(this).on($(this).attr('data-source'), $.dGame.jsobserver.__jsoHandler);
                     });
                     return this;
@@ -408,16 +418,18 @@ Array.prototype.diffo = function(a, strict) {
         //
         reload: function(event, data) {
             return this.each(function() {
-                var src = this.attr('data-source');
+                var src = $(this).attr('data-source');
                 if (src == undefined) {
                     console.error("Attribut 'data-source' not found.");
                     return this;
                 }
-                if (typeof(data) != "null" && typeof(data) != "undefined") {
-                    this.html(data);
+                if (typeof(data) != "null" && typeof(data) != null && typeof(data) != "undefined") {
+                    console.log("data-source reload set the data to '"+data+"'")
+                    $(this).html(data);
+                    return this;
                 } else {
                     var uri = $.dGame.jsobserver.data_reload_getrealsource(this.attr('data-source'));
-                    this.load(uri, function(response, status, xhr) {
+                    $(this).load(uri, function(response, status, xhr) {
                         if (status == "error") {
                             var errmsg = "(" + xhr.status + " " + xhr.statusText + ") : " + response;
                             console.error(errmsg);

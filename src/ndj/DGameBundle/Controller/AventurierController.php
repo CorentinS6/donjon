@@ -442,7 +442,7 @@ class AventurierController extends Controller {
         // vérifier la distance
         if ($aventurier->a_porte_attaque($adv)) {
             //@todo finir traduction
-            caracs::bagarre($this->av, $adv);
+            caracs::bagarre($aventurier, $adv);
             return new Response('ok');
         } else {
             return new Response('Trop loin pour attaquer !');

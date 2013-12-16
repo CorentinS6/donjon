@@ -1123,7 +1123,7 @@ class Aventurier {
      * @param object $e
      * @return boolean
      */
-    public function a_porte(PositionnableTrait $e) {
+    public function a_porte(/*PositionnableTrait*/ $e) {
         $p = Tools::explodex(',', $e->getPOSITION());
         return ($e->getIdpiece() === $this->getIdpiece() && $this->a_porte_coord($p[0], $p[1]));
     }
@@ -1140,7 +1140,7 @@ class Aventurier {
     }
 
     // @TODO : prendre en compte da distance (les armes de jets)
-    public function a_porte_attaque(PositionnableTrait $e) {
+    public function a_porte_attaque(/*PositionnableTrait*/ $e) {
         return $this->a_porte($e);
     }
 
@@ -1161,4 +1161,71 @@ class Aventurier {
 */
         return $this->setPosition('{' . $x . '' . $y . '}');
     }
+    
+    /**
+     * Calcul la défense d'un aventurier
+     * @return int
+     */
+    public function getDEFENSE() {
+        $defense = 0;
+        // parcours de l'inventaire pour ajouter les points de défense des objets équipés
+        foreach($this->inventaires as $i) {
+            // si l'objet est équipe, on ajoute ses points de défense
+            if ($i->isEquipe()) {
+                $defense += caracs::jetDe($i->getIdobjets()->getDefense());
+            }
+        }
+        return $defense;
+    }
+
+    /**
+     * Calcul le dégat d'un aventurier
+     * @return int
+     */
+    public function getDEGAT() {
+        $degat = $this->getIdcreature()->getDegat();
+        // parcours de l'inventaire pour ajouter les points d'attaque des objets équipes
+        foreach($this->inventaires as $i) {
+            // si l'objet est équipe, on ajoute ses points de dégat
+            if ($i->isEquipe()) {
+                $degat += caracs::jetDe($i->getIdobjets()->getDegat());
+            }
+        }
+        return $degat;
+    }
+
+    /**
+     * Infligue des dégats, retour vrai si le perso est mort.
+     * @param int $degat
+     * @return boolean
+     */
+    public function blessure($degat) {
+
+        $nouvo = $this->getPvie() - $degat;
+        $r = false;
+        // mort ?pt de vie négatif ou nul ?
+        if ($nouvo <= 0) {
+            // pouvoir héro ?
+            if ($this->hasPouvoir('hero')) {
+                if ($this->getPvie() == 0) // si déjà KO, alors mort !
+                    $r = $this->mort();
+                else
+                    $degat -= $this->getPvie();
+            } else {
+                $r = $this->mort();
+            }
+        }
+        $this->setPvie($this->getPvie()-$degat);
+        return $r;
+    }
+	
+    public function mort(){
+        //stats::add('MORT', 1, $this);
+        // TODO : ce qui se passe lorsque l'on meurt
+        //evenement::create($this, '<b>Tu es mort !</b>');
+        //evenement::create($this, '<b>Tu es mort !</b>',2);
+        $this->setPosition('{M}');
+        return true;
+    }
+
 }

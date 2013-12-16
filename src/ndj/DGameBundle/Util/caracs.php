@@ -260,7 +260,7 @@ class caracs
 		return ($jet <= $pc);
 	}
 
-	static public function bagarre(icombattant $j1, icombattant $j2)
+	static public function bagarre(/*icombattant*/ $j1, /*icombattant*/ $j2)
 	{
 		$msg = $j1->getNOM().' attaque '.$j2->getNOM();
 		$d = array(0,false);
@@ -308,7 +308,7 @@ class caracs
 		if ($j2 instanceof aventurier) evenement::create($j2,$msg);
 	}
 
-	static public function attaque(icombattant $j1, icombattant $j2)
+	static public function attaque(/*icombattant*/ $j1, /*icombattant*/ $j2)
 	{
 		$degat = $j1->getDEGAT() - $j2->getDEFENSE();
 		// si les dÃ©gÃ¢ts sont supÃ©rieurs aux dÃ©fenses =>Â blessures

@@ -31,7 +31,8 @@
 
         <td width="15">&nbsp;</td>
         <td>
-            <img src="{{asset('bundles/ndjdgame/images/gicon/pd.png')}}" width="25" align="absmiddle" title="Points de déplacement" /> <span class="data-aventurier-PDEP">{{aventurier.pdep}}</span>
+            <img src="{{asset('bundles/ndjdgame/images/gicon/pd.png')}}" width="25" align="absmiddle" title="Points de déplacement" /> 
+            <span data-source="aventurier_{{aventurier.id}}.pdep" class="data-aventurier-PDEP">{{aventurier.pdep}}</span>
         </td>
         <td width="30">&nbsp;</td>
         <td>Position : <span class="data-aventurier-POSITION">{{aventurier.displayposition|raw}}</span>

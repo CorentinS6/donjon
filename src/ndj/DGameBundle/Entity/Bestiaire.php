@@ -824,4 +824,36 @@ class Bestiaire {
 */
         return $this->setPosition('{' . $x . '' . $y . '}');
     }
+    
+    /**
+     * Calcul la défense d'un bestiaire
+     * @return int
+     */
+    public function getDEFENSE() {
+        $defense = 0;
+        // parcours de l'inventaire pour ajouter les points de défense des objets équipés
+        foreach($this->inventaires as $i) {
+            // si l'objet est équipe, on ajoute ses points de défense
+            if ($i->isEquipe()) {
+                $defense += caracs::jetDe($i->getIdobjets()->getDefense());
+            }
+        }
+        return $defense;
+    }
+
+    /**
+     * Calcul le dégat d'un bestiaire
+     * @return int
+     */
+    public function getDEGAT() {
+        $degat = $this->getIdcreature()->getDegat();
+        // parcours de l'inventaire pour ajouter les points d'attaque des objets équipes
+        foreach($this->inventaires as $i) {
+            // si l'objet est équipe, on ajoute ses points de dégat
+            if ($i->isEquipe()) {
+                $degat += caracs::jetDe($i->getIdobjets()->getDegat());
+            }
+        }
+        return $degat;
+    }
 }

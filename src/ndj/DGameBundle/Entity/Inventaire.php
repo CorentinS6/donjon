@@ -536,5 +536,13 @@ class Inventaire {
 */
         return $this->setPosition('{' . $x . '' . $y . '}');
     }
+    
+    /**
+     * Vérifie si l'objet est équipé
+     * @retrun boolean
+     */
+    public function isEquipe() {
+        return isset($this->position[1]) && $this->position[1]=='E';
+    }
 
 }
