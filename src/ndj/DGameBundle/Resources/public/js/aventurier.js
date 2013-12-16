@@ -391,6 +391,23 @@ function av_ramasser_inv(idi)
 }
 
 function av_attaquer(k) {
+    var map = $.dGame.getMapByName("carte_aventurier");
+
+    $.get(Routing.generate('aventurier_attaquer', {'k': k})).done(function(data) {
+        if (data == 'ok') {
+            $.dGame.jsobserver.queue({code: 'aventurier.pact'});
+            $.dGame.jsobserver.queue({code: 'aventurier.pvie'});
+            $.dGame.jsobserver.queue({code: 'aventurier.experience'});
+            $.dGame.jsobserver.queue({code: "piece_" + map.data("id") + ".reloadElements"});
+            updateXp();
+            updateVie();
+        } else {
+            set_error(data);
+        }
+
+    });
+    
+    /*// old
     $.get(Routing.generate('aventurier_attaquer', {'k': k})).done(function(data) {
         if (data == 'ok') {
             updateAffichageDonneeNoVal('PA');
@@ -402,13 +419,14 @@ function av_attaquer(k) {
             set_error(data);
         }
     });
+     */
 }
 
 function updateVie() {
-    getDonnee('PV', function(data) {
+    getDonnee('PVIE', function(data) {
         data = parseInt(data);
         $(".progressbar-PV").progressbar("option", {value: data});
-        updateAffichageDonnee('data-aventurier-PV', data);
+        //updateAffichageDonnee('data-aventurier-PV', data);
     });
 }
 
@@ -424,7 +442,7 @@ function updateXp() {
         $(".progressbar-XP").progressbar("option", {value: xp});
         updateAffichageDonnee('data-aventurier-EXPERIENCE', xpreel);
         updateAffichageDonnee('data-aventurier-NIVEAU', level);
-        updateAffichageDonneeNoVal('EXPERIENCE_NEXT_LEVEL');
+        //updateAffichageDonneeNoVal('EXPERIENCE_NEXT_LEVEL');
     });
 }
 

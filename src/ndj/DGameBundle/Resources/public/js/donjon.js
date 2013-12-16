@@ -195,7 +195,7 @@ function initMarche()
 /**
  * @deprecated ?
  */
-function getDonnee(type, __call) {
+function getDonnee(type, _call) {
     $.get(Routing.generate('gamecommon_getdonnee', {'data': type}), _call);
     /*if (modeDeJeu=='d')
      $.get(dir+'_ajax_query.php/donjon/getDonnee?data='+type, __call);
@@ -529,7 +529,7 @@ var __error_time = 10000;
 function set_error(msg, textStatus) //msg = jqXHR, textStatus, errorThrown
 {
     if(typeof(msg)!=='string') {
-        var msg2 = $(err.responseText).find('h1').html();
+        var msg2 = $(msg.responseText).find('h1').html();
         if (typeof(msg2) === 'undefined') {
             msg = "Erreur : " + msg;
         } else {

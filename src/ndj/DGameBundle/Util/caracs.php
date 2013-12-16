@@ -260,25 +260,28 @@ class caracs
 		return ($jet <= $pc);
 	}
 
+        // lors un joueur J1 attaque un autre joueur J2
 	static public function bagarre(/*icombattant*/ $j1, /*icombattant*/ $j2)
 	{
 		$msg = $j1->getNOM().' attaque '.$j2->getNOM();
 		$d = array(0,false);
 		$xp = 0;
-		// difficultÃ© de l'attaque
-		$d1 = self::get_test_diff($j1->getBAGARRE(), $j2->getBAGARRE());		// difficulte de la bagarre
+		// difficulté de l'attaque
+		$d1 = self::get_test_diff($j1->getBAGARRE(), $j2->getBAGARRE());	// difficulte de la bagarre
 		$d2 = self::get_test_diff($j1->getBAGARRE(), $j2->getACROBATIE());	// difficulte de l'attaque
-		$d3 = self::get_test_diff($j2->getBAGARRE(), $j1->getACROBATIE());	// difficulte de l'attaque (du joueur attaquÃ© Ã  l'origine)
+		$d3 = self::get_test_diff($j2->getBAGARRE(), $j1->getACROBATIE());	// difficulte de l'attaque (du joueur attaqué à l'origine)
 		// bonus j1
 		$bonusa = (1-$d1 + 1-$d2)/2;
 		// bonus j2
 		$bonusd = ($d1 + 1-$d3)/2;
 		$xpf = 0;
+                // si l'attaque réuissie
 		if (self::test_oppose($j1->getBAGARRE(), $j2->getBAGARRE())) {
 				
 			// xp si attaque
 			$mort = false;
 			$xp += self::XP_BASE * $bonusa;
+                        // est-ce que J1 provoque des dégâts sur J2
 			if (self::test_oppose($j1->getBAGARRE(), $j2->getACROBATIE())) {
 				$d = self::attaque($j1, $j2);
 				if ($mort = $d[1]) $xp *= 0.5;
@@ -286,14 +289,16 @@ class caracs
 				$xp *= 0.3;
 			}
 			$xpf = $j1->gain_xp($xp);
-			$msg .= '. '.$j1->getNOM(). ' inflige <b>'.$d[0].' dÃ©gÃ¢ts</b> Ã  '.$j2->getNOM().' et gagne <b>'.$xpf.' XP</b>.';
+			$msg .= '. '.$j1->getNOM(). ' inflige <b>'.$d[0].' dégâts</b> à '.$j2->getNOM().' et gagne <b>'.$xpf.' XP</b>.';
 			if ($mort) $msg .= $j2->getNOM().' est mort !';
 				
+                // echec de l'attaque, J2 réplique
 		} else {
 
 			// xp pour l'aversaire si attaque
 			$mort = false;
 			$xp += self::XP_BASE * $bonusd;
+                        // est-ce que J2 provoque des dégâts sur J1
 			if (self::test_oppose($j2->getBAGARRE(), $j1->getACROBATIE())) {
 				$d = self::attaque($j2, $j1);
 				if ($mort = $d[1]) $xp *= 0.5;
@@ -301,11 +306,10 @@ class caracs
 				$xp *= 0.3;
 			}
 			$xpf = $j2->gain_xp($xp);
-			$msg .= ' et rate...<br />'.$j2->getNOM(). ' inflige <b>'.$d[0].' dÃ©gÃ¢ts</b> Ã  '.$j1->getNOM().' et gagne <b>'.$xpf.' XP</b>.';
+			$msg .= ' et rate...<br />'.$j2->getNOM(). ' inflige <b>'.$d[0].' dégâts</b> à '.$j1->getNOM().' et gagne <b>'.$xpf.' XP</b>.';
 			if ($mort) $msg .= $j1->getNOM().' est mort !';
 		}
-		if ($j1 instanceof aventurier) evenement::create($j1,$msg);
-		if ($j2 instanceof aventurier) evenement::create($j2,$msg);
+                return $msg;
 	}
 
 	static public function attaque(/*icombattant*/ $j1, /*icombattant*/ $j2)

@@ -9,7 +9,7 @@
 
         <td>&nbsp;</td>
         <td>
-            Niveau <span class="data-aventurier-NIVEAU">{{ aventurier.experience | level }}</span>
+            Niveau <span data-source="aventurier_{{aventurier.id}}.niveau" class="data-aventurier-NIVEAU">{{ aventurier.experience | level }}</span>
         </td>
 
         <td width="15">&nbsp;</td>
@@ -22,11 +22,11 @@
 
         <td width="15">&nbsp;</td>
         <td>
-            <img src="{{asset('bundles/ndjdgame/images/gicon/po.png')}}" width="25" align="absmiddle" /><span class="data-aventurier-ARGENT">{{aventurier.argent|number_format(2,',',' ')}} PO</span>
+            <img src="{{asset('bundles/ndjdgame/images/gicon/po.png')}}" width="25" align="absmiddle" /><span data-source="aventurier_{{aventurier.id}}.argent" class="data-aventurier-ARGENT">{{aventurier.argent|number_format(2,',',' ')}} PO</span>
         </td>
         <td width="30">&nbsp;</td>
         <td>
-            <img src="{{asset('bundles/ndjdgame/images/gicon/pa.png')}}" width="25" align="absmiddle" title="Points d'action" /> <span class="data-aventurier-PACT">{{aventurier.pact}}</span>
+            <img src="{{asset('bundles/ndjdgame/images/gicon/pa.png')}}" width="25" align="absmiddle" title="Points d'action" /> <span data-source="aventurier_{{aventurier.id}}.pact" class="data-aventurier-PACT">{{aventurier.pact}}</span>
         </td>
 
         <td width="15">&nbsp;</td>
@@ -35,7 +35,7 @@
             <span data-source="aventurier_{{aventurier.id}}.pdep" class="data-aventurier-PDEP">{{aventurier.pdep}}</span>
         </td>
         <td width="30">&nbsp;</td>
-        <td>Position : <span class="data-aventurier-POSITION">{{aventurier.displayposition|raw}}</span>
+        <td>Position : <span data-source="aventurier_{{aventurier.id}}.position" class="data-aventurier-POSITION">{{aventurier.displayposition|raw}}</span>
         </td>
 
 

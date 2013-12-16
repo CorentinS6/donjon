@@ -84,7 +84,7 @@ class JsObserverController extends Controller {
         }
         $j = $this->get('gamesession')->get();
         $key = $this->get('gamesession')->getKey();
-
+        
         // mise à jour dans la liste des connectés
         $this->get('gamesession')->setConnected();
         
@@ -199,6 +199,11 @@ class JsObserverController extends Controller {
         }
     }
     
+    /**
+     * Format un evenement
+     * @param Object$o
+     * @return array
+     */
     protected function formatEvent(& $o) {
         $j = $this->get('gamesession')->get();
         $r = array(

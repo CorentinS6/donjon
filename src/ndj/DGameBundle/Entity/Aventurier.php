@@ -1125,7 +1125,7 @@ class Aventurier {
      */
     public function a_porte(/*PositionnableTrait*/ $e) {
         $p = Tools::explodex(',', $e->getPOSITION());
-        return ($e->getIdpiece() === $this->getIdpiece() && $this->a_porte_coord($p[0], $p[1]));
+        return $e->isOnMap() && ($e->getIdpiece() === $this->getIdpiece() && $this->a_porte_coord($p[0], $p[1]));
     }
 
     /**
@@ -1228,4 +1228,7 @@ class Aventurier {
         return true;
     }
 
+    
+    /* en attendant les pouvoirs */
+    public function hasPouvoir($p) { return false; }
 }

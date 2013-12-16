@@ -856,4 +856,42 @@ class Bestiaire {
         }
         return $degat;
     }
+
+    /**
+     * Infligue des dégats, retour vrai si le perso est mort.
+     * @param int $degat
+     * @return boolean
+     */
+    public function blessure($degat) {
+
+        $nouvo = $this->getPvie() - $degat;
+        $r = false;
+        // mort ?pt de vie négatif ou nul ?
+        if ($nouvo <= 0) {
+            // pouvoir héro ?
+            if ($this->hasPouvoir('hero')) {
+                if ($this->getPvie() == 0) // si déjà KO, alors mort !
+                    $r = $this->mort();
+                else
+                    $degat -= $this->getPvie();
+            } else {
+                $r = $this->mort();
+            }
+        }
+        $this->setPvie($this->getPvie()-$degat);
+        return $r;
+    }
+	
+    public function mort(){
+        //stats::add('MORT', 1, $this);
+        // TODO : ce qui se passe lorsque l'on meurt
+        //evenement::create($this, '<b>Tu es mort !</b>');
+        //evenement::create($this, '<b>Tu es mort !</b>',2);
+        $this->setPosition('{M}');
+        return true;
+    }
+    
+    /* en attendant les pouvoirs */
+    public function hasPouvoir($p) { return false; }
+
 }

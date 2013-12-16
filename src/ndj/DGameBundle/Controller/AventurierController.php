@@ -9,6 +9,7 @@ use ndj\DGameBundle\Util\caracs;
 use ndj\DGameBundle\Entity\Donjon;
 use ndj\DGameBundle\Entity\Aventurier;
 use ndj\DGameBundle\Entity\Creature;
+use ndj\DGameBundle\Entity\Evenement;
 use ndj\DGameBundle\Entity;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -439,10 +440,37 @@ class AventurierController extends Controller {
         }
 
         $adv = $this->get('gamesession')->getObjectFromKey($k);
+        $av_key = $this->get('gamesession')->getKey();
         // vérifier la distance
         if ($aventurier->a_porte_attaque($adv)) {
-            //@todo finir traduction
-            caracs::bagarre($aventurier, $adv);
+            // bagarre
+            $msg = caracs::bagarre($aventurier, $adv);
+            
+            $em = $this->getDoctrine()->getManager();
+            
+            // messages
+            $e = new Evenement();
+            $e->setDest($av_key)->setCat(4)->setLu(0)->setDt(new \DateTime())->setContent(json_encode(array(
+                "code" => 'info',
+                "data" => $msg
+            )));
+            $em->persist($e);
+
+            if ($adv instanceof Aventurier) {
+                $ev = new Evenement();
+                $ev->setDest($k)->setCat(4)->setLu(0)->setDt(new \DateTime())->setContent(json_encode(array(
+                    "code" => 'info',
+                    "data" => $msg
+                )));
+                $em->persist($ev);
+            }
+            
+            // update des combattants
+            $em->persist($aventurier);
+            $em->persist($adv);
+            
+            $em->flush();
+
             return new Response('ok');
         } else {
             return new Response('Trop loin pour attaquer !');

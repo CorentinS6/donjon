@@ -316,4 +316,10 @@ class Objets
     public function getImg() {
     	return 'bundles/ndjdgame/images/objets/'.$this->getId().'.png';
     }
+    
+    
+    public function getDefense() {
+        // return $this->getBouclier();
+        return 0;
+    }
 }

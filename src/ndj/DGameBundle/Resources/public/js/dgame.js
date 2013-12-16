@@ -234,7 +234,7 @@ Array.prototype.diffo = function(a, strict) {
                         jso.data.tempon = [];
                         if (typeof(res) !== 'undefined' && typeof(res) !== 'null' && res != '') {
                             for (var i = 0; i < res.length; i++) {
-                                console.log("jso.trigger : "+res[i].code+"."+ res[i].data)
+                                // console.log("jso.trigger : "+res[i].code+"."+ res[i].data)
                                 jso.gtrigger(res[i].code, res[i].data);
                             }
                         }
@@ -254,13 +254,9 @@ Array.prototype.diffo = function(a, strict) {
                     //var ev = src[0].split("_");
                     //var ns = (src.length == 2) ? src[1] : null;
                     var target = $(event.target);
-                    console.log(event)
-                    console.log(data_in)
-                    console.log("ev_type = "+event.type)
                     var ev = event.type.split("_");
                     var ns = event.namespace;
                     if (ev[0] == "aventurier" || ev[0] == "bestiaire" || ev[0] == "inventaire" || ev[0] == "donjon") {
-                        console.log(ev[0]+"."+event+"("+data+")")
                         $(this).reload(event, data);
                     } else if (ev[0] == "piece") {
                         if (ns == "reloadElements") {
@@ -275,12 +271,13 @@ Array.prototype.diffo = function(a, strict) {
 
                     } else if (ev[0] == "commerce") {
 
+                    } else if (ev[0] == "info") {
+                        set_info(data);
                     }
                 },
                 // Ajoute un nouvelle "écouteur"
                 addItem: function(o) {
                     o.each(function(){
-                        // console.log("jso.addItem "+$(this).attr('data-source')+"."+$.dGame.jsobserver.__jsoHandler)
                         $(this).on($(this).attr('data-source'), $.dGame.jsobserver.__jsoHandler);
                     });
                     return this;
@@ -424,7 +421,6 @@ Array.prototype.diffo = function(a, strict) {
                     return this;
                 }
                 if (typeof(data) != "null" && typeof(data) != null && typeof(data) != "undefined") {
-                    console.log("data-source reload set the data to '"+data+"'")
                     $(this).html(data);
                     return this;
                 } else {
