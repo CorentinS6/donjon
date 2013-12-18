@@ -181,7 +181,9 @@ function Av_Reload_Inventaire() {
 function Av_drop(idi) {
     $.get(Routing.generate('inventaire_drop', {'id': idi})).done(function(data) {
         Av_Reload_Inventaire();
-        Av_mapForceReload();
+        var map = $.dGame.getMapByName("carte_aventurier");
+        $.dGame.jsobserver.queue({code: "piece_" + map.data("id") + ".reloadElements"});
+        //Av_mapForceReload();
     });
 }
 
@@ -217,8 +219,9 @@ function Av_timer_Map(t)
 }
 function Av_mapForceReload()
 {
-    clearTimeout(__Av_reloadMapTimeOut);
-    Av_timer_Map(0);
+    alert('Av_mapForceReload() deprecated : use jso now !');
+    //clearTimeout(__Av_reloadMapTimeOut);
+    //Av_timer_Map(0);
 }
 
 
@@ -296,17 +299,12 @@ function Av_mapDestroy() {
 //	ACTIONS
 //
 
-// Passage secret
-function Av_Action_P(idPIECE, x, y) {
-    Av_mapDestroy();
-    loadInLayer(Routing.generate('aventurier_action_p', {'idpiece': idPIECE, 'x': x, 'y': y}), '#aventurier-body-mainpanel');
-    return false;
-}
 //	Ramasser l'or
 function Av_Action_PO(x, y, po)
 {
     $.get(Routing.generate('aventurier_action_po', {'po': po, 'x': x, 'y': y})).done(function(data) {
         if (data != '') {
+            $.dGame.jsobserver.queue({code: 'aventurier.argent'});
             updateAffichageDonnee('data-aventurier-ARGENT', data);
             mapA.build();
         } else {
@@ -314,7 +312,8 @@ function Av_Action_PO(x, y, po)
         }
     });
 }
-//
+
+// déclencheur
 function Av_Action_D()
 {
     $.get(Routing.generate('aventurier_action_d')).done(function(data) {
@@ -333,6 +332,14 @@ function Av_Action_D()
         }
     });
 }
+
+// Passage secret
+function Av_Action_P(idPIECE, x, y) {
+    Av_mapDestroy();
+    loadInLayer(Routing.generate('aventurier_action_p', {'idpiece': idPIECE, 'x': x, 'y': y}), '#aventurier-body-mainpanel');
+    return false;
+}
+
 // Prendre l'escalier montant
 function Av_Action_EM()
 {
@@ -362,15 +369,17 @@ function Av_Action_F()
     Av_mapDestroy();
     $.get(Routing.generate('aventurier_findonjon')).done(function(data) {
         //console.log(data);
-        //alert(data);
         Av_Reload_Interface();
         set_background('taverne_01');
         $('.av-mode-donjon').fadeOut();
         updateXp();
         updateVie();
-        updateAffichageDonneeNoVal('PA');
-        updateAffichageDonneeNoVal('PD');
-        updateAffichageDonneeNoVal('ARGENT');
+        $.dGame.jsobserver.queue({code: 'aventurier.pact'});
+        $.dGame.jsobserver.queue({code: 'aventurier.pdep'});
+        $.dGame.jsobserver.queue({code: 'aventurier.argent'});
+        //updateAffichageDonneeNoVal('PA');
+        //updateAffichageDonneeNoVal('PD');
+        //updateAffichageDonneeNoVal('ARGENT');
     });
     return false;
 }
@@ -381,11 +390,12 @@ function Av_Action_F()
 function av_ramasser_inv(idi)
 {
     $.get(Routing.generate('inventaire_ramasser', {'id': idi})).done(function(data) {
-        if (data != '') {
+        if (data == 1) {
             Av_Reload_Inventaire();
-            Av_mapForceReload();
+            var map = $.dGame.getMapByName("carte_aventurier");
+            $.dGame.jsobserver.queue({code: "piece_" + map.data("id") + ".reloadElements"});
         } else {
-            set_error("Erreur : impossible de prendre cet objet !");
+            set_error("Impossible de prendre cet objet !");
         }
     });
 }
@@ -406,20 +416,6 @@ function av_attaquer(k) {
         }
 
     });
-    
-    /*// old
-    $.get(Routing.generate('aventurier_attaquer', {'k': k})).done(function(data) {
-        if (data == 'ok') {
-            updateAffichageDonneeNoVal('PA');
-            updateVie();
-            updateXp();
-            chat_reload();
-            Av_mapForceReload();
-        } else {
-            set_error(data);
-        }
-    });
-     */
 }
 
 function updateVie() {

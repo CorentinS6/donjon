@@ -897,5 +897,48 @@ class Piece {
         }
         return false;
     }
+    
+    
+    protected function isFreeOf($x, $y, $class) {
+        $_pos = '{'.$x.','.$y.'}';
+        $_f = 'get'.$class.'s';
+        $l = $this->$_f();
+        foreach($l as $item) {
+            if ($_pos == $item->getPosition()) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * Vérifie si una venturier est présent en x y dans la piece
+     * @param int $x
+     * @param int $y
+     * @return boolean
+     */
+    public function isFreeOfAventurier($x, $y) {
+        return $this->isFreeOf($x, $y, 'aventurier');
+    }
+    
+    /**
+     * Vérifie si una venturier est présent en x y dans la piece
+     * @param int $x
+     * @param int $y
+     * @return boolean
+     */
+    public function isFreeOfBestiaire($x, $y) {
+        return $this->isFreeOf($x, $y, 'bestiaire');
+    }
+    
+    /**
+     * Vérifie si una venturier est présent en x y dans la piece
+     * @param int $x
+     * @param int $y
+     * @return boolean
+     */
+    public function isFreeOfInventaire($x, $y) {
+        return $this->isFreeOf($x, $y, 'inventaire');
+    }
 
 }

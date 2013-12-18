@@ -468,6 +468,7 @@ class Inventaire {
 
     public function drop() {
         if (!is_null($a = $this->getIdaventurier())) {
+            $a->getIdpiece()->
             $a->removeInventaire($this);
             $a->getIdpiece()->addInventaire($this);
             $this->setIddonjon($a->getIddonjon());
@@ -535,6 +536,11 @@ class Inventaire {
         }
 */
         return $this->setPosition('{' . $x . '' . $y . '}');
+    }
+    
+    
+    public function isOnMap() {
+        return !is_null($this->getIdpiece());
     }
     
     /**

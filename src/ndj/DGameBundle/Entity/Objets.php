@@ -317,7 +317,7 @@ class Objets
     	return 'bundles/ndjdgame/images/objets/'.$this->getId().'.png';
     }
     
-    
+    // @todo
     public function getDefense() {
         // return $this->getBouclier();
         return 0;

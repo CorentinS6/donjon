@@ -139,7 +139,8 @@ class InventaireController extends Controller {
     public function dropInventaire(Inventaire $i) {
         $aventurier = $this->get('gamesession')->geta();
 
-        if ($i->getIdAVENTURIER() === $aventurier) {
+        list($x,$y) = explode(',',substr($aventurier->getPosition(),1,strlen($aventurier->getPosition())-2));
+        if ($i->getIdAVENTURIER() === $aventurier && !is_null($aventurier->getIdpiece()) && $aventurier->getIdpiece()->isFreeOfInventaire($x,$y)) {
 
             $i->drop();
 
