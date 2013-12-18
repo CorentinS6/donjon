@@ -272,7 +272,7 @@ function Av_deplacer(d)
                             // updateAffichageDonneeNoVal('PDEP');
                             // $.dGame.jsobserver.gtrigger("piece_" + map.data("id") + ".reloadElements");
                             $.dGame.jsobserver.queue({code:'aventurier.pdep'});
-                            $.dGame.jsobserver.queue({code:"piece_" + map.data("id") + ".reloadElements"});
+                            $.dGame.jsobserver.queue({code:"piece_" + map.data("id") + ".reloadElements"}, true);
                             // Av_mapForceReload();
                         } else {
                             set_error(data);
@@ -408,7 +408,7 @@ function av_attaquer(k) {
             $.dGame.jsobserver.queue({code: 'aventurier.pact'});
             $.dGame.jsobserver.queue({code: 'aventurier.pvie'});
             $.dGame.jsobserver.queue({code: 'aventurier.experience'});
-            $.dGame.jsobserver.queue({code: "piece_" + map.data("id") + ".reloadElements"});
+            $.dGame.jsobserver.queue({code: "piece_" + map.data("id") + ".reloadElements"}, true);
             updateXp();
             updateVie();
         } else {

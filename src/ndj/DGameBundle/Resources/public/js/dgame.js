@@ -186,7 +186,7 @@ Array.prototype.diffo = function(a, strict) {
                 // ajout une action à envoyer 
                 queue: function(o, force) {
                     if (!this._lock()) {
-                        setTimeout(function(){ $.dGame.jsobserver.queue(o, force); }, 700);
+                        setTimeout(function(){ $.dGame.jsobserver.queue(o, force); }, 300);
                         return this;
                     }
                     // { code:"char_reload.tagada", data:{data} }
@@ -194,7 +194,7 @@ Array.prototype.diffo = function(a, strict) {
                     this._unlock();
 
                     if (force == true) {
-                        this.transaction();
+                        return this.transaction();
                     }
                     
                     return this;
@@ -211,7 +211,7 @@ Array.prototype.diffo = function(a, strict) {
                 transaction: function() {
                     if (!this._lock()) {
                         clearInterval(this.data.timer);
-                        setTimeout(function() {  $.dGame.jsobserver.transaction(); }, 500);
+                        setTimeout(function() {  $.dGame.jsobserver.transaction(); }, 450);
                         return this;
                     }
                     // var queue = this.data.tempon.serialize();
