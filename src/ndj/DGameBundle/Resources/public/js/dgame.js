@@ -734,12 +734,14 @@ Array.prototype.diffo = function(a, strict) {
                     // fonction de dessin
                     // @todo
                     if (layerNum == 1 || layerNum == 2 || layerNum == 3 || layerNum == 6) {
+                        
+                        map = $(this);
 
                         //$('td[id^="' + this.MapId + '-l' + layerNum + 'd"]').click(function() {
                         tiles.click(function() {
-                            //this.oMap = oMap;
+                            // tile selectionné dans la  librairie
                             var e = $('#gardien-editeur-sidepanel-libs .ge_layer_libs span.selected:visible');
-
+                            // quel outil sélectionné ?
                             var tool = (layerNum == 6) ? e.attr('tool') : getCurrentTool();
 
                             // pinceau
@@ -750,33 +752,35 @@ Array.prototype.diffo = function(a, strict) {
                                     map.setAction($(this), e);
                                 }
 
-                                // rectangle
+                            // rectangle
                             } else if (tool === 'r') {
-                                if (oMap.editorCurrentDraw) {
+                                // si rectangle déja en cours : stop réctangle
+                                if (map.data("editorCurrentDraw") == true) {
                                     if (layerNum != 6) {
                                         tiles.filter(".gEPtempTile").css({backgroundImage: e.css('background-image')});
                                     } else {
-                                        oMap.setAction(tiles.filter(".gEPtempTile"), e);
+                                        map.setAction(tiles.filter(".gEPtempTile"), e);
                                     }
-                                    oMap.stopNewTile();
+                                    map.stopNewTile();
+                                // sinon : nouveau rectangle
                                 } else {
                                     var idTile = $(this).attr('id');
                                     //format ex: VRV-l1d11_9
                                     var posTile = idTile.substring(7).split("_");
                                     var l = idTile.substring(5, 1);
-                                    oMap.addTileToGrid(l, posTile[0], posTile[1]);
+                                    map.addTileToGrid(l, posTile[0], posTile[1]);
                                 }
                             }
                         });
 
                         // $('td[id^="' + this.MapId + '-l' + layerNum + 'd"]').mouseover(function() {
                         tiles.mouseover(function() {
-                            if (oMap.editorCurrentDraw) {
-                                this.oMap = oMap;
+                            if (map.data("editorCurrentDraw")) {
+                                this.map = map;
                                 var idTile = $(this).attr('id');
                                 var posTile = idTile.substring(7).split("_");
                                 var l = idTile.substring(5, 6);
-                                oMap.setSquareNewTiles(l, oMap.editorDrawInitPot[0], oMap.editorDrawInitPot[1], posTile[0], posTile[1]);
+                                map.setSquareNewTiles(l, map.data("editorDrawInitPot")[0], map.data("editorDrawInitPot")[1], posTile[0], posTile[1]);
                             }
                         });
                     }
@@ -785,11 +789,12 @@ Array.prototype.diffo = function(a, strict) {
             });
         },
                 
-        // DEBUT : A TRADUIRE
+        // actions
         _parseActions: function() {
             this._getLayer(6).find('td').empty();
 
             var data = this.data("actions").explodex("}{");
+            
 
             for (var i = 0; i < data.length; i++)
             {
@@ -1349,8 +1354,8 @@ Array.prototype.diffo = function(a, strict) {
 	// EDITOR DRAG
         addTileToGrid: function(l, initX, initY)
         {
-            this.editorCurrentDraw = true;
-            this.editorDrawInitPot = [initX, initY];
+            this.data("editorCurrentDraw", true);
+            this.data("editorDrawInitPot", [initX, initY]);
             this.setSquareNewTiles(l, initX, initY, initX, initY);
         },
     
@@ -1374,9 +1379,61 @@ Array.prototype.diffo = function(a, strict) {
 	stopNewTile: function()
 	{
 		$("td.gEPtempTile").removeClass('gEPtempTile');
-		this.editorCurrentDraw = false;
-		this.editorDrawInitPot = [];
-	}
+		this.data("editorCurrentDraw",false);
+		this.data("editorDrawInitPot", []);
+	},
+                
+        // editeur d'action : traiter lorsque l'editeur ajoute une action à partir de la carte directement
+        // @todo : a finir de traduire
+        setAction: function(cells, action) {
+            var map = this;
+            a = action.attr('action');
+            switch (a) {
+                case 'W' :
+                case 'V' :
+                case 'I':
+                case 'EM':
+                case 'ED' :
+                case 'Z':
+                case 'S':
+                case 'F':
+                    var data = new Array();
+                    cells.each(function() {
+                        data.push($(this).attr('id').split('-l6d').pop());
+                    });
+                    data = a + '-' + data.join('-');
+                    loadInLayer(Routing.generate('piece_saveactions', {'id': map.data("id"), 'actions': data}), '#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6')
+                    map.build();
+                    break;
+                case 'PO' :
+                    var coord = cells.attr('id').split('-l6d').pop().split('_');
+                    var somme = prompt('Quel montant veux-tu déposer en ' + coord[0] + ',' + coord[1] + ' ?');
+                    if (somme != null && somme != undefined) {
+                        deposerPo(map.data("id"), coord[0], coord[1], somme);
+                        loadInLayer(Routing.generate('piece_interfaceediteurpieceactionlibs', {'id':map.data("id")}), '#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6');
+                        // loadInLayer('donjon/editeurLibrairieActionLib?idPIECE='+oMap.idPIECE+'&a='+data,'#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6')
+                        map.build();
+                    }
+                    break;
+
+                case 'P' :
+                case 'M' :
+                case 'MS' :
+                case 'D':
+                    var coord = cells.attr('id').split('-l6d').pop().split('_');
+                    loadInLayer(Routing.generate('piece_actionform', {'id': map.data("id"), 'type': a, 'x': coord[0], 'y': coord[1]}), "#dialogLibNewAction");
+
+                    $("#dialogLibNewAction").dialog({
+                        modal: true,
+                        closeOnEscape: true,
+                        title: "Nouvelle action",
+                        width: 500,
+                        resizable: false
+                    });
+                    break;
+            }
+        },
+        
                 
         
 

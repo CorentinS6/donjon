@@ -106,7 +106,7 @@ $("#propeditPiece_Lum").slider({
 
 
 $(function(){
-    $('#gardien-editeur-mapwrapper').createMap({name:"carte_editeur",mode:"edit"}).importMap({{ piece.json | raw }});
+    $('#gardien-editeur-mapwrapper').createMap({name:"carte_editeur",mode:"editor"}).importMap({{ piece.json | raw }});
 });
 /*
 map = new Map({{piece.id}}, {{piece.taillex}}, {{piece.tailley}});	

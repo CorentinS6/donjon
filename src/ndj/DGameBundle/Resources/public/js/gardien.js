@@ -441,6 +441,10 @@ function gGotoEMap(id) {
 	gLoadTab('#editeur?p='+id);
 }
 
+
+//
+// sauvegarde de la carte
+//
 __g_save_Counter_init = 60;
 __g_save_Counter_to = null;
 function __g_save_Counter(i)
@@ -465,6 +469,7 @@ function __g_save()
 	$('#gardien-editeur-save').button( "disable" );
 	$('#gardien-editeur-save2').button( "disable" );
 	$('#gardien-editeur-save2').button( "option", "label", '<img src="'+img_dir+'/interface/wait3.gif"/>' );
+        var map = $.dGame.getMapByName("carte_editeur");
 	map.save('__g_save_restart()');
 }
 function __g_save_restart()
@@ -477,6 +482,7 @@ function __g_save_restart()
 	if ($('#gardien-editeur-save2').is(':checked'))
 		__g_save_Counter(__g_save_Counter_init);
 }
+// fin sauvegarde de la carte
 
 function gSelectTileLib(e)
 {
@@ -488,43 +494,47 @@ function gSelectTileLib(e)
 }
 
 function gLoadCouche(c) {
-	// panneau de la libraire
-	if (c==1) {
-		$('#gardien-editeur-pensel').buttonset('enable');
-		$('.ge_mobilier_wrapper').hide();
-		$('.ge_lib_wrapper').hide();
-		if ($('.ge_sol_wrapper').html()=='') {
-			gLoadMapLib('sol');
-		}
-		$('.ge_sol_wrapper').show();
-	} else if (c==2 || c==3) {
-		$('#gardien-editeur-pensel').buttonset('enable');
-		$('.ge_lib_wrapper').hide();
-		$('.ge_sol_wrapper').hide();
-		if ($('.ge_mobilier_wrapper').html()=='') {
-			gLoadMapLib('statue');
-		}
-		$('.ge_mobilier_wrapper').show();
-		//gLoadMapLib('mobilier');
-	} else {
-		$('#gardien-editeur-pensel').buttonset('disable');
-		$('.ge_sol_wrapper').hide();
-		$('.ge_mobilier_wrapper').hide();
-		$('.ge_lib_wrapper').hide();
-		$('.ge_lib_wrapper-'+c).show();
-	}
-	
-	// carte
-	$('#gardien-editeur-mapwrapper .map_layer').hide();
-    if (c==1) {
-    	$('div#map'+map.MapId+'_layer_'+c).show().css('opacity',1);
-    } else if (c==2 || c==3 || c==4 || c==5 || c==6) {	
-    	for(var i = 1;i < c;i++) {
-    		$('div#map'+map.MapId+'_layer_'+i).show().css('opacity',(0.2+0.1*i));
-    	}
-    	$('div#map'+map.MapId+'_layer_'+c).show().css('opacity',1);
-    } else if (c==8) {
-    	$('#gardien-editeur-mapwrapper .map_layer').show().css('opacity',1);
+    // panneau de la libraire
+    if (c == 1) {
+        $('#gardien-editeur-pensel').buttonset('enable');
+        $('.ge_mobilier_wrapper').hide();
+        $('.ge_lib_wrapper').hide();
+        if ($('.ge_sol_wrapper').html() == '') {
+            gLoadMapLib('sol');
+        }
+        $('.ge_sol_wrapper').show();
+    } else if (c == 2 || c == 3) {
+        $('#gardien-editeur-pensel').buttonset('enable');
+        $('.ge_lib_wrapper').hide();
+        $('.ge_sol_wrapper').hide();
+        if ($('.ge_mobilier_wrapper').html() == '') {
+            gLoadMapLib('statue');
+        }
+        $('.ge_mobilier_wrapper').show();
+        //gLoadMapLib('mobilier');
+    } else {
+        $('#gardien-editeur-pensel').buttonset('disable');
+        $('.ge_sol_wrapper').hide();
+        $('.ge_mobilier_wrapper').hide();
+        $('.ge_lib_wrapper').hide();
+        $('.ge_lib_wrapper-' + c).show();
+    }
+
+    // carte
+    var map = $.dGame.getMapByName("carte_editeur");
+    $(map).find('.map_layer').hide();
+    if (c == 1) {
+        $(map)._getLayer(c).show().css('opacity', 1);
+    } else if (c == 2 || c == 3 || c == 4 || c == 5 || c == 6) {
+        for (var i = 1; i < c; i++) {
+            $(map)._getLayer(i).show().css('opacity', (0.2 + 0.1 * i));
+        }
+        $(map)._getLayer(c).show().css('opacity', 1);
+    } else if (c == 8) {
+        for (var i = 1; i < c; i++) {
+            $(map)._getLayer(i).show().css('opacity', 1);
+        }
+        $(map).show().css('opacity', 1);
     }
 }
 
@@ -574,7 +584,8 @@ function gLoadMapLib(libname)
 			// chargement du l'arbre
 			$(layertId).html('');
 			for(var i in _gaLib[type]) {
-				$(layertId).append('<span><a href="javascript:void(0);" onclick="gLoadMapLib(\''+i+'\')">'+_gaLib[type][i]['title']+'</a> ('+_gaLib[type][i]['image'].length+')</span>');
+                                if (_gaLib[type][i]['image']!=undefined)
+                                    $(layertId).append('<span><a href="javascript:void(0);" onclick="gLoadMapLib(\''+i+'\')">'+_gaLib[type][i]['title']+'</a> ('+_gaLib[type][i]['image'].length+')</span>');
 			}
 		}
 
