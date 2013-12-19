@@ -641,9 +641,10 @@ Array.prototype.diffo = function(a, strict) {
         _getLayer: function(num) {
             return this.find("#"+this.data("mid") + "_layer_" + num);
         },
+                
         // retourne le $ cellule x,y de la couche l
         _getCell: function(l, x, y) {
-            return this.find("td#" + this.data("mid") + '-l' + l + 'd' + x + '_' + y);
+            return $(this).find("td#" + $(this).data("mid") + '-l' + l + 'd' + x + '_' + y);
         },
         
         _getMapRoot: function() {
@@ -734,8 +735,6 @@ Array.prototype.diffo = function(a, strict) {
                     // fonction de dessin
                     // @todo
                     if (layerNum == 1 || layerNum == 2 || layerNum == 3 || layerNum == 6) {
-                        
-                        map = $(this);
 
                         //$('td[id^="' + this.MapId + '-l' + layerNum + 'd"]').click(function() {
                         tiles.click(function() {
@@ -757,7 +756,7 @@ Array.prototype.diffo = function(a, strict) {
                                 // si rectangle déja en cours : stop réctangle
                                 if (map.data("editorCurrentDraw") == true) {
                                     if (layerNum != 6) {
-                                        tiles.filter(".gEPtempTile").css({backgroundImage: e.css('background-image')});
+                                        map.find("td.gEPtempTile").css({backgroundImage: e.css('background-image')});
                                     } else {
                                         map.setAction(tiles.filter(".gEPtempTile"), e);
                                     }
@@ -765,10 +764,9 @@ Array.prototype.diffo = function(a, strict) {
                                 // sinon : nouveau rectangle
                                 } else {
                                     var idTile = $(this).attr('id');
-                                    //format ex: VRV-l1d11_9
-                                    var posTile = idTile.substring(7).split("_");
-                                    var l = idTile.substring(5, 1);
-                                    map.addTileToGrid(l, posTile[0], posTile[1]);
+                                    var posTile = idTile.split("-").pop().substring(3).split("_"); //format ex: dgame_map_20097-l1d2_7
+                                    var l = idTile.substring(17, 1); // ?
+                                    map.addTileToGrid(layerNum, posTile[0], posTile[1]);
                                 }
                             }
                         });
@@ -778,9 +776,10 @@ Array.prototype.diffo = function(a, strict) {
                             if (map.data("editorCurrentDraw")) {
                                 this.map = map;
                                 var idTile = $(this).attr('id');
-                                var posTile = idTile.substring(7).split("_");
-                                var l = idTile.substring(5, 6);
-                                map.setSquareNewTiles(l, map.data("editorDrawInitPot")[0], map.data("editorDrawInitPot")[1], posTile[0], posTile[1]);
+                                //var posTile = idTile.substring(7).split("_");
+                                var posTile = idTile.split("-").pop().substring(3).split("_"); //format ex: dgame_map_20097-l1d2_7
+                                var l = idTile.substring(17, 1);
+                                map.setSquareNewTiles(layerNum, map.data("editorDrawInitPot")[0], map.data("editorDrawInitPot")[1], posTile[0], posTile[1]);
                             }
                         });
                     }
@@ -1351,7 +1350,7 @@ Array.prototype.diffo = function(a, strict) {
 		return tileNum;
 	},
 	
-	// EDITOR DRAG
+	// Démarrage d'un nouveau rectangle de selection
         addTileToGrid: function(l, initX, initY)
         {
             this.data("editorCurrentDraw", true);
@@ -1359,26 +1358,35 @@ Array.prototype.diffo = function(a, strict) {
             this.setSquareNewTiles(l, initX, initY, initX, initY);
         },
     
-	setSquareNewTiles: function(l, xi,yi,x,y)
-	{
-		if (this.editorCurrentDraw)
-		{
-			xi = parseInt(xi);
-			yi = parseInt(yi);
-			x = parseInt(x);
-			y = parseInt(y);
-			$("td.gEPtempTile").removeClass('gEPtempTile');
-			for(i = xi; i<=x; i++) {
-				for(j = yi; j<=y; j++) {
-					$("td#"+this.MapId+"-l"+l+"d"+i+"_"+j).addClass('gEPtempTile');
-				}
-			}
-		}
-	},
+        /**
+         * Trace un carré de selection sur la carte (mode rectangle)
+         * @param {int} l numéro du layer
+         * @param {int} xi
+         * @param {int} yi
+         * @param {int} x
+         * @param {int} y
+         * @returns {void}
+         */
+	setSquareNewTiles: function(l, xi, yi, x, y)
+        {
+            if (this.data("editorCurrentDraw") == true)
+            {
+                xi = parseInt(xi);
+                yi = parseInt(yi);
+                x = parseInt(x);
+                y = parseInt(y);
+                this.find("td.gEPtempTile").removeClass('gEPtempTile');
+                for (i = xi; i <= x; i++) {
+                    for (j = yi; j <= y; j++) {
+                        this._getCell(l, i, j).addClass('gEPtempTile');
+                    }
+                }
+            }
+        },
 	
 	stopNewTile: function()
 	{
-		$("td.gEPtempTile").removeClass('gEPtempTile');
+		this.find("td.gEPtempTile").removeClass('gEPtempTile');
 		this.data("editorCurrentDraw",false);
 		this.data("editorDrawInitPot", []);
 	},
