@@ -446,6 +446,8 @@ Array.prototype.diffo = function(a, strict) {
         //
         // MAP : MANIPULATION GENERALE
         //
+        
+        // nouvelle carte
         createMap: function(options) {
             if (this.length == 1) {
                 if (this[0] == document) {
@@ -467,20 +469,23 @@ Array.prototype.diffo = function(a, strict) {
             }
             return this;
         },
-                
+        
+        // suppression d'une carte
         deleteMap: function() {
             $.dGame.jsobserver.delItem(this);
             $.dGame.delMap(this); // fonctionne ?
             this.empty();
             return this;
         },
-                
+        
+        // importer des informations pour construire une carte
         importMap: function(m) {
             this.data(m);
             this.buildMap();
             return this;
         },    
-                
+        
+        // construction d'une carte
         buildMap: function() {
             // ajustement du wrapper
             this.css('overflow', ((this.data("mode") === 'game')?'hidden':'auto')); // dépassement si carte trop grande pour le conteneur ?
@@ -520,7 +525,6 @@ Array.prototype.diffo = function(a, strict) {
             }));
             
             var mapw = this.children('#'+mid);
-            
 
             // couches de la carte 
             for(var i=1; i<=6; i++)
@@ -598,12 +602,14 @@ Array.prototype.diffo = function(a, strict) {
                     }
                 }
             }
+            
+            // parametrage eds actions
             this.data("actionFirstLoad",false);
             this.data("_actions", actions);
             this._parseActions();
             
+            // chargements des objets et personnages
             this.loadElements();
-            
             
             // scroll pour voir le joueur
             if (this.data("mode") === 'game') {
@@ -628,25 +634,28 @@ Array.prototype.diffo = function(a, strict) {
                 });
             });
             
-            this.attr("data-source","piece_"+this.data("id")+".reloadElements");
-            $.dGame.jsobserver.addItem(this);
-            this.fadeIn(1000);
-            
+            // surveillance JOS
+            //this.attr("data-source","piece_"+this.data("id")+".reloadElements");
+            //$.dGame.jsobserver.addItem(this);
             this.attr('data-source','piece_'+this.data("id"));
             $.dGame.jsobserver.addItem(this);
             
+            this.fadeIn(1000);
+            
             return this;
         },
-                
+
+        // retourne la couche "num" de la carte
         _getLayer: function(num) {
             return this.find("#"+this.data("mid") + "_layer_" + num);
         },
                 
-        // retourne le $ cellule x,y de la couche l
+        // retourne la cellule x,y de la couche l de la carte
         _getCell: function(l, x, y) {
             return $(this).find("td#" + $(this).data("mid") + '-l' + l + 'd' + x + '_' + y);
         },
         
+        // retourne l'element HTML de base d'une carte
         _getMapRoot: function() {
             if (this == document) {
                 throw "Element MapRoot introuvable !";
@@ -655,6 +664,7 @@ Array.prototype.diffo = function(a, strict) {
             return (this.data("mid") != undefined) ? this : this.parent()._getMapRoot();
         },
    
+        // anime l'opacité d'une celleule x,y (layer l) de la carte
 	_animateLoopOpacity: function(l,x,y) {
                 var _delay = 2000;
 		this._getCell(l,x,y)
@@ -664,6 +674,7 @@ Array.prototype.diffo = function(a, strict) {
 			.animate({opacity:0.5},_delay,"linear", function() { $(this)._getMapRoot()._animateLoopOpacity(l,x,y) });
 	},
                 
+        // initialisation d'un layer
         _initLayer: function() {
             return this.each(function() {
                 var map = $(this).parent().parent();
@@ -788,7 +799,7 @@ Array.prototype.diffo = function(a, strict) {
             });
         },
                 
-        // actions
+        // parametrage des actions
         _parseActions: function() {
             this._getLayer(6).find('td').empty();
 
@@ -1080,6 +1091,7 @@ Array.prototype.diffo = function(a, strict) {
             });
 	},
         
+        // initialisation du menu contaxtuel
         setContextMenu: function($trigger, e) {
             var map = $trigger._getMapRoot();
             var pos = $trigger.attr('id').split('-l6d').pop().split('_');
@@ -1285,33 +1297,46 @@ Array.prototype.diffo = function(a, strict) {
         //
         // MAP : FONCTION EDITEUR
         //
+        
+        // enregistremlent d'une carte
 	save: function(_call)
-	{
-		var sol = this.getSolString();
-		var sol2 = this.getMobilierString(2);
-		var mobilier = this.getMobilierString(3);
-		//console.log("sol : "+sol)
-		//console.log("sol2 : "+sol2)
-		//console.log("mobilier : "+mobilier)
-		var route = Routing.generate('piece_save',{'id':this.data("id"),'sol':sol, 'sol2':sol2, 'mobilier':mobilier});
-		//console.log(route);
-		//
-		start_loading();
-		$.post(route).done( function(txt){
-			if(txt!='ok') { set_error(txt); }
-			if (_call!=undefined && _call!=null) { eval(_call); }
-		})
-                  .fail(function (err){ set_error("Erreur lors de la sauvegarde de la carte !") })
-                 .always(function(){ stop_loading(); });
-	},
-	
+        {
+            if (this.data("mode") != "editor") return;
+            
+            var sol = this.getSolString();
+            var sol2 = this.getMobilierString(2);
+            var mobilier = this.getMobilierString(3);
+            //console.log("sol : "+sol)
+            //console.log("sol2 : "+sol2)
+            //console.log("mobilier : "+mobilier)
+            var route = Routing.generate('piece_save', {'id': this.data("id"), 'sol': sol, 'sol2': sol2, 'mobilier': mobilier});
+            //console.log(route);
+            //
+            start_loading();
+            $.post(route).done(function(txt) {
+                if (txt != 'ok') {
+                    set_error(txt);
+                }
+                if (_call != undefined && _call != null) {
+                    eval(_call);
+                }
+            })
+                    .fail(function(err) {
+                set_error("Erreur lors de la sauvegarde de la carte !")
+            })
+                    .always(function() {
+                stop_loading();
+            });
+        },
+                
+	// retourne la liste des tile du mobilier
 	getMobilierString: function(l){
 		str = '';
-		for(var y=0; y < this.NHeigth; y++)
+		for(var y=0; y < this.data("tailley"); y++)
 		{
-			for(var x=0; x < this.NWidth; x++)
+			for(var x=0; x < this.data("taillex"); x++)
 			{
-				elem = this.getTileNumFromUrl($('#'+this.MapId+'-l'+l+'d'+x+'_'+y).css('background-image'));
+				elem = this.getTileNumFromUrl( this._getCell(l,x,y).css('background-image'));
 				if (elem != null)
 				{
 					str += "["+x+","+y+","+elem+"]";
@@ -1321,15 +1346,16 @@ Array.prototype.diffo = function(a, strict) {
 		return str;
 	},	
 
+        // retourne la liste des tile du sol
 	getSolString: function() {
 		str = '';
-		for(var y=0; y < this.NHeigth; y++)
+		for(var y=0; y < this.data("tailley"); y++)
 		{
 			str += "["; 
-			limit_fix_x = this.NWidth-1;
-			for(var x=0; x < this.NWidth; x++)
+			limit_fix_x = this.data("taillex")-1;
+			for(var x=0; x < this.data("taillex"); x++)
 			{
-				elem = this.getTileNumFromUrl($('#'+this.MapId+'-l1d'+x+'_'+y).css('background-image'));
+				elem = this.getTileNumFromUrl(this._getCell(1,x,y).css('background-image'));
 				if (elem == null) {
 					elem = 'null';
 				}
@@ -1341,8 +1367,9 @@ Array.prototype.diffo = function(a, strict) {
 		return str;
 	},
 	
+        // retourne le numéro de l'image de l'url
 	getTileNumFromUrl: function(url) {
-		console.log('map.getTileNumFromUrl("'+url+'")');
+		// console.log('map.getTileNumFromUrl("'+url+'")');
 		if (url==null || url==undefined || url=='') return null;
 		var reg = /(\/.*)+\/t([0-9]+)\.png/;
 		var trouve = url.split(reg);
@@ -1411,7 +1438,9 @@ Array.prototype.diffo = function(a, strict) {
                     });
                     data = a + '-' + data.join('-');
                     loadInLayer(Routing.generate('piece_saveactions', {'id': map.data("id"), 'actions': data}), '#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6')
-                    map.build();
+                    //map.build();
+                    $.dGame.jsobserver.queue({code: "piece_" + map.data("id") + ".reloadElements"}, true);
+
                     break;
                 case 'PO' :
                     var coord = cells.attr('id').split('-l6d').pop().split('_');
@@ -1420,7 +1449,8 @@ Array.prototype.diffo = function(a, strict) {
                         deposerPo(map.data("id"), coord[0], coord[1], somme);
                         loadInLayer(Routing.generate('piece_interfaceediteurpieceactionlibs', {'id':map.data("id")}), '#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6');
                         // loadInLayer('donjon/editeurLibrairieActionLib?idPIECE='+oMap.idPIECE+'&a='+data,'#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6')
-                        map.build();
+                        //map.build();
+                        $.dGame.jsobserver.queue({code: "piece_" + map.data("id") + ".reloadElements"}, true);
                     }
                     break;
 
