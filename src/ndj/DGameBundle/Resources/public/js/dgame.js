@@ -300,6 +300,7 @@ Array.prototype.diffo = function(a, strict) {
                     $('[data-source]').reload();
                 }
             },
+                    
             //
             // FIN OBSERVER
             // 
@@ -365,7 +366,7 @@ Array.prototype.diffo = function(a, strict) {
                     
             map_default_config: {
                 mid: null, // identifiant unique
-                name:null,   // nom de la carte, permettant dfacilement de la récupérer
+                name:null, // nom de la carte, permettant facilement de la récupérer
                 //
                 // PIECE attributs
                 //
@@ -1450,7 +1451,7 @@ Array.prototype.diffo = function(a, strict) {
                         loadInLayer(Routing.generate('piece_interfaceediteurpieceactionlibs', {'id':map.data("id")}), '#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6');
                         // loadInLayer('donjon/editeurLibrairieActionLib?idPIECE='+oMap.idPIECE+'&a='+data,'#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6')
                         //map.build();
-                        $.dGame.jsobserver.queue({code: "piece_" + map.data("id") + ".reloadElements"}, true);
+                        $.dg.jsobserver.queue({code: "piece_" + map.data("id") + ".reloadElements"}, true);
                     }
                     break;
 
@@ -1478,10 +1479,11 @@ Array.prototype.diffo = function(a, strict) {
     }); // fin $.fn
 
     // alias
-    $.extend({gG: $.dGame});
+    $.extend({dg: $.dGame});
+    $.extend({jso: $.dGame.jsobserver});
 })(jQuery);
 
 // initialisation
 $(document).ready(function(){
-   $.dGame.init();
+   $.dg.init();
 });

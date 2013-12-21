@@ -2,7 +2,7 @@
 
 namespace ndj\DGameBundle\Entity;
 
-use ndj\DGameBundle\Entity\Tools;
+use ndj\DGameBundle\Util\Tools;
 use Doctrine\ORM\Mapping as ORM;
 use ndj\DGameBundle\Entity\Inventaire;
 use ndj\DGameBundle\Entity\Bestiaire;

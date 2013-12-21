@@ -417,6 +417,7 @@ div.map_layer1 table.epiece {
 		background-repeat: repeat;
 	}
 	table.epiece td img{
+                position: absolute;
 		display: block;	
 		max-width: 30px;
 		max-height: 30px;
