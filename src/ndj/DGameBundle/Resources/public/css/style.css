@@ -416,13 +416,14 @@ div.map_layer1 table.epiece {
 	div.map_layer6 table.epiece td {
 		background-repeat: repeat;
 	}
-	table.epiece td img{
+	table.epiece td img {
                 position: absolute;
 		display: block;	
 		max-width: 30px;
 		max-height: 30px;
 		padding:0;
 		margin: 0;
+                border:1px solid red;
 	}
 	div.map_layer6 table.epiece td.gEPtempTile {
 		background-color: yellowgreen;
