@@ -416,6 +416,7 @@ div.map_layer1 table.epiece {
 	div.map_layer6 table.epiece td {
 		background-repeat: repeat;
 	}
+        /* @FIXME position absolute ne passe pas à la compilation du css */
 	table.epiece td img {
                 position: absolute;
 		display: block;	
@@ -423,7 +424,6 @@ div.map_layer1 table.epiece {
 		max-height: 30px;
 		padding:0;
 		margin: 0;
-                border:1px solid red;
 	}
 	div.map_layer6 table.epiece td.gEPtempTile {
 		background-color: yellowgreen;
