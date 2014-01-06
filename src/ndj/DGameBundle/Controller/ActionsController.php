@@ -19,7 +19,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use ndj\DGameBundle\Entity\Piece;
 use ndj\DGameBundle\Entity\Donjon;
 use ndj\DGameBundle\Entity\Etage;
-use ndj\DGameBundle\Entity\Tools;
+use ndj\DGameBundle\Util\Tools;
+use ndj\DGameBundle\Entity\Evenement;
 
 /**
  * 
@@ -147,6 +148,15 @@ class ActionsController extends Controller
 					$donjon->recette($_a[3]);
 					$em->persist($donjon);
 				}
+                                
+                                // messages pour recahrgement carte
+                               /* $e = new Evenement();
+                                $av_key = $this->get('gamesession')->getKey();
+                                $e->setDest($av_key)->setCat(4)->setLu(0)->setDt(new \DateTime())->setContent(json_encode(array(
+                                    "code" => 'piece_'.$piece->getId().'.reloadActions',
+                                    "data" => ''
+                                )));
+                                $em->persist($e);*/
 		   
 				$em->persist($piece);
 			} else {
@@ -163,7 +173,7 @@ class ActionsController extends Controller
 		 
 		$em->flush();
 		 
-		return new Response('<script>	map.build(); loadInLayer(\''.$this->generateUrl('piece_interfaceediteurpieceactionlibs',array('id'=>$piece->getId())).'\',\'#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6\')</script>');
+		return new Response('<script> loadInLayer(\''.$this->generateUrl('piece_interfaceediteurpieceactionlibs',array('id'=>$piece->getId())).'\',\'#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6\'); $.dGame.jsobserver.gtrigger(\'piece_'.$piece->getId().'.reloadActions\',null);</script>');
 	}
 	
 	

@@ -168,7 +168,6 @@ Array.prototype.diffo = function(a, strict) {
                 },
                 // initialisation
                 init: function() {
-                    console.log("jsobserver.init");
                     // on vérifie qu'il est en jeu
                     if ($.dGame.ingame()) {
                         var i = 0;
@@ -176,7 +175,6 @@ Array.prototype.diffo = function(a, strict) {
                             i++;
                             $.dGame.jsobserver.addItem( $(this) );
                         });
-                        console.log(i + " data-loaders.");
 
                         // set timer
                         this.data.timer = setInterval(function(){ $.dGame.jsobserver.transaction() }, this.data.delay);
@@ -261,6 +259,8 @@ Array.prototype.diffo = function(a, strict) {
                     } else if (ev[0] == "piece") {
                         if (ns == "reloadElements") {
                             target.loadElements();
+                        } else if (ns == "reloadActions") {
+                            target.reloadActions();
                         }
                     } else if (ev[0] == "chat") {
                         if (ev[1] == "send") { // empiler la commande & send
@@ -277,14 +277,17 @@ Array.prototype.diffo = function(a, strict) {
                 },
                 // Ajoute un nouvelle "écouteur"
                 addItem: function(o) {
-                    o.each(function(){
+                    o.each(function() {
                         $(this).on($(this).attr('data-source'), $.dGame.jsobserver.__jsoHandler);
                     });
                     return this;
                 },
                 // Suprrimer un "écouteur"
                 delItem: function(o) {
-                    o.off(o.attr('data-source'), $.dGame.jsobserver.__jsoHandler);
+                    o.each(function() {
+                        $(this).off($(this).attr('data-source'), $.dGame.jsobserver.__jsoHandler);
+                    });
+                    return this;
                 },
                 // Signale un evenement aux écouteurs
                 gtrigger: function(event, data) {
@@ -637,8 +640,8 @@ Array.prototype.diffo = function(a, strict) {
             
             // surveillance JOS
             //this.attr("data-source","piece_"+this.data("id")+".reloadElements");
-            //$.dGame.jsobserver.addItem(this);
-            this.attr('data-source','piece_'+this.data("id"));
+            //$.dGame.jsobserver.addItemgamecommon_maploadactions(this);
+            this.attr('data-source','piece_'+this.data("id")+".reloadElements.reloadActions");
             $.dGame.jsobserver.addItem(this);
             
             this.fadeIn(1000);
@@ -798,6 +801,21 @@ Array.prototype.diffo = function(a, strict) {
                 }
                 return this;
             });
+        },
+                
+        reloadActions: function() {
+            start_loading();
+            mapw = this;
+            $.getJSON(Routing.generate('gamecommon_maploadactions', {'id': mapw.data("id")}))
+                    .done(function(data) {
+                mapw.data("actions", "{" + data.join("}{") + "}");
+                mapw._parseActions();
+            }).always(function() {
+                stop_loading();
+            }).fail(function() {
+                set_error("Erreur lors du chargement des actions de la salle !");
+            });
+
         },
                 
         // parametrage des actions
@@ -1439,9 +1457,7 @@ Array.prototype.diffo = function(a, strict) {
                     });
                     data = a + '-' + data.join('-');
                     loadInLayer(Routing.generate('piece_saveactions', {'id': map.data("id"), 'actions': data}), '#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6')
-                    //map.build();
-                    $.dGame.jsobserver.queue({code: "piece_" + map.data("id") + ".reloadElements"}, true);
-
+                    $.dGame.jsobserver.gtrigger("piece_" + map.data("id") + ".reloadActions", null);
                     break;
                 case 'PO' :
                     var coord = cells.attr('id').split('-l6d').pop().split('_');
@@ -1449,9 +1465,7 @@ Array.prototype.diffo = function(a, strict) {
                     if (somme != null && somme != undefined) {
                         deposerPo(map.data("id"), coord[0], coord[1], somme);
                         loadInLayer(Routing.generate('piece_interfaceediteurpieceactionlibs', {'id':map.data("id")}), '#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6');
-                        // loadInLayer('donjon/editeurLibrairieActionLib?idPIECE='+oMap.idPIECE+'&a='+data,'#gardien-editeur-sidepanel-libs .ge_lib_wrapper-6')
-                        //map.build();
-                        $.dg.jsobserver.queue({code: "piece_" + map.data("id") + ".reloadElements"}, true);
+                        $.dGame.jsobserver.gtrigger("piece_" + map.data("id") + ".reloadActions", null);
                     }
                     break;
 
