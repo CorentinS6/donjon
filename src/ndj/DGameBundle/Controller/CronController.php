@@ -75,6 +75,10 @@ class CronController extends Controller {
 				$sql [] = 'UPDATE AVENTURIER SET MANA=LEAST(MANA+1,MANA_MAX) WHERE ETAT=1';
 				// évènement programmé
 				
+                                
+                                
+                                // @TODO : clear doublon dans evenements
+                                
 				// var_dump($sql);
 				// do it SQL querys !
 				

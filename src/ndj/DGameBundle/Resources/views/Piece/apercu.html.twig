@@ -1,0 +1,5 @@
+{% set apercu_id = random() %}
+<div id="game-apercu-mapwrapper-{{ apercu_id }}" class="w70 h100"></div>
+<script>
+$(function(){ $('#game-apercu-mapwrapper-{{ apercu_id }}').createMap({name:"carte_apercu_{{ apercu_id }}",mode:"view"}).importMap({{ piece.json | raw }}); });
+</script>

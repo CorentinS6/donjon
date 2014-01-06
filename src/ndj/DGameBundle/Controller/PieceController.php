@@ -255,5 +255,16 @@ class PieceController extends Controller
     	return new Response('ok');
     }
     
-    
+
+    /**
+     * Prévisualiser la pièce
+     *
+     * @Route("/apercu/{id}", name="piece_apercu", options={"expose"=true})
+     */
+    public function apercuAction(Piece $piece) {
+        return $this->render('ndjDGameBundle:Piece:apercu.html.twig', array(
+                    'piece' => $piece
+        ));
+    }
+
 }

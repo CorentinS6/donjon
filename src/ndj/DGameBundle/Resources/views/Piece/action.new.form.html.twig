@@ -33,6 +33,7 @@
 {# pour un passage #} {# piece::listeChoix('idPIECE','Choisissez une salle',null,' id="newActionPidPIECE"') #}
 <div id="newActionP" class="toggleNewAction hide">
 Vers la salle {% include 'ndjDGameBundle:Piece:selector.html.twig' with {'pieces':piece.getiddonjon.getpieces,'options':' id=newActionPidPIECE '} %} 
+(<a href="javascript:void(0);" onclick="set_dialog({title:'Aperçu',width: 800,height: 700,resizable: true},Routing.generate('piece_apercu',{id:$('#newActionPidPIECE').val()}))">Aperçu</a>)
 <br />En : X = <input type="text" name="xto" id="newActionXto" value="0" size="3" /> - Y : <input type="text" name="yto" id="newActionYto" value="0" size="3" />
 </div>
  
