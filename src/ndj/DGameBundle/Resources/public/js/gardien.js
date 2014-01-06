@@ -401,9 +401,11 @@ function Donjon_eLoadPiece(idEtage)
 						for(b = dep_x ; b < max_x ; b++)
 						{							
 							$('#c'+b+'_'+a).addClass('piece');
-							$('#c'+b+'_'+a).css("background-color","rgb("+tileColor1+","+tileColor2+","+tileColor3+")");
+                                                        $('#c'+b+'_'+a).addClass('piece_'+p.id);
+                                                        $('#c' + b + '_' + a).css("background-color", "rgb(" + tileColor1 + "," + tileColor2 + "," + tileColor3 + ")");
+                                                       
 							$('#c'+b+'_'+a).attr('name', p.id);
-							$('#c'+b+'_'+a).append('<span class="hide"><h3>'+p.nom+'</h3>Position : x='+p.posx+' - y='+p.posy+'<br />Taille : '+p.taillex+'x'+p.tailley+'</span>');
+							$('#c'+b+'_'+a).append('<span class="hide"><h3>'+p.nom+'</h3>Position : x='+p.posx+' - y='+p.posy+'<br />Taille : '+p.taillex+'x'+p.tailley+'<br />(double clic pour éditer la pièce)</span>');
 							//$('#c'+b+'_'+a).attr('title', p.Nom);
 							$('#c'+b+'_'+a).dblclick(function(){
 								$("div#ESalleInfo").html('Patientez... Chargement de la salle en cours pour l\'édition !');
@@ -417,6 +419,26 @@ function Donjon_eLoadPiece(idEtage)
 							
 						}
 					}
+                                        
+                                        var piece_actions = p.actions.explodex("}{");
+                                        for (var a = 0; a < piece_actions.length; a++) {
+                                            var item = piece_actions[a].split(",");
+                                            if (item[2] == "V") {
+                                                $('#c' + (dep_x+parseInt(item[0])) + '_' + (dep_y+parseInt(item[1]))).css("background-color", "#000");
+                                            } else if (item[2] == "I") {
+                                                $('#c' + (dep_x+parseInt(item[0])) + '_' + (dep_y+parseInt(item[1]))).css("background-color", "red");
+                                            } else if (item[2] == "W") {
+                                                $('#c' + (dep_x+parseInt(item[0])) + '_' + (dep_y+parseInt(item[1]))).css("background-color", "blue");
+                                            } else if (item[2] == "S") {
+                                                $('#c' + (dep_x+parseInt(item[0])) + '_' + (dep_y+parseInt(item[1]))).css("background-color", "green");
+                                            } else if (item[2] == "F") {
+                                                $('#c' + (dep_x+parseInt(item[0])) + '_' + (dep_y+parseInt(item[1]))).css("background-color", "yellow");
+                                            } else if (item[2] == "ED" || item[2] == "EM") {
+                                                $('#c' + (dep_x+parseInt(item[0])) + '_' + (dep_y+parseInt(item[1]))).css("background-color", "purple");
+                                            } else if (item[2] == "P") {
+                                                $('#c' + (dep_x+parseInt(item[0])) + '_' + (dep_y+parseInt(item[1]))).css("background-color", "orange");
+                                            }
+                                        }
 					
 					tileColor1 = (tileColor1 + 70) % 255;
 					tileColor2 = (tileColor2 + 30) % 255;

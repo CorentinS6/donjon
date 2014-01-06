@@ -5,10 +5,21 @@
 <div id="gEERightContent" class="overa right h100 w30 bgd">
 <span class="smaller right">[<a href="#editeur?donjon" onclick="gLoadTab($(this).attr('href'));">Retour au donjon</a>]</span>
 <h1>{{etage.nom}} (Niveau {{etage.niveau}})</h1>
-<div class="smaller">    
-	<p>Pour crééer une nouvelle salle, cliquez sur une case libre (Salle de 3x3 minimum - "ECHAP" pour annuler, coût : 1PC/case)</p>
-	<p>Survoler les salles déjà créées (en couleur sur le plan) pour avoir des informations</p>
-	<p>Doucle-cliquer sur une salle déjà  créée pour la modifier</p> 
+<div class="smaller">  
+    <ul>
+	<li>Pour crééer une nouvelle salle, cliquez sur une case libre (Salle de 3x3 minimum - "ECHAP" pour annuler, coût : 1PC/case)</li>
+	<li>Survoler les salles déjà créées (en couleur sur le plan) pour avoir des informations</li>
+	<li>Doucle-cliquer sur une salle déjà  créée pour la modifier</li> 
+   </ul>
+        <p>
+            <table>
+                <tr><td bgcolor="red">&nbsp;</td><td>Case interdite</td> <td bgcolor="orange">&nbsp;</td><td>Passage / Porte</td> </tr>
+                <tr><td bgcolor="#000">&nbsp;</td><td>Vide</td> <td bgcolor="green">&nbsp;</td><td>Sortie</td> </tr>
+                <tr><td bgcolor="blue">&nbsp;</td><td>Eau</td> <td bgcolor="yellow">&nbsp;</td><td>Fin du donjon</td> </tr>
+                <tr><td bgcolor="purple">&nbsp;</td><td>Escalier</td></tr>
+                
+            </table>
+        </p>
 </div>
 
 <div id="ESalleInfo"></div>
